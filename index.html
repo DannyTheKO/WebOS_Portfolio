@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/script.js" defer></script>
+    <script type="module" src="js/topbar.js" defer></script>
+    <script type="module" src="js/detail.js" defer></script>
     <title>Danny's OS</title>
 </head>
 
@@ -21,28 +23,31 @@
         <p id="dateTime">[ Date / Time ]</p>
     </div>
 
-    <!-- Detail -->
-    <div class="container_detail">
-        <div class="container_pfp">
-            <img class="profile_picture" src="Img/Hewwo.png" alt="Danny's Profile Image">
-            <h2>DANNY</h2>
-        </div>
-
-        <hr>
-
-        <div class="container_introduction">
-            <p>Hi, my name is Danh Tien</p>
-            <p>I'm a software engineer, currently study in Saigon University</p>
-            <p>I create cool website for fun, play video games and other things</p>
-            <p>Welcome to my portfolio website.</p>
-        </div>
-
-
-        <div class="container_links">
-            <a href="https://github.com/DannyTheKO" target="_blank">github.com</a>
-            <a href="https://stats.fm/DannyTheKO" target="_blank">stats.fm</a>
-            <a href="https://tokin.tv/user/@Danny" target="_blank">tokin.tv</a>
-            <a href="https://linktr.ee/dannyti" target="_blank">linktr.ee</a>
+    <!-- Introduction -->
+    <div id="detail_window">
+        <div id="detail_window_header"></div>
+        <div class="container_padding">
+            <div class="container_pfp">
+                <img class="profile_picture" src="img/Hewwo.png" alt="Danny's Profile Image">
+                <h2>DANNY</h2>
+            </div>
+    
+            <hr>
+    
+            <div class="container_introduction">
+                <p>Hi, my name is Danh Tien</p>
+                <p>I'm a software engineer, currently studied in Saigon University</p>
+                <p>I create cool website for fun, play video games and other things</p>
+                <p>Welcome to my portfolio website.</p>
+            </div>
+    
+    
+            <div class="container_links">
+                <a href="https://github.com/DannyTheKO" target="_blank">github.com</a>
+                <a href="https://stats.fm/DannyTheKO" target="_blank">stats.fm</a>
+                <a href="https://tokin.tv/user/@Danny" target="_blank">tokin.tv</a>
+                <a href="https://linktr.ee/dannyti" target="_blank">linktr.ee</a>
+            </div>
         </div>
     </div>
 </body>

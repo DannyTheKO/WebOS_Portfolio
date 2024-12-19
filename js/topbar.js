@@ -7,11 +7,14 @@ function dateTime() {
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: true
     }).replace(',', ' |');
-    
+
+    formattedDateTime = `[ ${formattedDateTime} ]`;
+
     var textTime = document.querySelector("#dateTime");
     textTime.innerHTML = formattedDateTime.toUpperCase();
 }
 
-setInterval(dateTime, 1000);
+setInterval(dateTime, 0);

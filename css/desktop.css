@@ -24,6 +24,9 @@
     --border-size-top: 30px;
     --border-size-around: 5px;
 
+    /* Desktop */
+    --desktop-font-color: rgb(0, 0, 0);
+
 
     /* Topbar custom var */
     --topbar-background-color: rgb(0, 0, 0, 0.5);

@@ -1,3 +1,19 @@
+function getScreenDimensions() {
+    return {
+        // Window inner dimensions (viewport)
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        
+        // Screen dimensions (full screen)
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        
+        // Available screen space (excluding taskbars/OS elements)
+        availWidth: window.screen.availWidth,
+        availHeight: window.screen.availHeight
+    };
+}
+
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`)
@@ -11,16 +27,13 @@ export function windowElement(element) {
     return { element, header, header_action };
 }
 
-export function iconElement(element) {
-    var element = document.querySelector(element)
-
-    element.style.cursor = "pointer";
-}
-
 // Drag windows function
 export function dragElement(element, header) {
     var initialX = 0, initialY = 0;
     var currentX = 0, currentY = 0;
+
+    const { viewportWidth, viewportHeight } = getScreenDimensions();
+
     var app = false;
 
 
@@ -53,22 +66,28 @@ export function dragElement(element, header) {
     // When mouse is pressed, we drag element
     function dragElement(e) {
         e.preventDefault();
-
-        // calculate the new cursor position:
         initialX = currentX - e.clientX;
         initialY = currentY - e.clientY;
         currentX = e.clientX;
         currentY = e.clientY;
 
-        // set the element's new position:
-        element.style.top = (element.offsetTop - initialY) + "px";
-        element.style.left = (element.offsetLeft - initialX) + "px";
+        // Calculate new position
+        let newTop = element.offsetTop - initialY;
+        let newLeft = element.offsetLeft - initialX;
+        
+        // Ensure window stays within viewport
+        const maxLeft = viewportWidth - element.offsetWidth;
+        const maxTop = viewportHeight - element.offsetHeight;
+        
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        newTop = Math.max(0, Math.min(newTop, maxTop));
 
-        // Style base on situation
+        element.style.top = newTop + "px";
+        element.style.left = newLeft + "px";
+
         if(app) {
             header.style.cursor = "grabbing";
-        }
-        else {
+        } else {
             element.style.cursor = "move";
         }
     }

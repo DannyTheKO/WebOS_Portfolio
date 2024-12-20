@@ -8,6 +8,41 @@
     src: url(../font/Angora-1G3BB.otf) format("opentype");
 }
 
+:root {
+    /* General var */
+    --pfp-size-small: 64px;
+    --pfp-size-normal: 128px;
+    --pfp-size-big: 256px;
+
+    --font-color: rgb(255, 255, 255);
+    --font-family: "consolas", sans-serif;
+    --font-size-small: 0.9rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.5rem;
+
+    --border-color: rgb(50, 146, 225);
+    --border-size-top: 30px;
+    --border-size-around: 5px;
+
+
+    /* Topbar custom var */
+    --topbar-background-color: rgb(0, 0, 0, 0.5);
+    --topbar-background-blur: blur(10px);
+    --topbar-font-family: "Stretch Pro", sans-serif;
+    --topbar-font-size: var(--font-size-small);
+    --topbar-btn-color: rgb(0, 0, 0, 0.7);
+
+    /* Application */
+    --application-icon-size: 64px;
+    --application-icon-image-size: 64px;
+    --application-icon-font-size: 16px;
+    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
+
+    --application-background-color: rgba(0, 0, 0, 0.8);
+    --application-background-blur: blur(2px);
+}
+
+
 body {
     box-sizing: content-box;
     font-family: var(--font-family);
@@ -109,39 +144,4 @@ body {
     .close {
         display: none;
     }
-}
-
-
-:root {
-    /* General var */
-    --pfp-size-small: 64px;
-    --pfp-size-normal: 128px;
-    --pfp-size-big: 256px;
-
-    --font-color: rgb(255, 255, 255);
-    --font-family: "consolas", sans-serif;
-    --font-size-small: 0.9rem;
-    --font-size-medium: 1.2rem;
-    --font-size-large: 1.5rem;
-
-    --border-color: rgb(50, 146, 225);
-    --border-size-top: 30px;
-    --border-size-around: 5px;
-
-
-    /* Topbar custom var */
-    --topbar-background-color: rgb(0, 0, 0, 0.5);
-    --topbar-background-blur: blur(10px);
-    --topbar-font-family: "Stretch Pro", sans-serif;
-    --topbar-font-size: var(--font-size-small);
-    --topbar-btn-color: rgb(0, 0, 0, 0.7);
-
-    /* Application */
-    --application-icon-size: 64px;
-    --application-icon-image-size: 64px;
-    --application-icon-font-size: 16px;
-    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
-
-    --application-background-color: rgba(0, 0, 0, 0.8);
-    --application-background-blur: blur(2px);
 }

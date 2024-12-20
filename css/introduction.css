@@ -11,9 +11,9 @@
     aspect-ratio: 4/1;
 
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 25%;
+    left: 60%;
+    /* transform: translate(-50%, -50%); */
 
     color: var(--font-color);
 
@@ -27,7 +27,9 @@
         margin: 0;
         padding: 0 5px;
 
+        /* Act like a border for the content */
         height: var(--border-size-top);
+        border-bottom: 1px solid var(--border-color);
         background-color: var(--border-color);
         backdrop-filter: unset;
 

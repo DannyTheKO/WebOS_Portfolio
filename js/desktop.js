@@ -1,25 +1,36 @@
 
-export function dragElement(element) {
-    var initialX = 0, initialY = 0; 
-    var currentX = 0, currentY = 0;
 
-    var header_drag = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
-    var header_action = header_drag.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
+// Get windows position and other element inside of that
+export function windowElement(element) {
+    var element = document.querySelector(`#${element.id}`)
 
-    header_drag.style.cursor = "grab";
-    header_drag.style.userSelect = "none";
+    var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
+    var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
+
+    // Header action styling
     header_action.style.cursor = "pointer";
 
+    return { element, header, header_action };
+}
+
+// Drag windows function
+export function dragElement(element, header) {
+    var initialX = 0, initialY = 0;
+    var currentX = 0, currentY = 0;
+
+    // Topbar styling
+    header.style.cursor = "grab";
+    header.style.userSelect = "none";
+
     // Check element if there is a header ? if not, we use the whole div
-    if (header_drag) {
+    if (header) {
         // if present, the header is where you move the DIV from:
-        header_drag.onmousedown = startDragging;
+        header.onmousedown = startDragging;
     } else {
         // otherwise, move the DIV from anywhere inside the DIV:
         element.onmousedown = startDragging;
     }
 
-        
     // When mouse is pressed
     function startDragging(e) {
         e.preventDefault();
@@ -34,7 +45,7 @@ export function dragElement(element) {
     // When mouse is pressed, we drag element
     function dragElement(e) {
         e.preventDefault();
-        
+
         // calculate the new cursor position:
         initialX = currentX - e.clientX;
         initialY = currentY - e.clientY;
@@ -44,7 +55,7 @@ export function dragElement(element) {
         // set the element's new position:
         element.style.top = (element.offsetTop - initialY) + "px";
         element.style.left = (element.offsetLeft - initialX) + "px";
-        header_drag.style.cursor = "grabbing";
+        header.style.cursor = "grabbing";
     }
 
     // When mouse is unpressed
@@ -52,8 +63,10 @@ export function dragElement(element) {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
-        header_drag.style.cursor = "grab";
+        header.style.cursor = "grab";
     }
+}
 
-
+export function closeElement(element) {
+    element.classList.toggle("close")
 }

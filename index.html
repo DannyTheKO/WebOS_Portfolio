@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script type="module" src="js/script.js" defer></script>
+
+    <link rel="stylesheet" href="css/desktop.css">
+    <link rel="stylesheet" href="css/introduction.css">
+
+    <script type="module" src="js/desktop.js"></script>
     <script type="module" src="js/topbar.js" defer></script>
-    <script type="module" src="js/detail.js" defer></script>
+    <script type="module" src="js/introduction.js" defer></script>
     <title>Danny's OS</title>
 </head>
 
@@ -22,43 +25,17 @@
             [ MERRY CHRISTMAS ]
             <img class="svg" src="svg/local_11.svg">
         </p>
-        <p>[ RACCOON x86 ]</p>
+        <p id="OSButton">
+            [ RACCOON OS ]
+            <img class="svg" src="svg/OS_Icon.svg" alt="OS Icon">
+        </p>
     </div>
 
-    <!-- Introduction -->
-    <div id="detail_window">
-        <div class="detail_window_header">
-            <div class="detail_window_header_name">
-                Infomation
-            </div>
-            <div class="detail_window_header_action">
-                <img id="close_action" class="svg" src="svg/close-square-svgrepo-com.svg" alt="Close">
-            </div>
-        </div>
-        <div class="container_content">
-            <div class="container_pfp">
-                <img class="profile_picture" src="img/Hewwo.png" alt="Danny's Profile Image">
-                <h2>DANNY</h2>
-            </div>
-    
-            <hr>
-    
-            <div class="container_introduction">
-                <p>Hi, my name is Danh Tien</p>
-                <p>I'm a software engineer, currently studied in Saigon University</p>
-                <p>I create cool website for fun, play video games and other things</p>
-                <p>Welcome to my portfolio website.</p>
-            </div>
-    
-    
-            <div class="container_links">
-                <a href="https://github.com/DannyTheKO" target="_blank">github.com</a>
-                <a href="https://stats.fm/DannyTheKO" target="_blank">stats.fm</a>
-                <a href="https://tokin.tv/user/@Danny" target="_blank">tokin.tv</a>
-                <a href="https://linktr.ee/dannyti" target="_blank">linktr.ee</a>
-            </div>
-        </div>
+    <div id="Introduction_btn_open" class="app">
+        <img class="app_icon" src="img/Introduction_Icon.jpg" alt="Introduction Icon">
+        <p class="app_name">Detail</p>
     </div>
+    <div id="Introduction_container"></div>
 </body>
 
 </html>

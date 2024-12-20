@@ -128,6 +128,8 @@ body {
             display: flex;
             text-align: center;
 
+            color: var(--desktop-font-color);
+
             font-family: var(--font-family);
             font-size: var(--application-icon-font-size);
             word-wrap: break-word;

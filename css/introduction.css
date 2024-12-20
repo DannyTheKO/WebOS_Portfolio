@@ -2,8 +2,6 @@
 
 /* Introduction Icon */
 #Introduction_Icon {
-    color: var(--desktop-font-color);
-    
     top: 25%;
     left: 22%;
 }

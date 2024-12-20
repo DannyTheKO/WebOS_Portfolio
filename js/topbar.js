@@ -1,4 +1,14 @@
 // Realtime Date And Time
+document.addEventListener('DOMContentLoaded', function () {
+    fetch("app/topbar.html")
+        .then(response => response.text())
+        .then(data => {
+            // Only after content is loaded, then initialize the window functionality
+            document.getElementById("Topbar").innerHTML = data;
+        })
+        .catch(error => console.error('Error loading introduction:', error));
+})
+
 function dateTime() {
     var date = new Date();
     var formattedDateTime = date.toLocaleDateString('en-GB', {

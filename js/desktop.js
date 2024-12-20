@@ -1,5 +1,3 @@
-
-
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`)
@@ -13,20 +11,30 @@ export function windowElement(element) {
     return { element, header, header_action };
 }
 
+export function iconElement(element) {
+    var element = document.querySelector(element)
+
+    element.style.cursor = "pointer";
+}
+
 // Drag windows function
 export function dragElement(element, header) {
     var initialX = 0, initialY = 0;
     var currentX = 0, currentY = 0;
+    var app = false;
 
-    // Topbar styling
-    header.style.cursor = "grab";
-    header.style.userSelect = "none";
 
     // Check element if there is a header ? if not, we use the whole div
     if (header) {
+        // Topbar styling
+        header.style.cursor = "grab";
+        header.style.userSelect = "none";
+        app = true;
         // if present, the header is where you move the DIV from:
         header.onmousedown = startDragging;
     } else {
+        element.style.cursor = "pointer";
+        app = false;
         // otherwise, move the DIV from anywhere inside the DIV:
         element.onmousedown = startDragging;
     }
@@ -55,7 +63,14 @@ export function dragElement(element, header) {
         // set the element's new position:
         element.style.top = (element.offsetTop - initialY) + "px";
         element.style.left = (element.offsetLeft - initialX) + "px";
-        header.style.cursor = "grabbing";
+
+        // Style base on situation
+        if(app) {
+            header.style.cursor = "grabbing";
+        }
+        else {
+            element.style.cursor = "move";
+        }
     }
 
     // When mouse is unpressed
@@ -63,10 +78,21 @@ export function dragElement(element, header) {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
-        header.style.cursor = "grab";
-    }
+        // Style base on situation
+        if(app) {
+            header.style.cursor = "grabbing";
+        }
+        else {
+            element.style.cursor = "pointer";
+        }    }
 }
 
-export function closeElement(element) {
-    element.classList.toggle("close")
+export function toggleElement(element) {
+    const status = window.getComputedStyle(element);
+    if (status.display === "none") {
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+    } else {
+        element.style.display = "none";
+    }
 }

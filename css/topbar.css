@@ -1,0 +1,63 @@
+
+/* Topbar */
+.container_topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 16px;
+
+    color: white;
+
+    font-family: var(--topbar-font-family);
+
+    background-color: var(--topbar-background-color);
+    backdrop-filter: var(--topbar-background-blur);
+
+    p {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 10px;
+
+        width: 350px;
+        height: calc(var(--topbar-font-size) + 8px);
+
+        font-size: var(--topbar-font-size);
+
+        cursor: pointer;
+        user-select: none;
+
+        padding: 8px;
+        /* margin: 0; */
+
+        background-color: var(--topbar-btn-color);
+
+        transform: translateY(0);
+        transition: 0.15s ease;
+        box-shadow: 10px 8px 0 var(--border-color);
+        overflow: hidden;
+    }
+
+    p:active {
+        transform: translateY(4px);
+        box-shadow: 6px 4px 5px var(--border-color);
+    }
+
+    p#OSButton {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0;
+        overflow: hidden;
+
+        width: 350px;
+        font-size: var(--topbar-font-size);
+        text-wrap-mode: nowrap;
+
+        .svg {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+        }
+    }
+}

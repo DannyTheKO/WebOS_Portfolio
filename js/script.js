@@ -3,13 +3,17 @@ export function dragElement(element) {
     var initialX = 0, initialY = 0; 
     var currentX = 0, currentY = 0;
 
-    var header = document.getElementById(element.id + "_header")
-    header.style.cursor = "grab";
+    var header_drag = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
+    var header_action = header_drag.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
+
+    header_drag.style.cursor = "grab";
+    header_drag.style.userSelect = "none";
+    header_action.style.cursor = "pointer";
 
     // Check element if there is a header ? if not, we use the whole div
-    if (header) {
+    if (header_drag) {
         // if present, the header is where you move the DIV from:
-        header.onmousedown = startDragging;
+        header_drag.onmousedown = startDragging;
     } else {
         // otherwise, move the DIV from anywhere inside the DIV:
         element.onmousedown = startDragging;
@@ -40,7 +44,7 @@ export function dragElement(element) {
         // set the element's new position:
         element.style.top = (element.offsetTop - initialY) + "px";
         element.style.left = (element.offsetLeft - initialX) + "px";
-        header.style.cursor = "grabbing";
+        header_drag.style.cursor = "grabbing";
     }
 
     // When mouse is unpressed
@@ -48,7 +52,7 @@ export function dragElement(element) {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
-        header.style.cursor = "grab";
+        header_drag.style.cursor = "grab";
     }
 
 

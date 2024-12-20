@@ -17,4 +17,4 @@ function dateTime() {
     textTime.innerHTML = formattedDateTime.toUpperCase();
 }
 
-setInterval(dateTime, 0);
+setInterval(dateTime, 1000);

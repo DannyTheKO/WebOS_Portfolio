@@ -46,6 +46,13 @@ body {
             color: white
         }
     }
+
+    .svg {
+        aspect-ratio: 1;
+        height: var(--font-size-large); 
+        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+        /* Makes SVG white */
+    }
 }
 
 
@@ -61,9 +68,9 @@ body {
     --font-size-medium: 1.2rem;
     --font-size-large: 1.5rem;
 
-    --border-color: #909eeebe;
+    --border-color: rgb(50, 146, 225);
     --border-size-top: 30px;
-    --border-size-around: 6px;
+    --border-size-around: 5px;
 
 
     /* Topbar custom var */
@@ -74,9 +81,9 @@ body {
     --topbar-btn-color: rgb(0, 0, 0, 0.7);
 
     /* Application */
-    --application-background-color: rgb(0, 0, 0, 0.7);
+    --application-background-color: rgba(0, 0, 0, 0.8);
     --application-background-blur: blur(2px);
-    --application-font-size:
+    /* --application-font-size: */
 }
 
 
@@ -85,37 +92,45 @@ body {
     display: flex;
     justify-content: space-between;
 
-    padding: 0 12px;
+    padding: 0 16px;
 
     color: white;
 
     font-family: var(--topbar-font-family);
 
     background-color: var(--topbar-background-color);
-    backdrop-filter: var(--application-background-blur);
+    backdrop-filter: var(--topbar-background-blur);
 
     p {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
+
+        width: 350px;
+
+        text-wrap-mode: nowrap;
 
         font-size: var(--topbar-font-size);
 
         cursor: pointer;
+        user-select: none;
 
         padding: 8px;
 
         background-color: var(--topbar-btn-color);
 
+        transform: translateY(0);
+        transition: 0.15s ease ;
+        box-shadow: 10px 8px 0 var(--border-color);
     }
 
-    .svg {
-        aspect-ratio: 1;
-        height: var(--font-size-large);
-        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
-        /* Makes SVG white */
+    p:active {
+        transform: translateY(4px);
+        box-shadow: 6px 4px 5px var(--border-color);
     }
+
+    
 }
 
 /* Introduction */
@@ -129,57 +144,74 @@ body {
     transform: translate(-50%, -50%);
 
     color: var(--font-color);
-    background-color: var(--application-background-color);
 
-    border: var(--border-size-around) var(--border-color) solid;
-    border-top: none;
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.7);
 
-    backdrop-filter: var(--application-background-blur);
-    box-shadow: 2px;
-
-    #detail_window_header {
-        border-top: var(--border-size-top) var(--border-color) solid;
-    }
-
-    .container_padding {
-        padding: 1em;
-    }
-
-    .container_introduction {
-        font-size: var(--font-size-medium);
-
-        padding: 4px;
-    }
-
-    .container_pfp {
+    .detail_window_header {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
 
-        font-size: var(--font-size-large);
+        margin: 0;
+        padding: 0 5px;
 
-        .profile_picture {
-            width: var(--pfp-size-normal);
-            aspect-ratio: 1/1;
+        height: var(--border-size-top);
+        background-color: var(--border-color);
+        backdrop-filter: unset;
 
-            margin: 8px 0;
-
-            border-radius: 100%;
+        * {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
-    .container_links {
-        display: flex;
-        justify-content: space-between;
-        align-content: top;
+    .container_content {
+        padding: 1em;
 
-        font-size: var(--font-size-small);
+        border: var(--border-size-around) var(--border-color) solid;
+        border-top: none;
 
-        padding: 8px 0 8px 0;
+        background-color: var(--application-background-color);
 
-        a {
+        backdrop-filter: var(--application-background-blur);
+
+
+        .container_introduction {
+            font-size: var(--font-size-medium);
+
             padding: 4px;
-            border: 1px dashed var(--border-color);
+        }
+
+        .container_pfp {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            font-size: var(--font-size-large);
+
+            .profile_picture {
+                width: var(--pfp-size-normal);
+                aspect-ratio: 1/1;
+
+                margin: 8px 0;
+
+                border-radius: 100%;
+            }
+        }
+
+        .container_links {
+            display: flex;
+            justify-content: space-between;
+
+            font-size: var(--font-size-small);
+
+            padding: 8px 0 8px 0;
+
+            a {
+                padding: 4px;
+                border: 2px dashed var(--border-color);
+            }
         }
     }
 }

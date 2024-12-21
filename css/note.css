@@ -1,0 +1,20 @@
+/* Introduction Icon */
+#Note_Icon {
+    top: 12%;
+    left: 19%;
+}
+
+#Note {
+    width: 500px;
+    height: 700px;
+    /* aspect-ratio: 4/1; */
+    color: var(--font-color);
+
+    position: absolute;
+    top: 25%;
+    left: 60%;
+    /* transform: translate(-50%, -50%); */
+
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.7);
+
+}

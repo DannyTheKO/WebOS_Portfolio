@@ -1,5 +1,3 @@
-
-
 /* Introduction Icon */
 #Introduction_Icon {
     top: 25%;
@@ -15,25 +13,15 @@
 
     position: absolute;
     top: 25%;
-    left: 60%;
+    left: 30%;
     /* transform: translate(-50%, -50%); */
 
 
     box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.7);
 
     .Introduction_header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
         margin: 0;
         padding: 0 5px;
-
-        /* Act like a border for the content */
-        height: var(--border-size-top);
-        border-bottom: 1px solid var(--border-color);
-        background-color: var(--border-color);
-        backdrop-filter: unset;
 
         * {
             display: flex;
@@ -42,23 +30,9 @@
         }
     }
 
-    .container_content {
+    .Introduction_main {
         padding: 1em;
-
-        border: var(--border-size-around) var(--border-color) solid;
-        border-top: none;
-
-        background-color: var(--application-background-color);
-
-        backdrop-filter: var(--application-background-blur);
-
-
-        .container_paragraph {
-            font-size: var(--font-size-medium);
-
-            padding: 4px;
-        }
-
+        
         .container_pfp {
             display: flex;
             flex-direction: column;
@@ -74,6 +48,13 @@
 
                 border-radius: 100%;
             }
+        }
+
+
+        .container_paragraph {
+            font-size: var(--font-size-medium);
+
+            padding: 4px;
         }
 
         .container_links {

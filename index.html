@@ -10,22 +10,30 @@
     <link rel="stylesheet" href="css/introduction.css">
     <link rel="stylesheet" href="css/note.css">
 
-    <script type="module" src="js/desktop.js"></script>
+    <script type="module" src="js/desktop.js" defer></script>
     <script type="module" src="js/topbar.js" defer></script>
     <script type="module" src="js/introduction.js" defer></script>
     <script type="module" src="js/note.js" defer></script>
     <title>Danny's OS</title>
 </head>
 
+
 <body>
     <!-- Topbar -->
     <div id="Topbar"></div>
 
+    <!-- Introduction -->
     <div id="Introduction_Icon" class="app Introduction_btn_open">
         <img class="app_icon" src="img/Introduction_Icon.jpg" alt="Introduction Icon">
         <p class="app_name">DANNY .EXE</p>
     </div>
     <div id="Introduction_Container"></div>
+
+    <div id="Note_Icon" class="app Note_btn_open">
+        <img class="app_icon" src="" alt="Note">
+        <p class="app_name">Note</p>
+    </div>
+    <div id="Note_Container"></div>
 </body>
 
 </html>

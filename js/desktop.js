@@ -3,11 +3,11 @@ function getScreenDimensions() {
         // Window inner dimensions (viewport)
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
-        
+
         // Screen dimensions (full screen)
         screenWidth: window.screen.width,
         screenHeight: window.screen.height,
-        
+
         // Available screen space (excluding taskbars/OS elements)
         availWidth: window.screen.availWidth,
         availHeight: window.screen.availHeight
@@ -21,8 +21,14 @@ export function windowElement(element) {
     var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
 
+    // Element Styling
+    // Stay hidden when start up
+    element.style.display = "none";
+
     // Header action styling
-    header_action.style.cursor = "pointer";
+    if (header_action != null) {
+        header_action.style.cursor = "pointer";
+    }
 
     return { element, header, header_action };
 }
@@ -34,7 +40,7 @@ export function dragElement(element, header) {
 
     const { viewportWidth, viewportHeight } = getScreenDimensions();
 
-    var app = false;
+    var appWindows = false;
 
 
     // Check element if there is a header ? if not, we use the whole div
@@ -42,12 +48,12 @@ export function dragElement(element, header) {
         // Topbar styling
         header.style.cursor = "grab";
         header.style.userSelect = "none";
-        app = true;
+        appWindows = true;
         // if present, the header is where you move the DIV from:
         header.onmousedown = startDragging;
     } else {
         element.style.cursor = "pointer";
-        app = false;
+        appWindows = false;
         // otherwise, move the DIV from anywhere inside the DIV:
         element.onmousedown = startDragging;
     }
@@ -74,18 +80,18 @@ export function dragElement(element, header) {
         // Calculate new position
         let newTop = element.offsetTop - initialY;
         let newLeft = element.offsetLeft - initialX;
-        
+
         // Ensure window stays within viewport
         const maxLeft = viewportWidth - element.offsetWidth;
         const maxTop = viewportHeight - element.offsetHeight;
-        
+
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));
         newTop = Math.max(0, Math.min(newTop, maxTop));
 
         element.style.top = newTop + "px";
         element.style.left = newLeft + "px";
 
-        if(app) {
+        if (appWindows) {
             header.style.cursor = "grabbing";
         } else {
             element.style.cursor = "move";
@@ -98,12 +104,13 @@ export function dragElement(element, header) {
         document.onmouseup = null;
         document.onmousemove = null;
         // Style base on situation
-        if(app) {
+        if (appWindows) {
             header.style.cursor = "grabbing";
         }
         else {
             element.style.cursor = "pointer";
-        }    }
+        }
+    }
 }
 
 export function toggleElement(element) {

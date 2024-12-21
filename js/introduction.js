@@ -11,25 +11,23 @@ document.addEventListener('DOMContentLoaded', function () {
             // Detect element and make it a windows function
             const introductionWindow = document.querySelector("#Introduction");
 
-            // Stay hidden when start up
-            introductionWindow.style.display = "none";
             const { element: element, header: header, header_action: header_action } = windowElement(introductionWindow);
 
             // Close and Open function
             const btnOpen = document.querySelector(".Introduction_btn_open");
             const btnClose = header_action.querySelector("#Introduction_btn_close");
-            
+
             btnOpen.addEventListener("dblclick", () => {
-                if (introductionWindow.style.display === "none") {
-                    toggleElement(introductionWindow)
+                if (element.style.display === "none") {
+                    toggleElement(element)
                 }
             })
-            
-            btnClose.addEventListener("click", () => toggleElement(introductionWindow));
+
+            btnClose.addEventListener("click", () => toggleElement(element));
 
             // Add draggable function to this windows
-            dragElement(element, header);
-            dragElement(btnOpen)
+            dragElement(element, header); // Windows
+            dragElement(btnOpen) // Icon
 
         })
         .catch(error => console.error('Error loading introduction:', error));

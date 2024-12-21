@@ -40,15 +40,17 @@
 
         background-color: var(--topbar-btn-color);
 
+        border: 2px solid var(--border-color);
+
         transform: translateY(0);
-        transition: 0.15s ease;
-        box-shadow: 10px 8px 0 var(--border-color);
+        transition: 0.1s ease;
+        box-shadow: 6px 4px 0 var(--border-color);
         overflow: hidden;
     }
 
     p:active {
-        transform: translateY(4px);
-        box-shadow: 6px 4px 5px var(--border-color);
+        transform: translateY(2px);
+        box-shadow: 4px 2px 0px var(--border-color);
     }
 
     p#OSButton {

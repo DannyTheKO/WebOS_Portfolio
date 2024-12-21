@@ -10,8 +10,11 @@
     --window-aspect-ratio: 4/1;
 
     /* Windows Position */
-    --window-position-top: 25%;
+    --window-position-top: 10%;
     --window-position-left: 30%;
+
+    --font-family: "consolas", sans-serif;
+    --font-family-special: "Stretch Pro", sans-serif;
 
     /* Note Application, this will overwrite the default beheavior */
     /* --application-icon-size: 64px;
@@ -62,26 +65,49 @@
             display: grid;
             grid-template-columns: 1fr 3fr;
             grid-template-areas: "noteTitle notePage";
+            column-gap: 12px;
 
             height: var(--window-size-height);
 
+            /* Scrollbar styling */
             ::-webkit-scrollbar {
-                display: none;
-                
+                width: 6px;
             }
+
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--border-color);
+                border-radius: 5px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--border-color);
+            }
+
+            /* Add this to remove the white corner */
+            ::-webkit-scrollbar-corner {
+                background: transparent;
+            }
+
 
             .noteTitle {
                 grid-area: noteTitle;
-                overflow-x: hidden;
+                overflow-x: scroll;
 
                 display: flex;
                 flex-direction: column;
+                justify-content: flex-start;
 
                 /* Testing purpose */
                 #noteTileId_1 {
-                    color: lightpink;
-                    padding: 12px 0;
-                    flex: 1;
+                    font-family: var(--font-family);
+                    font-size: var(--font-size-small);
+
+                    color: white;
+                    padding: 0 0 12px 0;
 
                     p {
                         margin: 0;
@@ -92,6 +118,10 @@
 
             .notePage {
                 grid-area: notePage;
+                overflow-x: scroll;
+
+                font-family: var(--font-family);
+                font-size: var(--font-size-small);
             }
         }
 

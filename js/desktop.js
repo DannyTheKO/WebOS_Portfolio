@@ -17,12 +17,12 @@ function getScreenDimensions() {
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`)
-    
+
     var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
 
     // Element Styling
-    // Stay hidden when start up
+    // Default style: stay hidden when start up
     element.style.display = "none";
 
     // Header action styling

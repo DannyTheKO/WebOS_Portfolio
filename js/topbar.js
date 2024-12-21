@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.text())
         .then(data => {
             // Only after content is loaded, then initialize the window functionality
-            document.getElementById("Topbar").innerHTML = data;
+            document.getElementById("Topbar_Container").innerHTML = data;
         })
         .catch(error => console.error('Error loading introduction:', error));
 })

@@ -1,33 +1,36 @@
 import { windowElement, dragElement, toggleElement } from "./desktop.js";
 
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("app/note.html")
-        .then(response => response.text())
-        .then(data => {
-            // Initialize Note HTML Body
-            document.getElementById("Note_Container").innerHTML = data;
+fetch("app/note.html")
+    .then(response => response.text())
+    .then(data => {
+        // Initialize Note HTML Body
+        document.getElementById("Note_Container").innerHTML = data;
 
-            // Get and extract element
-            const noteWindow = document.querySelector("#Note")
+        // Get and extract element
+        const noteWindow = document.querySelector("#Note")
 
-            const { element: element, header: header, header_action: header_action } = windowElement(noteWindow);
+        const { element: element, header: header, header_action: header_action } = windowElement(noteWindow);
 
-            // Close and Open function
-            const btnOpen = document.querySelector(".Note_btn_open")
-            const btnClose = header_action.querySelector("#Note_btn_close")
+        // Close and Open function
+        const btnOpen = document.querySelector(".Note_btn_open")
+        const btnClose = header_action.querySelector("#Note_btn_close")
 
-            // Add Open and Close button
-            btnOpen.addEventListener("dblclick", () => {
-                if (element.style.display === "none") {
-                    toggleElement(element)
-                }
-            })
-
-            btnClose.addEventListener("click", () => toggleElement(element));
-
-            // Add Drag Element function
-            dragElement(element, header)
-            dragElement(btnOpen)
+        // Add Open and Close button
+        btnOpen.addEventListener("dblclick", () => {
+            if (element.style.display === "none") {
+                toggleElement(element)
+            }
         })
-        .catch(error => console.error('Error loading introduction:', error));
+
+        btnClose.addEventListener("click", () => toggleElement(element));
+
+        // Add Drag Element function
+        dragElement(element, header); // Windows
+        dragElement(btnOpen); // Icon
+    })
+    .catch(error => console.error('Error loading introduction:', error));
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
 })

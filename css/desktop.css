@@ -27,15 +27,7 @@
     /* Desktop */
     --desktop-font-color: rgb(0, 0, 0);
 
-
-    /* Topbar custom var */
-    --topbar-background-color: rgb(0, 0, 0, 0.5);
-    --topbar-background-blur: blur(10px);
-    --topbar-font-family: "Stretch Pro", sans-serif;
-    --topbar-font-size: var(--font-size-small);
-    --topbar-btn-color: rgb(0, 0, 0, 0.7);
-
-    /* Application */
+    /* Application Default Style */
     --application-icon-size: 64px;
     --application-icon-image-size: 64px;
     --application-icon-font-size: 16px;
@@ -100,7 +92,7 @@ body {
         user-select: none;
     }
 
-    /* App Icon */
+    /* App Icon Default Style */
     .app {
         display: flex;
         flex-direction: column;
@@ -126,7 +118,8 @@ body {
         }
 
         .app_name {
-            display: flex;
+            flex: 1;
+
             text-align: center;
 
             color: var(--desktop-font-color);
@@ -146,8 +139,8 @@ body {
         background-color: var(--application-icon-background-hover);
     }
 
-    /* App Windows */
-    [id]:not(#Topbar *) {
+    /* App Windows Default Style */
+    [id]:not(#Topbar_Container *) {
         display: flex;
         flex-direction: column;
 
@@ -164,11 +157,17 @@ body {
             border-bottom: 1px solid var(--border-color);
             background-color: var(--border-color);
             backdrop-filter: unset;
+
+            * {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
 
         [class$="_main"] {
-            padding: 1em;
             flex: 1;
+            position: relative;
 
             border: var(--border-size-around) var(--border-color) solid;
             border-top: none;

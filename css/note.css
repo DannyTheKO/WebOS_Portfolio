@@ -1,20 +1,99 @@
-/* Introduction Icon */
-#Note_Icon {
-    top: 12%;
-    left: 19%;
+#Note_Icon,
+#Note_Container {
+    /* Icon Position */
+    --icon-position-top: 10%;
+    --icon-position-left: 1%;
+
+    /* Windows Size */
+    --window-size-width: 900px;
+    --window-size-height: 700px;
+    --window-aspect-ratio: 4/1;
+
+    /* Windows Position */
+    --window-position-top: 25%;
+    --window-position-left: 30%;
+
+    /* Note Application, this will overwrite the default beheavior */
+    /* --application-icon-size: 64px;
+    --application-icon-image-size: 64px;
+    --application-icon-font-size: 16px;
+
+    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
+    --application-background-color: rgba(0, 0, 0, 0.8);
+    --application-background-blur: blur(2px); */
 }
 
+/* Note Icon */
+#Note_Icon {
+    top: var(--icon-position-top);
+    left: var(--icon-position-left);
+}
+
+/* Note Windows */
 #Note {
-    width: 500px;
-    height: 700px;
-    /* aspect-ratio: 4/1; */
+    /* Custom Width and Height for the app */
+    width: var(--window-size-width);
+    height: var(--window-size-height);
+    /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
 
+    /* Custom Position for the app on the desktop  */
     position: absolute;
-    top: 25%;
-    left: 60%;
+    top: var(--window-position-top);
+    left: var(--window-position-left);
+
+    /* This will break the screen limit of the desktop but this will stay here for... idk development purpose :) */
     /* transform: translate(-50%, -50%); */
 
     box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.7);
 
+    /* Custom Header if you want to style it */
+    .Note_header {
+        margin: 0;
+        padding: 0 5px;
+    }
+
+    /* This is where you're edit your style inside the content */
+    .Note_main {
+        padding: 0.5em;
+
+        .container_grid {
+            /* Setting up display grid */
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            grid-template-areas: "noteTitle notePage";
+
+            height: var(--window-size-height);
+
+            ::-webkit-scrollbar {
+                display: none;
+                
+            }
+
+            .noteTitle {
+                grid-area: noteTitle;
+                overflow-x: hidden;
+
+                display: flex;
+                flex-direction: column;
+
+                /* Testing purpose */
+                #noteTileId_1 {
+                    color: lightpink;
+                    padding: 12px 0;
+                    flex: 1;
+
+                    p {
+                        margin: 0;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+
+            .notePage {
+                grid-area: notePage;
+            }
+        }
+
+    }
 }

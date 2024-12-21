@@ -11,6 +11,7 @@
 #Introduction {
     width: 700px;
     aspect-ratio: 4/1;
+    color: var(--font-color);
 
     position: absolute;
     top: 25%;

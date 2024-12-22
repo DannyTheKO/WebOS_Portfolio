@@ -35,7 +35,7 @@
                     2px  2px 0 #000;  /* Bottom-right */;
 
     /* Application Default Style */
-    --application-icon-size: 64px;
+    --application-icon-size: 80px;
     --application-icon-image-size: 64px;
     --application-icon-font-size: 16px;
     --application-icon-background-hover: rgb(50, 146, 225, 0.5);
@@ -44,9 +44,11 @@
     --application-background-blur: blur(2px);
 }
 
+* {
+    box-sizing: border-box;
+}
 
 body {
-    box-sizing: content-box;
     font-family: var(--font-family);
 
     overflow: hidden;
@@ -105,7 +107,7 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
+        
         width: var(--application-icon-size);
 
         -webkit-user-select: none;
@@ -147,6 +149,10 @@ body {
         background-color: var(--application-icon-background-hover);
     }
 
+    .selected {
+        outline: 2px solid var(--border-color);
+    }
+
     /* App Windows Default Style */
     [id]:not(#Topbar_Container *) {
         display: flex;
@@ -160,10 +166,10 @@ body {
             font-weight: 800;
 
             margin: 0;
-            padding: 2px 6px;
+            padding: 8px 5px;
 
             /* Act like a border for the content */
-            height: var(--font-size-large);
+            height: 30px;
             border-bottom: 1px solid var(--border-color);
             background-color: var(--border-color);
             backdrop-filter: unset;

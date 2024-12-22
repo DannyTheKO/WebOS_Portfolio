@@ -28,7 +28,7 @@
         gap: 10px;
 
         width: 350px;
-        height: calc(var(--topbar-font-size) + 8px);
+        height: 40px;
 
         font-size: var(--topbar-font-size);
 

@@ -1,4 +1,4 @@
-import { windowElement, dragElement, toggleElement } from "./desktop.js";
+import { windowElement, dragElement, btnOpenAndClose } from "./desktop.js";
 
 fetch("app/note.html")
     .then(response => response.text())
@@ -8,14 +8,14 @@ fetch("app/note.html")
 
         // Get and extract element
         const noteWindow = document.querySelector("#Note")
+        const {
+            element: element,
+            header: header,
+            header_action: header_action
+        } = windowElement(noteWindow);
 
-        const { 
-            element: element, 
-            header: header, 
-            header_action: header_action,
-            btnOpen: btnOpen,
-            btnClose: btnClose,
-        } = windowElement(noteWindow)
+        // Add open and close button
+        const btnOpen = btnOpenAndClose(element, header_action);
 
         // Add Drag Element function
         dragElement(element, header); // Windows

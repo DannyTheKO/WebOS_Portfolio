@@ -33,9 +33,10 @@
 
 /* Introduction Windows */
 #Introduction {
+    flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
-    height: var(--window-size-height);
+    /* height: var(--window-size-height); */
     /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
 

@@ -14,15 +14,60 @@ function getScreenDimensions() {
     };
 }
 
+function toggleElement(element) {
+    const status = window.getComputedStyle(element);
+    if (status.display === "none") {
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+export function btnOpenAndClose(element, header_action) {
+    var btnOpen = document.querySelector(`#${element.id}_btn_open`);
+    var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
+
+    // Open and Close function
+    if (btnOpen != null && btnClose != null) {
+        // Open "Select" Feature
+        btnOpen.addEventListener("click", () => {
+            // Remove any Selected class from ALL previous icons
+            document.querySelectorAll(".selected").forEach(icon => {
+                icon.classList.remove("selected");
+            });
+
+            // Toggle 'Selected' class on current icon
+            btnOpen.classList.toggle("selected");
+        });
+
+        // Add click listener to document to handle clicking outside
+        document.addEventListener("click", (event) => {
+            if (!event.target.closest(".app")) {
+                btnOpen.classList.remove("selected");
+            }
+        })
+
+        // Open Button Action
+        btnOpen.addEventListener("dblclick", () => {
+            if (element.style.display === "none") {
+                toggleElement(element)
+            }
+        })
+
+        // Close Button Action
+        btnClose.addEventListener("click", () => toggleElement(element));
+    }
+
+    return btnOpen;
+}
+
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`)
 
     var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
-
-    var btnOpen = document.querySelector(`#${element.id}_btn_open`);
-    var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
 
     // Element Styling
     // Default style: stay hidden when start up
@@ -33,21 +78,7 @@ export function windowElement(element) {
         header_action.style.cursor = "pointer";
     }
 
-    // Open and Close function
-    if (btnOpen != null && btnClose != null) {
-        // Open
-        btnOpen.addEventListener("dblclick", () => {
-            if (element.style.display === "none") {
-                toggleElement(element)
-            }
-        })
-
-        // Close
-        btnClose.addEventListener("click", () => toggleElement(element));
-    }
-
-
-    return { element, header, header_action, btnOpen, btnClose };
+    return { element, header, header_action };
 }
 
 // Drag windows function
@@ -120,22 +151,13 @@ export function dragElement(element, header) {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
+
         // Style base on situation
         if (appWindows) {
-            header.style.cursor = "grabbing";
+            header.style.cursor = "grab";
         }
         else {
             element.style.cursor = "pointer";
         }
-    }
-}
-
-export function toggleElement(element, header_action) {
-    const status = window.getComputedStyle(element);
-    if (status.display === "none") {
-        element.style.display = "flex";
-        element.style.flexDirection = "column";
-    } else {
-        element.style.display = "none";
     }
 }

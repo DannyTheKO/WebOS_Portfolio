@@ -34,9 +34,10 @@
 
 /* Note Windows */
 #Note {
+    flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
-    height: var(--window-size-height);
+    /* height: var(--window-size-height); */
     /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
 
@@ -80,7 +81,7 @@
 
             ::-webkit-scrollbar-thumb {
                 background: var(--border-color);
-                border-radius: 5px;
+                /* border-radius: 5px; */
             }
 
             ::-webkit-scrollbar-thumb:hover {

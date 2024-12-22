@@ -1,4 +1,4 @@
-import { windowElement, dragElement, toggleElement } from "./desktop.js";
+import { windowElement, dragElement, btnOpenAndClose } from "./desktop.js";
 
 fetch("app/introduction.html")
     .then(response => response.text())
@@ -12,9 +12,10 @@ fetch("app/introduction.html")
             element: element, 
             header: header, 
             header_action: header_action,
-            btnOpen: btnOpen,
-            btnClose: btnClose,
         } = windowElement(introductionWindow);
+
+        // Add open and close button
+        const btnOpen = btnOpenAndClose(element, header_action);
 
         // Add draggable function to this windows
         dragElement(element, header); // Windows

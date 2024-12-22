@@ -8,20 +8,13 @@ fetch("app/introduction.html")
 
         // Detect element and make it a windows function
         const introductionWindow = document.querySelector("#Introduction");
-
-        const { element: element, header: header, header_action: header_action } = windowElement(introductionWindow);
-
-        // Close and Open function
-        const btnOpen = document.querySelector(".Introduction_btn_open");
-        const btnClose = header_action.querySelector("#Introduction_btn_close");
-
-        btnOpen.addEventListener("dblclick", () => {
-            if (element.style.display === "none") {
-                toggleElement(element)
-            }
-        })
-
-        btnClose.addEventListener("click", () => toggleElement(element));
+        const { 
+            element: element, 
+            header: header, 
+            header_action: header_action,
+            btnOpen: btnOpen,
+            btnClose: btnClose,
+        } = windowElement(introductionWindow);
 
         // Add draggable function to this windows
         dragElement(element, header); // Windows

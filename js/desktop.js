@@ -21,6 +21,9 @@ export function windowElement(element) {
     var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
 
+    var btnOpen = document.querySelector(`#${element.id}_btn_open`);
+    var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
+
     // Element Styling
     // Default style: stay hidden when start up
     element.style.display = "none";
@@ -30,7 +33,21 @@ export function windowElement(element) {
         header_action.style.cursor = "pointer";
     }
 
-    return { element, header, header_action };
+    // Open and Close function
+    if (btnOpen != null && btnClose != null) {
+        // Open
+        btnOpen.addEventListener("dblclick", () => {
+            if (element.style.display === "none") {
+                toggleElement(element)
+            }
+        })
+
+        // Close
+        btnClose.addEventListener("click", () => toggleElement(element));
+    }
+
+
+    return { element, header, header_action, btnOpen, btnClose };
 }
 
 // Drag windows function
@@ -113,7 +130,7 @@ export function dragElement(element, header) {
     }
 }
 
-export function toggleElement(element) {
+export function toggleElement(element, header_action) {
     const status = window.getComputedStyle(element);
     if (status.display === "none") {
         element.style.display = "flex";

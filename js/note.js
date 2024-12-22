@@ -9,20 +9,13 @@ fetch("app/note.html")
         // Get and extract element
         const noteWindow = document.querySelector("#Note")
 
-        const { element: element, header: header, header_action: header_action } = windowElement(noteWindow);
-
-        // Close and Open function
-        const btnOpen = document.querySelector(".Note_btn_open")
-        const btnClose = header_action.querySelector("#Note_btn_close")
-
-        // Add Open and Close button
-        btnOpen.addEventListener("dblclick", () => {
-            if (element.style.display === "none") {
-                toggleElement(element)
-            }
-        })
-
-        btnClose.addEventListener("click", () => toggleElement(element));
+        const { 
+            element: element, 
+            header: header, 
+            header_action: header_action,
+            btnOpen: btnOpen,
+            btnClose: btnClose,
+        } = windowElement(noteWindow)
 
         // Add Drag Element function
         dragElement(element, header); // Windows

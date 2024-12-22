@@ -1,4 +1,4 @@
-#Introduction_Icon,
+.Introduction_Icon,
 #Introduction_Container {
     /* Icon Position */
     --icon-position-top: 25%;
@@ -25,7 +25,7 @@
 
 
 /* Introduction Icon */
-#Introduction_Icon {
+.Introduction_Icon {
     top: var(--icon-position-top);
     left: var(--icon-position-left);
 }

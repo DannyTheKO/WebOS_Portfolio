@@ -34,7 +34,7 @@
     --application-icon-background-hover: rgb(50, 146, 225, 0.5);
 
     --application-background-color: rgba(0, 0, 0, 0.8);
-    --application-background-blur: blur(2px);
+    --application-background-blur: blur(4px);
 
     /* Desktop */
     --desktop-font-color: rgb(255, 255, 255);

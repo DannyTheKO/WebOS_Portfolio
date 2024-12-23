@@ -8,6 +8,35 @@ function toggleElement(element) {
     }
 }
 
+function windowsRiseZIndex(element) {
+    const currentZIndex = parseInt(getComputedStyle(element).getPropertyValue("--desktop-zIndex"));
+    const thresholdZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--desktop-zIndex-threshold"));
+
+    if (currentZIndex < thresholdZIndex) {
+        const newZIndex = thresholdZIndex + 1;
+
+        // Update element z-index
+        element.style.zIndex = newZIndex;
+        element.style.setProperty("--desktop-zIndex", newZIndex);
+
+        // Update threshold
+        document.documentElement.style.setProperty("--desktop-zIndex-threshold", newZIndex);
+    }
+}
+
+// Z-index management
+function initializeZIndex(element) {
+    // Initial values
+    element.style.setProperty("--desktop-zIndex", "1");
+    document.documentElement.style.setProperty("--desktop-zIndex-threshold", "2");
+
+    // Click handler for z-index updates
+    element.addEventListener("click", () => {
+        windowsRiseZIndex(element)
+    });
+}
+
+
 export function btnOpenAndClose(element, header_action) {
     var btnOpen = document.querySelector(`#${element.id}_btn_open`);
     var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
@@ -60,48 +89,24 @@ export function btnOpenAndClose(element, header_action) {
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`);
-    
+
     var header = document.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
-    
+
     // Element style when start up
-    element.style.display = "flex";
+    element.style.display = "none";
 
     // Header action styling
     if (header_action != null) {
         header_action.style.cursor = "pointer";
     }
-    
-    // Z-index function
-    // Set value
-    element.style.setProperty("--desktop-zIndex", 1);
-    document.documentElement.style.setProperty("--desktop-zIndex-threshold", 2);
 
-    // Then get value
-    var elementStyle = getComputedStyle(element);
-    var rootStyle = getComputedStyle(document.documentElement);
-
-    element.addEventListener("click", (window_zIndex, threshold_zIndex) => {
-        window_zIndex = parseInt(elementStyle.getPropertyValue("--desktop-zIndex"));
-        threshold_zIndex = parseInt(rootStyle.getPropertyValue("--desktop-zIndex-threshold"));
-
-        if (window_zIndex < threshold_zIndex) {
-
-            window_zIndex = threshold_zIndex + 1;
-            element.style.zIndex = window_zIndex;
-            element.style.setProperty("--desktop-zIndex", window_zIndex)
-
-            threshold_zIndex = threshold_zIndex + 1;
-            document.documentElement.style.setProperty("--desktop-zIndex-threshold", threshold_zIndex)
-        }
-
-    });
-
+    initializeZIndex(element);
 
     return { element, header, header_action };
 }
 
-// Drag windows function
+// Drag function
 export function dragElement(element, header) {
     var initialX = 0, initialY = 0;
     var currentX = 0, currentY = 0;
@@ -122,13 +127,21 @@ export function dragElement(element, header) {
         header.style.cursor = "grab";
         header.style.userSelect = "none";
         appWindows = true;
+
         // Window mode - drag from header
-        header.onmousedown = startDragging;
+        header.onmousedown = (e) => {
+            windowsRiseZIndex(element);
+            startDragging(e);
+        };
     } else {
         element.style.cursor = "pointer";
         appWindows = false;
+        
         // Icon mode - drag from anywhere
-        element.onmousedown = startDragging;
+        element.onmousedown = (e) => {
+            windowsRiseZIndex(element);
+            startDragging(e);
+        };
     }
 
     // When mouse is pressed
@@ -137,6 +150,7 @@ export function dragElement(element, header) {
         // get the mouse cursor position at startup:
         currentX = e.clientX;
         currentY = e.clientY;
+
         document.onmouseup = stopDragging;
         // call a function whenever the cursor moves:
         document.onmousemove = dragElement;
@@ -181,8 +195,7 @@ export function dragElement(element, header) {
         // Style base on situation
         if (appWindows) {
             header.style.cursor = "grab";
-        }
-        else {
+        } else {
             element.style.cursor = "pointer";
         }
     }

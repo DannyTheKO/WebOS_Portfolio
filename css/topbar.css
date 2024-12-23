@@ -1,9 +1,14 @@
 #Topbar_Container {
     /* Topbar custom var */
+    --topbar-button-width: 350px;
+    --topbar-button-height: 40px;
+
     --topbar-background-color: rgb(0, 0, 0, 0.5);
     --topbar-background-blur: blur(10px);
+
     --topbar-font-family: "Stretch Pro", sans-serif;
     --topbar-font-size: var(--font-size-small);
+    
     --topbar-btn-color: rgb(0, 0, 0, 0.7);
 }
 
@@ -27,8 +32,8 @@
         justify-content: space-evenly;
         gap: 10px;
 
-        width: 350px;
-        height: 40px;
+        width: var(--topbar-button-width);
+        height: var(--topbar-button-height);
 
         font-size: var(--topbar-font-size);
 

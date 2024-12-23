@@ -27,13 +27,6 @@
     --border-size-top: 30px;
     --border-size-around: 5px;
 
-    /* Desktop */
-    --desktop-font-color: rgb(255, 255, 255);
-    --text-shadow:  -2px -2px 0 #000,  /* Top-left */
-                    2px -2px 0 #000,  /* Top-right */
-                    -2px  2px 0 #000,  /* Bottom-left */
-                    2px  2px 0 #000;  /* Bottom-right */;
-
     /* Application Default Style */
     --application-icon-size: 80px;
     --application-icon-image-size: 64px;
@@ -42,6 +35,13 @@
 
     --application-background-color: rgba(0, 0, 0, 0.8);
     --application-background-blur: blur(2px);
+
+    /* Desktop */
+    --desktop-font-color: rgb(255, 255, 255);
+    --desktop-zIndex-threshold: 2;
+    [class$="_Container"] > [id] {
+        --desktop-zIndex: 1;
+    }
 }
 
 * {
@@ -107,6 +107,8 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        z-index: 0;
         
         width: var(--application-icon-size);
 

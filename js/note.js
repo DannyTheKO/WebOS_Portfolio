@@ -14,6 +14,8 @@ fetch("app/note.html")
             header_action: header_action
         } = windowElement(noteWindow);
 
+        // element.style.display = "flex"
+
         // Add open and close button
         const btnOpen = btnOpenAndClose(element, header_action);
 

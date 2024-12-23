@@ -5,8 +5,8 @@
     --icon-position-left: 1%;
 
     /* Windows Size */
-    --window-size-width: 900px;
-    --window-size-height: 700px;
+    --window-size-width: 800px;
+    --window-size-height: 500px;
     --window-aspect-ratio: 4/1;
 
     /* Windows Position */
@@ -36,8 +36,8 @@
 #Note {
     flex: 1;
     /* Custom Width and Height for the app */
-    width: var(--window-size-width);
-    /* height: var(--window-size-height); */
+    min-width: var(--window-size-width);
+    min-height: var(--window-size-height);
     /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
 
@@ -59,6 +59,7 @@
 
     /* This is where you're edit your style inside the content */
     .Note_main {
+        position: relative;
         padding: 0.5em;
 
         .container_grid {
@@ -68,6 +69,7 @@
             grid-template-areas: "noteTitle notePage";
             column-gap: 12px;
 
+            /* Set width and height content */
             height: var(--window-size-height);
 
             /* Scrollbar styling */
@@ -93,14 +95,17 @@
                 background: transparent;
             }
 
+            .noteTitle, .notePage {
+                overflow-x: scroll;
+
+            }
 
             .noteTitle {
                 grid-area: noteTitle;
-                overflow-x: scroll;
 
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
+                /* justify-content: flex-start; */
 
                 /* Testing purpose */
                 #noteTileId_1 {
@@ -119,7 +124,6 @@
 
             .notePage {
                 grid-area: notePage;
-                overflow-x: scroll;
 
                 font-family: var(--font-family);
                 font-size: var(--font-size-small);

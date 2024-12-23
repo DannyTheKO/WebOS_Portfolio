@@ -1,19 +1,3 @@
-function getScreenDimensions() {
-    return {
-        // Window inner dimensions (viewport)
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-
-        // Screen dimensions (full screen)
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-
-        // Available screen space (excluding taskbars/OS elements)
-        availWidth: window.screen.availWidth,
-        availHeight: window.screen.availHeight
-    };
-}
-
 function toggleElement(element) {
     const status = window.getComputedStyle(element);
     if (status.display === "none") {
@@ -31,6 +15,7 @@ export function btnOpenAndClose(element, header_action) {
     // Open and Close function
     if (btnOpen != null && btnClose != null) {
         // Open "Select" Feature
+        // When user action is single click
         btnOpen.addEventListener("click", () => {
             // Remove any Selected class from ALL previous icons
             document.querySelectorAll(".selected").forEach(icon => {
@@ -40,6 +25,16 @@ export function btnOpenAndClose(element, header_action) {
             // Toggle 'Selected' class on current icon
             btnOpen.classList.toggle("selected");
         });
+
+        // When user action is double click
+        btnOpen.addEventListener("dblclick", () => {
+            // Remove any Selected class from ALL previous icons
+            document.querySelectorAll(".selected").forEach(icon => {
+                icon.classList.remove("selected");
+            });
+
+            btnOpen.classList.remove("selected");
+        })
 
         // Add click listener to document to handle clicking outside
         document.addEventListener("click", (event) => {
@@ -64,19 +59,44 @@ export function btnOpenAndClose(element, header_action) {
 
 // Get windows position and other element inside of that
 export function windowElement(element) {
-    var element = document.querySelector(`#${element.id}`)
-
-    var header = document.querySelector(`#${element.id} .${element.id}_header`) // DONT FUCKING TOUCH IT
-    var header_action = header.querySelector(`.${element.id}_header_action`) // DONT YOU EVEN THINK ABOUT IT
-
-    // Element Styling
-    // Default style: stay hidden when start up
-    element.style.display = "none";
+    var element = document.querySelector(`#${element.id}`);
+    
+    var header = document.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
+    var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
+    
+    // Element style when start up
+    element.style.display = "flex";
 
     // Header action styling
     if (header_action != null) {
         header_action.style.cursor = "pointer";
     }
+    
+    // Z-index function
+    // Set value
+    element.style.setProperty("--desktop-zIndex", 1);
+    document.documentElement.style.setProperty("--desktop-zIndex-threshold", 2);
+
+    // Then get value
+    var elementStyle = getComputedStyle(element);
+    var rootStyle = getComputedStyle(document.documentElement);
+
+    element.addEventListener("click", (window_zIndex, threshold_zIndex) => {
+        window_zIndex = parseInt(elementStyle.getPropertyValue("--desktop-zIndex"));
+        threshold_zIndex = parseInt(rootStyle.getPropertyValue("--desktop-zIndex-threshold"));
+
+        if (window_zIndex < threshold_zIndex) {
+
+            window_zIndex = threshold_zIndex + 1;
+            element.style.zIndex = window_zIndex;
+            element.style.setProperty("--desktop-zIndex", window_zIndex)
+
+            threshold_zIndex = threshold_zIndex + 1;
+            document.documentElement.style.setProperty("--desktop-zIndex-threshold", threshold_zIndex)
+        }
+
+    });
+
 
     return { element, header, header_action };
 }
@@ -86,10 +106,15 @@ export function dragElement(element, header) {
     var initialX = 0, initialY = 0;
     var currentX = 0, currentY = 0;
 
-    const { viewportWidth, viewportHeight } = getScreenDimensions();
+    // Get user screen width and hieght 
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Get Topbar position
+    const topBarElement = document.querySelector("#Topbar_Container .Topbar")
+    const topBarHeight = topBarElement.getBoundingClientRect().height;
 
     var appWindows = false;
-
 
     // Check element if there is a header ? if not, we use the whole div
     if (header) {
@@ -97,12 +122,12 @@ export function dragElement(element, header) {
         header.style.cursor = "grab";
         header.style.userSelect = "none";
         appWindows = true;
-        // if present, the header is where you move the DIV from:
+        // Window mode - drag from header
         header.onmousedown = startDragging;
     } else {
         element.style.cursor = "pointer";
         appWindows = false;
-        // otherwise, move the DIV from anywhere inside the DIV:
+        // Icon mode - drag from anywhere
         element.onmousedown = startDragging;
     }
 
@@ -130,11 +155,12 @@ export function dragElement(element, header) {
         let newLeft = element.offsetLeft - initialX;
 
         // Ensure window stays within viewport
-        const maxLeft = viewportWidth - element.offsetWidth;
         const maxTop = viewportHeight - element.offsetHeight;
+        const maxLeft = viewportWidth - element.offsetWidth;
+        const minTop = topBarHeight;
 
+        newTop = Math.max(minTop, Math.min(newTop, maxTop));
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-        newTop = Math.max(0, Math.min(newTop, maxTop));
 
         element.style.top = newTop + "px";
         element.style.left = newLeft + "px";

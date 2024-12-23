@@ -38,10 +38,6 @@
 
     /* Desktop */
     --desktop-font-color: rgb(255, 255, 255);
-    --desktop-zIndex-threshold: 2;
-    [class$="_Container"] > [id] {
-        --desktop-zIndex: 1;
-    }
 }
 
 * {

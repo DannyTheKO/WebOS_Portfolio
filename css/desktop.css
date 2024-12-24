@@ -54,7 +54,8 @@ body {
     padding: 0;
     margin: 0;
 
-    background-image: url(../img/ferret.jpg);
+    background-color: black;
+    background-image: url(../img/ferret_background.jpg);
     background-size: cover;
 
     h1,

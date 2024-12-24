@@ -51,13 +51,30 @@ fetch("app/note.html")
 
         toggleSidebar.addEventListener("click", () => {
             const isVisible = getComputedStyle(noteTitle).display !== 'none';
-
+            btnReaction(toggleSidebar)
+            
             if (isVisible) {
                 closeSideBar(containerGrid, noteTitle);
             } else {
                 openSideBar(containerGrid, noteTitle);
             }
         });
+
+        function btnReaction(toggleSidebar) {
+            toggleSidebar.style.transition = `
+            padding 0.1s ease 0s
+            `
+
+            // Start
+            setTimeout(() => {
+                toggleSidebar.style.padding = "8px"
+            }, 0);
+
+            // End
+            setTimeout(() => {
+                toggleSidebar.style.padding = "6px"
+            }, 100);
+        }
 
         function closeSideBar(containerGrid, noteTitle) {
             // S: 0s, D: 0.3s, E: 0.3s
@@ -78,7 +95,7 @@ fetch("app/note.html")
             }, 0);
 
             setTimeout(() => {
-                noteTitle.style.padding = "0"
+                noteTitle.style.padding = "128px 6px 0 0" // Start going down
                 noteTitle.style.opacity = "0"
                 containerGrid.style.gridTemplateColumns = "0fr 1fr"
             }, 100);
@@ -102,17 +119,17 @@ fetch("app/note.html")
 
             // Start animation with 0 sec delay
             noteTitle.style.display = 'flex';
-            
+
             setTimeout(() => {
                 containerGrid.style.columnGap = "12px"
                 noteTitle.style.opacity = "1"
-                noteTitle.style.padding = "0 6px 0 0"
+                noteTitle.style.padding = "48px 0 0 0"
             }, 0);
-            
+
             setTimeout(() => {
                 containerGrid.style.gridTemplateColumns = "0.9fr 3fr"
             }, 100)
-            
+
             setTimeout(() => {
                 containerGrid.style.gridTemplateColumns = "0.7fr 3fr"
             }, 250);

@@ -117,7 +117,23 @@ export function dragElement(element, header) {
 
     // Get Topbar position
     const topBarElement = document.querySelector("#Topbar_Container .Topbar")
-    const topBarHeight = topBarElement.getBoundingClientRect().height;
+    // Get Topbar height with error handling
+    const getTopBarHeight = () => {
+        const topBarElement = document.querySelector("#Topbar_Container .Topbar");
+        let topBarHeight = 0; // Default fallback value
+
+        if (topBarElement) {
+            try {
+                topBarHeight = topBarElement.getBoundingClientRect().height;
+            } catch (error) {
+                console.warn('Failed to get topbar height:', error);
+            }
+        }
+
+        return topBarHeight || 40; // Return fallback value of 40px if height is 0 or undefined
+    };
+
+    const topBarHeight = getTopBarHeight();
 
     var appWindows = false;
 
@@ -136,7 +152,7 @@ export function dragElement(element, header) {
     } else {
         element.style.cursor = "pointer";
         appWindows = false;
-        
+
         // Icon mode - drag from anywhere
         element.onmousedown = (e) => {
             windowsRiseZIndex(element);

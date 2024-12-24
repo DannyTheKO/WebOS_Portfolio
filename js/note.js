@@ -27,11 +27,6 @@ fetch("app/note.html")
         // Initialize Note Application Logic
         const noteMain = document.querySelector(".Note_main");
 
-        // Component
-        const containerGrid = noteMain.querySelector(".container_grid")
-        const noteTitle = noteMain.querySelector(".noteTitle");
-
-
         // Data
         let notesContent = [
             {
@@ -49,23 +44,79 @@ fetch("app/note.html")
         ];
 
         // Sidebar toggle
-        const toggleSidebar = document.querySelector("#toggle_sidebar");
-        
+        const toggleSidebar = noteMain.querySelector("#toggle_sidebar"); // Button
+        const containerGrid = noteMain.querySelector(".container_grid")
+        const noteTitle = noteMain.querySelector(".noteTitle");
+        const notePage = noteMain.querySelector(".notePage")
+
         toggleSidebar.addEventListener("click", () => {
-            const isVisible = getComputedStyle(noteTitle).overflowY !== 'hidden';
+            const isVisible = getComputedStyle(noteTitle).display !== 'none';
 
             if (isVisible) {
-                noteTitle.style.overflowX = "hidden";
-                noteTitle.style.overflowY = "hidden";
-                containerGrid.style.gridTemplateColumns = '0fr 1fr';
-                containerGrid.style.columnGap = "0";
+                closeSideBar(containerGrid, noteTitle);
             } else {
-                noteTitle.style.overflowX = "hidden"
-                noteTitle.style.overflowY = "scroll"
-                containerGrid.style.gridTemplateColumns = '1fr 3fr';
-                containerGrid.style.columnGap = "10px";
+                openSideBar(containerGrid, noteTitle);
             }
-        })
+        });
+
+        function closeSideBar(containerGrid, noteTitle) {
+            // S: 0s, D: 0.3s, E: 0.3s
+            containerGrid.style.transition = `
+            grid-template-columns 0.3s ease 0s,
+            column-gap 0.1s ease 0.2s,
+            padding 0.1s ease 0.2s`
+
+            // S: 0s, D: 0.3s + 0.1s, E: 0.3s
+            noteTitle.style.transition = `
+            opacity 0.3s ease 0s,
+            padding 0.1s ease 0.1s`
+
+            // Start animation with 0 sec delay
+            setTimeout(() => {
+                containerGrid.style.columnGap = "0px"
+                containerGrid.style.gridTemplateColumns = "0.75fr 3fr"
+            }, 0);
+
+            setTimeout(() => {
+                noteTitle.style.padding = "0"
+                noteTitle.style.opacity = "0"
+                containerGrid.style.gridTemplateColumns = "0fr 1fr"
+            }, 100);
+
+            setTimeout(() => {
+                noteTitle.style.display = 'none';
+            }, 250);
+        }
+
+        function openSideBar(containerGrid, noteTitle) {
+            // S: 0s, D: 0.3s, E: 0.3s
+            containerGrid.style.transition = `
+            grid-template-columns 0.3s ease 0s,
+            column-gap 0.1s ease 0.2s,
+            padding 0.1s ease 0.2s`
+
+            // S: 0s, D: 0.3s + 0.1s, E: 0.3s
+            noteTitle.style.transition = `
+            opacity 0.3s ease 0s,
+            padding 0.1s ease 0.1s`
+
+            // Start animation with 0 sec delay
+            noteTitle.style.display = 'flex';
+            
+            setTimeout(() => {
+                containerGrid.style.columnGap = "12px"
+                noteTitle.style.opacity = "1"
+                noteTitle.style.padding = "0 6px 0 0"
+            }, 0);
+            
+            setTimeout(() => {
+                containerGrid.style.gridTemplateColumns = "0.9fr 3fr"
+            }, 100)
+            
+            setTimeout(() => {
+                containerGrid.style.gridTemplateColumns = "0.7fr 3fr"
+            }, 250);
+        }
     })
     .catch(error => console.error('Error loading introduction:', error));
 

@@ -4,26 +4,26 @@
     --icon-position-top: 10%;
     --icon-position-left: 1%;
 
-    /* Windows Size */
-    --window-size-width: 800px;
-    --window-size-height: 500px;
-    --window-aspect-ratio: 4/1;
-
     /* Windows Position */
     --window-position-top: 10%;
-    --window-position-left: 30%;
+    --window-position-left: 10%;
+
+    /* Windows Size */
+    --window-size-width: 75vw;
+    --window-size-height: 60vh;
+    --window-aspect-ratio: 4/1;
 
     --font-family: "consolas", sans-serif;
     --font-family-special: "Stretch Pro", sans-serif;
 
     /* Note Application, this will overwrite the default beheavior */
-    /* --application-icon-size: 64px;
-    --application-icon-image-size: 64px;
-    --application-icon-font-size: 16px;
+    /* --application-icon-size: 64px; */
+    /* --application-icon-image-size: 64px; */
+    /* --application-icon-font-size: 16px; */
 
-    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
-    --application-background-color: rgba(0, 0, 0, 0.8);
-    --application-background-blur: blur(2px); */
+    /* --application-icon-background-hover: rgb(50, 146, 225, 0.5); */
+    /* --application-background-color: rgba(0, 0, 0, 0.8); */
+    /* --application-background-blur: blur(2px); */
 }
 
 /* Note Icon */
@@ -36,7 +36,7 @@
 #Note {
     flex: 1;
     /* Custom Width and Height for the app */
-    min-width: var(--window-size-width);
+    width: var(--window-size-width);
     min-height: var(--window-size-height);
     /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
@@ -49,7 +49,7 @@
     /* This will break the screen limit of the desktop but this will stay here for... idk development purpose :) */
     /* transform: translate(-50%, -50%); */
 
-    box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 1);
 
     /* Custom Header if you want to style it */
     .Note_header {
@@ -64,73 +64,76 @@
 
         #toggle_sidebar {
             position: absolute;
-            right: 2%;
-            bottom: 2%;
+            right: 100%;
+            top: 0%;
 
             width: 36px;
             height: 36px;
 
-            padding: 6px;
+            padding: 4px;
 
-            background-color: var(--border-color);
+            border: 5px solid var(--border-color);
+            border-right-color: transparent;
+
+            background-color: rgb(0, 0, 0);
+
         }
 
         .container_grid {
             /* Setting up display grid */
             display: grid;
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: 0.7fr 3fr;
             grid-template-areas: "noteTitle notePage";
             column-gap: 12px;
 
             /* Set width and height content */
             height: var(--window-size-height);
 
-            /* Scrollbar styling */
-            ::-webkit-scrollbar {
-                width: 6px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: var(--border-color);
-                /* border-radius: 5px; */
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-                background: var(--border-color);
-            }
-
-            /* Add this to remove the white corner */
-            ::-webkit-scrollbar-corner {
-                background: transparent;
-            }
-
-            .noteTitle, .notePage {
-                overflow-x: scroll;
-
+            .noteTitle,
+            .notePage {
+                word-wrap: break-word;
+                overflow-y: scroll;
+                overflow-x: hidden;
             }
 
             .noteTitle {
                 grid-area: noteTitle;
-
+                
+                /* This is good for animation */
+                text-wrap: nowrap;
+                
                 display: flex;
                 flex-direction: column;
-                /* justify-content: flex-start; */
-
+                
+                padding: 0 6px 0 0;
+                
                 /* Testing purpose */
-                #noteTileId_1 {
+                [id^="noteTitleId_"]{
+                    user-select: none;
+                    cursor: pointer;
+
+                    width: fit-content;
+
                     font-family: var(--font-family);
                     font-size: var(--font-size-small);
+
+                    display: flex;
+                    flex-direction: column;
 
                     color: white;
                     padding: 0 0 12px 0;
 
+                    word-break: keep-all;
+                    margin-bottom: 10px;
+
                     p {
-                        margin: 0;
-                        margin-bottom: 10px;
+                        margin: 6px 0 10px 0;
+                    }
+
+                    h2,
+                    p {
+                        max-width: 100%;
+                        white-space: nowrap;
                     }
                 }
             }

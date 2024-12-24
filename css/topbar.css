@@ -42,15 +42,16 @@
 
         padding: 8px;
         /* margin: 0; */
-
+        
+        overflow: hidden;
+        
         background-color: var(--topbar-btn-color);
 
         border: 2px solid var(--border-color);
 
-        transform: translateY(0);
         transition: 0.1s ease;
+        transform: translateY(0);
         box-shadow: 6px 4px 0 var(--border-color);
-        overflow: hidden;
     }
 
     p:active {

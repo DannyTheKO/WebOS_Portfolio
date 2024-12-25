@@ -75,12 +75,17 @@ export function btnOpenAndClose(element, header_action) {
         // Open Button Action
         btnOpen.addEventListener("dblclick", () => {
             if (element.style.display === "none") {
-                toggleElement(element)
+                windowsRiseZIndex(element)
+                element.style.display = "flex";
+                element.style.flexDirection = "column";
             }
+            windowsRiseZIndex(element)
         })
 
         // Close Button Action
-        btnClose.addEventListener("click", () => toggleElement(element));
+        btnClose.addEventListener("click", () => {
+            element.style.display = "none";
+        });
     }
 
     return btnOpen;

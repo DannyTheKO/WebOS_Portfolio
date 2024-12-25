@@ -115,8 +115,6 @@ export function dragElement(element, header) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Get Topbar position
-    const topBarElement = document.querySelector("#Topbar_Container .Topbar")
     // Get Topbar height with error handling
     const getTopBarHeight = () => {
         const topBarElement = document.querySelector("#Topbar_Container .Topbar");

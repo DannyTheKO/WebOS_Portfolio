@@ -112,12 +112,12 @@
                 
                 padding: 48px 0 0 0;
                 
-                /* Note Content */
+                /* Note Title Element */
                 [id^="noteTitleId_"]{
                     user-select: none;
                     cursor: pointer;
 
-                    width: fit-content;
+                    /* width: fit-content; */
 
                     font-family: var(--font-family);
                     font-size: var(--font-size-small);
@@ -140,6 +140,10 @@
                         max-width: 100%;
                         white-space: nowrap;
                     }
+                }
+
+                [id^="noteTitleId_"]:hover {
+                    outline: 2px solid var(--border-color);
                 }
             }
 

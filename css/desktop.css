@@ -186,6 +186,9 @@ body {
             justify-content: space-between;
             align-items: center;
 
+            overflow: hidden;
+            text-wrap: nowrap;
+
             font-weight: 800;
 
             margin: 0;

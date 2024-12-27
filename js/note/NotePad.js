@@ -58,7 +58,7 @@ fetch("/app/NotePad.html")
                 toggleSidebar.style.height = "0"
                 toggleSidebar.style.padding = "0"
                 toggleSidebar_Btn_Image.style.opacity = "0"
-            }, 100)
+            }, 0)
 
             if (state) {
                 setTimeout(() => {

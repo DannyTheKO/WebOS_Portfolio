@@ -67,8 +67,14 @@
             left: 6px;
             top: 6px;
 
+            overflow: hidden;
+
+            cursor: pointer;
+
             width: 36px;
             height: 36px;
+
+            transform: translate(0%, 0%);
 
             padding: 6px;
 
@@ -98,7 +104,7 @@
             .noteTitle {
                 grid-area: noteTitle;
                 
-                /* This is good for animation */
+                /* This look good on animation */
                 text-wrap: nowrap;
                 
                 display: flex;
@@ -106,7 +112,7 @@
                 
                 padding: 48px 0 0 0;
                 
-                /* Testing purpose */
+                /* Note Content */
                 [id^="noteTitleId_"]{
                     user-select: none;
                     cursor: pointer;

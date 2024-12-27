@@ -22,8 +22,3 @@ fetch("app/introduction.html")
         dragElement(btnOpen); // Icon
     })
     .catch(error => console.error('Error loading introduction:', error));
-
-
-document.addEventListener('DOMContentLoaded', function () {
-
-})

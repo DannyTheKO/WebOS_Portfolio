@@ -21,6 +21,6 @@ fetch("app/topbar.html")
 
             var textTime = document.querySelector("#dateTime");
             textTime.innerHTML = formattedDateTime.toUpperCase();
-        } setInterval(dateTime, 200)
+        } setInterval(dateTime, 1000)
     })
     .catch(error => console.error('Error loading introduction:', error));

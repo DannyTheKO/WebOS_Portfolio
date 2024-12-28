@@ -20,5 +20,7 @@ fetch("../../app/introduction.html")
         // Add draggable function to this windows
         dragElement(element, header); // Windows
         dragElement(btnOpen); // Icon
+
+        
     })
     .catch(error => console.error('Error loading introduction:', error));

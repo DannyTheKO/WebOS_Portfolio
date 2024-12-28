@@ -136,9 +136,11 @@ fetch("../../app/note.html")
         var noteManager = new NoteManager();
         var listNote = noteManager.getAllNotes();
 
+        const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
+        noteTitleHeaderName.style.setProperty("--note-id", 0);
+
         // with every note, we print the title and date first into a noteTitle
         listNote.forEach(note => {
-            // We create a div
             const noteTitleContent = document.createElement("div");
 
             // Then we customize id into a div
@@ -153,20 +155,37 @@ fetch("../../app/note.html")
 
             // Then append the child element
             noteTitle.appendChild(noteTitleContent);
-
+            
             noteTitleContent.addEventListener("click", () => {
-                const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
-                const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
-                const noteContent = noteManager.getNoteById(noteId);
+                const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id"); // Get ID when click
+                const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
 
-                // Create a div
-                const notePageContent = document.createElement("div")
+                
+                if (noteId != noteIDHeader) {
+                    // Remove any child in note page
+                    while(notePage.firstChild) {
+                        notePage.removeChild(notePage.firstChild);
+                    }
 
-                // Customize it
-                notePageContent.id = `noteContentId_${noteContent.noteId}`
-                notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+                    // Get content
+                    const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
+                    
+                    // Create a div
+                    const notePageContent = document.createElement("div")
+                    
+                    // Customize it
+                    notePageContent.id = `noteContentId_${noteContent.noteId}`
+                    notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+                    notePageContent.innerHTML = `${noteContent.contentURL}`
 
-                noteHeaderAnimation(noteTitleHeaderName);
+                    // Append into note page
+                    notePage.appendChild(notePageContent);
+
+                    noteHeaderAnimation(noteTitleHeaderName);
+
+                    // Set the noteIDHeader back
+                    noteTitleHeaderName.style.setProperty("--note-id", noteId)
+                }
             })
 
             // Animation
@@ -186,6 +205,16 @@ fetch("../../app/note.html")
                     noteTitleHeaderName.style.padding = "0"
                     noteTitleHeaderName.style.opacity = "1"
                 }, 200)
+            }
+
+            // TODO: make animation when note page is load
+            function notePageAnimation() {
+                
+            }
+
+            // TODO: make animation when note title is selected 
+            function noteTitleAnimation() {
+
             }
         })
         //#endregion

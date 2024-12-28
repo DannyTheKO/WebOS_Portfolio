@@ -16,7 +16,7 @@ export class NoteManager {
                 <div style="
                     font-family: var(--font-family-special);
                     font-size: var(--font-size-medium);">
-                    <h1>Danny's Note</h1>
+                    <h1>[ Danny's Note ]</h1>
                     <h2>[ 08/08/2002 | 11:00:00 PM ]</h2>
                     <hr>
                 </div>
@@ -29,7 +29,23 @@ export class NoteManager {
                 <p>Hi, this is a note</p>
             </div>
                 `),
-            new Note(2, "Someone's Else Note", "[ 08/08/2002 | 11:00:00 PM ]", ``)
+            new Note(2, "Someone's Else Note", "[ 08/08/2002 | 11:00:00 PM ]", `
+            <div style="padding: 24px 4em;" contenteditable="false">
+                <div style="
+                    font-family: var(--font-family-special);
+                    font-size: var(--font-size-medium);">
+                    <h1>[ Someone's Else Note ]</h1>
+                    <h2>[ 08/08/2002 | 11:00:00 PM ]</h2>
+                    <hr>
+                </div>
+                <div>
+                    <img src="../img/nature.gif" alt="Image"
+                    style="
+                    object-fit: contain;
+                    width: 100%;">
+                </div>
+            </div>
+                `)
         ];
     }
 

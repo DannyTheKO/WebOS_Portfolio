@@ -52,7 +52,7 @@ fetch("../../app/note.html")
 
         btnClose.addEventListener("click", () => {
             notePageUnloadAnimation(notePage);
-            noteHeaderAnimation(noteTitleHeaderName, 1)
+            noteHeaderAnimation(noteTitleHeaderName, null)
         })
 
         //#region Sidebar Button
@@ -343,24 +343,30 @@ fetch("../../app/note.html")
 
         // Animation
         function noteHeaderAnimation(noteTitleHeaderName, noteId) {
-            const note = noteManager.getNoteById(noteId)
-
             noteTitleHeaderName.style.transition = `
                 padding 0.1s ease 0s,
                 opacity 0.1s ease 0s
                 `
 
-            setTimeout(() => {
-                noteTitleHeaderName.style.padding = "0 0 64px 0"
-                noteTitleHeaderName.style.opacity = "0"
-            }, 100)
+            if (noteId != null) { // LOAD
+                const note = noteManager.getNoteById(noteId)
 
-            setTimeout(() => {
-                noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
-                noteTitleHeaderName.style.padding = "0"
-                noteTitleHeaderName.style.opacity = "1"
-            }, 700)
+                setTimeout(() => {
+                    noteTitleHeaderName.style.padding = "0 0 64px 0"
+                    noteTitleHeaderName.style.opacity = "0"
+                }, 100)
 
+                setTimeout(() => {
+                    noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
+                    noteTitleHeaderName.style.padding = "0"
+                    noteTitleHeaderName.style.opacity = "1"
+                }, 700)
+            } else { // UNLOAD
+                setTimeout(() => {
+                    noteTitleHeaderName.style.padding = "0 0 64px 0"
+                    noteTitleHeaderName.style.opacity = "0"
+                }, 100)
+            }
         }
 
         // Note Page Loading Animation 

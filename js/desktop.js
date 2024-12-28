@@ -75,31 +75,41 @@ export function btnOpenAndClose(element, header_action) {
         // Open Button Action
         btnOpen.addEventListener("dblclick", () => {
             if (element.style.display === "none") {
+
                 windowsRiseZIndex(element)
                 element.style.display = "flex";
                 element.style.flexDirection = "column";
+
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                }, 200);
             }
             windowsRiseZIndex(element)
         })
 
         // Close Button Action
         btnClose.addEventListener("click", () => {
-            element.style.display = "none";
+            element.style.opacity = 0;
+            setTimeout(() => {
+                element.style.display = "none";
+            }, 200);
         });
     }
 
-    return {btnOpen: btnOpen, btnClose: btnClose};
+    return { btnOpen: btnOpen, btnClose: btnClose };
 }
 
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`);
-
+    
     var header = document.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
-
+    
     // Element style when start up
     element.style.display = "none";
+    element.style.transition = `opacity 0.1s ease 0s`
+    element.style.opacity = 0;
 
     // Header action styling
     if (header_action != null) {

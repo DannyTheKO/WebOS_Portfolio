@@ -49,9 +49,9 @@ fetch("../../app/note.html")
                 noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
             }, 100);
         })
-
+        
         btnClose.addEventListener("click", () => {
-            notePageLoad(notePage, 0);
+            notePageAnimationUnload(notePage);
             noteHeaderAnimation(noteTitleHeaderName, 0)
         })
 
@@ -379,6 +379,16 @@ fetch("../../app/note.html")
                 notePage.style.setProperty('--width', '100%');
                 notePage.style.setProperty('--height', '0%');
             }, 500);
+        }
+
+        function notePageAnimationUnload(notePage) {
+            const overlay = window.getComputedStyle(notePage, '::after');
+
+            // Now you can access the computed styles of the ::after element
+            // But to modify it, you should use CSS custom properties on the parent
+
+            notePage.style.setProperty('--width', '100%');
+            notePage.style.setProperty('--height', '100%');
         }
         //#endregion
 

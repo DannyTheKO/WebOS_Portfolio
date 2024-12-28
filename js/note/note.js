@@ -15,11 +15,11 @@ fetch("../../app/note.html")
             header_action: header_action
         } = windowElement(noteWindow);
 
-        // HEY
-        element.style.display = "flex"
+        // HEY, this will show window of note
+        // element.style.display = "flex"
 
         // Add open and close button
-        const btnOpen = btnOpenAndClose(element, header_action);
+        const {btnOpen, btnClose} = btnOpenAndClose(element, header_action);
 
         // Add Drag Element function
         dragElement(element, header); // Windows
@@ -38,6 +38,22 @@ fetch("../../app/note.html")
         const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn") // Toggle Button
         const previousBtn = sidebarBtnContainer.querySelector("#previous_btn") // Toggle Button
         const nextBtn = sidebarBtnContainer.querySelector("#next_btn") // Toggle Button
+
+        // Start up behaviour
+        btnOpen.addEventListener("dblclick", () => {
+            // this will remember the last note when open
+            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+            
+            setTimeout(() => {
+                notePageLoad(notePage, noteIDHeader); 
+                noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
+            }, 100);
+        })
+
+        btnClose.addEventListener("click", () => {
+            notePageLoad(notePage, 0);
+            noteHeaderAnimation(noteTitleHeaderName, 0)
+        })
 
         //#region Sidebar Button
         // Expand and Collapse
@@ -266,10 +282,6 @@ fetch("../../app/note.html")
         const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
         noteTitleHeaderName.style.setProperty("--note-id", 1);
 
-        // Load Default Page
-        noteHeaderAnimation(noteTitleHeaderName, 1)
-        notePageLoad(notePage, 1);
-
         // with every note, we print the title and date first into a noteTitle
         listNote.forEach(note => {
             const noteTitleContent = document.createElement("div");
@@ -361,7 +373,7 @@ fetch("../../app/note.html")
             setTimeout(() => {
                 notePage.style.setProperty('--width', '100%');
                 notePage.style.setProperty('--height', '100%');
-            }, 100);
+            }, 0);
 
             setTimeout(() => {
                 notePage.style.setProperty('--width', '100%');

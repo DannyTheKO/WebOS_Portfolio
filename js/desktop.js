@@ -88,7 +88,7 @@ export function btnOpenAndClose(element, header_action) {
         });
     }
 
-    return btnOpen;
+    return {btnOpen: btnOpen, btnClose: btnClose};
 }
 
 // Get windows position and other element inside of that

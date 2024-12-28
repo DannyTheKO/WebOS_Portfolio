@@ -88,7 +88,9 @@ fetch("../../app/note.html")
                 previousBtn.style.padding = "6px"
             }, 250)
 
+            noteHeaderAnimation(noteTitleHeaderName, notePrev)
             notePageLoad(notePage, notePrev)
+            noteTitleHeaderName.style.setProperty("--note-id", notePrev)
         })
 
         // Next Note
@@ -124,7 +126,9 @@ fetch("../../app/note.html")
                 nextBtn.style.padding = "6px"
             }, 250)
 
+            noteHeaderAnimation(noteTitleHeaderName, noteNext)
             notePageLoad(notePage, noteNext)
+            noteTitleHeaderName.style.setProperty("--note-id", noteNext)
         })
 
         function btnReaction(btn, container, state) {
@@ -228,6 +232,10 @@ fetch("../../app/note.html")
         const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
         noteTitleHeaderName.style.setProperty("--note-id", 1);
 
+        // Load Default Page
+        noteHeaderAnimation(noteTitleHeaderName, 1)
+        notePageLoad(notePage, 1);
+
         // with every note, we print the title and date first into a noteTitle
         listNote.forEach(note => {
             const noteTitleContent = document.createElement("div");
@@ -252,7 +260,7 @@ fetch("../../app/note.html")
 
                 if (noteId != noteIDHeader) {
                     notePageLoad(notePage, noteId);
-                    noteHeaderAnimation(noteTitleHeaderName);
+                    noteHeaderAnimation(noteTitleHeaderName, noteId);
 
                     // Set the noteIDHeader back
                     noteTitleHeaderName.style.setProperty("--note-id", noteId)
@@ -286,11 +294,11 @@ fetch("../../app/note.html")
                 notePage.appendChild(notePageContent);
             }, 500);
         }
-        // Load Default Page
-        notePageLoad(notePage, "1");
 
         // Animation
-        function noteHeaderAnimation(noteTitleHeaderName) {
+        function noteHeaderAnimation(noteTitleHeaderName, noteId) {
+            const note = noteManager.getNoteById(noteId)
+
             noteTitleHeaderName.style.transition = `
                 padding 0.1s ease 0s,
                 opacity 0.1s ease 0s
@@ -302,7 +310,7 @@ fetch("../../app/note.html")
             }, 100)
 
             setTimeout(() => {
-                noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
+                noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
                 noteTitleHeaderName.style.padding = "0"
                 noteTitleHeaderName.style.opacity = "1"
             }, 700)
@@ -326,7 +334,6 @@ fetch("../../app/note.html")
                 notePage.style.setProperty('--height', '0%');
             }, 500);
         }
-
         //#endregion
 
     })

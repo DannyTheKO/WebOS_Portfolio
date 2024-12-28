@@ -33,51 +33,59 @@ fetch("../../app/note.html")
         const notePage = noteMain.querySelector(".notePage");
 
         const containerGrid = noteMain.querySelector(".container_grid")
-        const toggleSidebar = noteMain.querySelector("#toggle_sidebar"); // Sidebar Button
-        const toggleSidebar_Btn_Image = toggleSidebar.querySelector(".svg") // Image
+        
+        const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container"); // Sidebar Container
+        const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn") // Toggle Button
 
-        //#region Sidebar Toggle
-        toggleSidebar.addEventListener("click", () => {
+        //#region Sidebar Button
+        // Expand and Collapse
+        toggleBtn.addEventListener("click", () => {
             const isVisible = getComputedStyle(noteTitle).display !== 'none';
-            btnReaction(toggleSidebar, isVisible)
+            btnReaction(toggleBtn, isVisible)
+
+            setTimeout(() => {
+                if (isVisible) {
+                    toggleBtn.src = "svg/enlarge-btn.svg"
+                } else {
+                    toggleBtn.src = "svg/collapse-btn.svg"
+                }
+            }, 250);
+
             sidebarReaction(containerGrid, noteTitle, isVisible)
         });
 
-        function btnReaction(toggleSidebar, state) {
-            toggleSidebar.style.transition = `
+        // Previous Note
+        // Next Note
+
+        function btnReaction(btn, state) {
+            btn.style.transition = `
             height 0.1s ease 0.1s,
             width 0.1s ease 0.1s,
-            padding 0.1s ease 0.15s
+            padding 0.1s ease 0.15s,
+            opacity 0.1s ease 0.12s
             `
 
-            toggleSidebar_Btn_Image.style.transition = `opacity 0.1s ease 0.12s`
-
             setTimeout(() => {
-                toggleSidebar.style.cursor = "default"
-                toggleSidebar.style.width = "36px"
-                toggleSidebar.style.height = "0"
-                toggleSidebar.style.padding = "0"
-                toggleSidebar_Btn_Image.style.opacity = "0"
+                btn.style.cursor = "default"
+                btn.style.width = "36px"
+                btn.style.height = "0"
+                btn.style.padding = "0"
             }, 0)
 
             if (state) {
                 setTimeout(() => {
-                    toggleSidebar_Btn_Image.style.opacity = "1"
-                    toggleSidebar.style.cursor = "pointer"
-                    toggleSidebar.style.width = "36px"
-                    toggleSidebar.style.height = "36px"
-                    toggleSidebar.style.padding = "6px"
-                    toggleSidebar_Btn_Image.src = "svg/enlarge-btn.svg"
+                    btn.style.cursor = "pointer"
+                    btn.style.width = "36px"
+                    btn.style.height = "36px"
+                    btn.style.padding = "6px"
                 }, 250)
             }
             else {
                 setTimeout(() => {
-                    toggleSidebar_Btn_Image.style.opacity = "1"
-                    toggleSidebar.style.cursor = "pointer"
-                    toggleSidebar.style.width = "36px"
-                    toggleSidebar.style.height = "36px"
-                    toggleSidebar.style.padding = "6px"
-                    toggleSidebar_Btn_Image.src = "svg/collapse-btn.svg"
+                    btn.style.cursor = "pointer"
+                    btn.style.width = "36px"
+                    btn.style.height = "36px"
+                    btn.style.padding = "6px"
                 }, 250)
             }
         }
@@ -155,38 +163,48 @@ fetch("../../app/note.html")
 
             // Then append the child element
             noteTitle.appendChild(noteTitleContent);
-            
+
             noteTitleContent.addEventListener("click", () => {
                 const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id"); // Get ID when click
                 const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
 
-                
+
                 if (noteId != noteIDHeader) {
-                    // Remove any child in note page
-                    while(notePage.firstChild) {
-                        notePage.removeChild(notePage.firstChild);
-                    }
-
-                    // Get content
-                    const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
-                    
-                    // Create a div
-                    const notePageContent = document.createElement("div")
-                    
-                    // Customize it
-                    notePageContent.id = `noteContentId_${noteContent.noteId}`
-                    notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
-                    notePageContent.innerHTML = `${noteContent.contentURL}`
-
-                    // Append into note page
-                    notePage.appendChild(notePageContent);
-
+                    notePageLoad(notePage, noteId);
                     noteHeaderAnimation(noteTitleHeaderName);
 
                     // Set the noteIDHeader back
                     noteTitleHeaderName.style.setProperty("--note-id", noteId)
                 }
             })
+
+            // Note Default Page
+            function notePageLoad(notePage, noteId) {
+                notePageAnimation(notePage);
+
+                setTimeout(() => {
+                    // Remove any child in note page
+                    while (notePage.firstChild) {
+                        notePage.removeChild(notePage.firstChild);
+                    }
+    
+                    // Get content
+                    const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
+    
+                    // Create a div
+                    const notePageContent = document.createElement("div")
+    
+                    // Customize it
+                    notePageContent.id = `noteContentId_${noteContent.noteId}`
+                    notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+                    notePageContent.innerHTML = `${noteContent.contentURL}`
+    
+                    // Append into note page
+                    notePage.appendChild(notePageContent);
+                }, 500);
+            }
+            // Load Default Page
+            notePageLoad(notePage, "1");
 
             // Animation
             function noteHeaderAnimation(noteTitleHeaderName) {
@@ -204,17 +222,26 @@ fetch("../../app/note.html")
                     noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
                     noteTitleHeaderName.style.padding = "0"
                     noteTitleHeaderName.style.opacity = "1"
-                }, 200)
+                }, 700)
+
             }
 
             // TODO: make animation when note page is load
-            function notePageAnimation() {
+            function notePageAnimation(notePage) {
+                const overlay = window.getComputedStyle(notePage, '::after');
                 
-            }
-
-            // TODO: make animation when note title is selected 
-            function noteTitleAnimation() {
-
+                // Now you can access the computed styles of the ::after element
+                // But to modify it, you should use CSS custom properties on the parent
+                
+                setTimeout(() => {
+                    notePage.style.setProperty('--width', '100%');
+                    notePage.style.setProperty('--height', '100%');
+                }, 100);
+            
+                setTimeout(() => {
+                    notePage.style.setProperty('--width', '100%');
+                    notePage.style.setProperty('--height', '0%');
+                }, 500);
             }
         })
         //#endregion

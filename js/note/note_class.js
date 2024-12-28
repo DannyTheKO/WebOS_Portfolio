@@ -26,7 +26,12 @@ export class NoteManager {
                     object-fit: contain;
                     width: 100%;">
                 </div>
-                <p>Hi, this is a note</p>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas minima labore consequatur, tempora quos suscipit. Doloremque pariatur nemo accusantium iste nostrum deleniti consectetur, sequi harum laudantium totam? Eaque, cum perferendis.
+        Facere quod incidunt nesciunt fugit nobis ab sint atque, unde eum sapiente dolor eos voluptatibus! Voluptas quo autem laborum doloremque ea! Enim cum ullam quod odit modi ducimus natus. Eius.
+        Sequi veritatis architecto omnis? Cum odio, fuga voluptatibus saepe, quaerat accusamus dicta dolorum commodi earum, quo velit perspiciatis natus aliquam itaque rem sapiente? Officiis quibusdam veniam reprehenderit eum! Corporis, nisi!
+        Obcaecati modi impedit asperiores dignissimos a quidem beatae debitis accusantium minus dolor qui corporis aperiam unde, doloremque ipsam molestiae cupiditate in, deleniti distinctio illum aliquid voluptates iure cumque? Ullam, expedita!
+        Iure beatae doloremque adipisci perferendis explicabo nam id nobis ad incidunt. Ipsam impedit asperiores corrupti possimus veritatis perferendis, dolor saepe voluptas magnam blanditiis, distinctio, consectetur qui laudantium natus earum! Eius.
+</p>
             </div>
                 `),
             new Note(2, "Someone's Else Note", "[ 08/08/2002 | 11:00:00 PM ]", `

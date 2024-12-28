@@ -30,7 +30,8 @@
     p {
         display: flex;
         justify-content: space-evenly;
-        gap: 10px;
+        align-items: center;
+        gap: 5px;
 
         width: var(--topbar-button-width);
         height: var(--topbar-button-height);
@@ -68,7 +69,7 @@
 
         width: 350px;
         font-size: var(--topbar-font-size);
-        text-wrap-mode: nowrap;
+        text-wrap: nowrap;
 
         .svg {
             width: 180px;

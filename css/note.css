@@ -10,7 +10,7 @@
 
     /* Windows Size */
     --window-size-width: 75vw;
-    --window-size-height: 60vh;
+    --window-size-height: 80vh;
     --window-aspect-ratio: 4/1;
 
     --font-family: "consolas", sans-serif;
@@ -62,26 +62,29 @@
         position: relative;
         padding: 0.5em;
 
-        #toggle_sidebar {
+        #sidebar_btn_container {
             position: absolute;
             left: 6px;
             top: 6px;
 
-            overflow: hidden;
+            z-index: 5;
 
             cursor: pointer;
+            
+            [id] {
+                padding: 6px;
+                
+                width: 36px;
+                height: 36px;
+                
+                transform: translate(0%, 0%);
+                overflow: hidden;
+            }
 
-            width: 36px;
-            height: 36px;
-
-            transform: translate(0%, 0%);
-
-            padding: 6px;
-
-            border: 2px solid var(--border-color);
-
-            background-color: rgb(0, 0, 0);
-
+            #toggle_btn {
+                background-color: rgb(0, 0, 0);
+                border: 2px solid var(--border-color);
+            }
         }
 
         .container_grid {
@@ -103,18 +106,18 @@
 
             .noteTitle {
                 grid-area: noteTitle;
-                
+
                 /* This look good on animation */
                 text-wrap: nowrap;
                 user-select: none;
-                
+
                 display: flex;
                 flex-direction: column;
-                
+
                 padding: 48px 0 0 0;
-                
+
                 /* Note Title Element */
-                [id^="noteId_"]{
+                [id^="noteId_"] {
                     user-select: none;
                     cursor: pointer;
 
@@ -142,13 +145,45 @@
                 }
 
                 [id^="noteId_"]:hover {
-                    background-color: rgb(50, 146, 225, 0.5);
+                    background-color: rgba(50, 146, 225, 0.5);
                 }
             }
 
-            .notePage {
-                grid-area: notePage;
+            /* Overlay when page load */
+            .notePage::before {
+                --overlay-color-light: rgb(20, 100, 225);
+                --overlay-color-dark: rgb(0, 0, 0);
 
+                content: "";
+                position: fixed;
+                overflow: hidden;
+
+                text-align: center;
+                text-wrap: nowrap;
+                overflow: hidden;
+
+                /* Initial state */
+                width: var(--width, 100%);
+                height: var(--height, 100%);
+
+                top: 0;
+                left: 0;
+
+                background-image: linear-gradient(180deg, var(--overlay-color-light), var(--overlay-color-dark));
+
+                /* Change transition property */
+                transition: width 0.2s ease 0s, height 0.2s ease 0s;
+                z-index: 10;
+
+                pointer-events: none;
+                user-select: none;
+            }
+
+            .notePage {
+                /* for the ::after element */
+
+                grid-area: notePage;
+                position: relative;
                 font-family: var(--font-family);
                 font-size: var(--font-size-small);
             }

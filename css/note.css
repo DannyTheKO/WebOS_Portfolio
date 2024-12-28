@@ -164,9 +164,6 @@
 
             /* Overlay when page load */
             .notePage::after {
-                --overlay-color-light: rgb(20, 100, 225);
-                --overlay-color-dark: rgb(0, 0, 0);
-
                 content: "";
                 position: fixed;
                 overflow: hidden;
@@ -193,7 +190,6 @@
                 transition: width 0.2s ease 0s, height 0.2s ease 0s;
                 z-index: 10;
 
-                pointer-events: none;
                 user-select: none;
             }
 

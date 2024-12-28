@@ -60,163 +60,165 @@ body {
     background-image: url(../img/ferret_background.jpg);
     background-size: cover;
 
-    h1,
-    h2 {
+}
+
+h1,
+h2 {
+    padding: 0;
+    margin: 0;
+}
+
+ul,
+li {
+    margin: 0;
+}
+
+hr {
+    border-color: var(--font-color);
+    box-shadow: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+
+    :visited {
+        color: white
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    /* border-radius: 5px; */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-color);
+}
+
+/* Add this to remove the white corner */
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Image Display */
+.svg {
+    aspect-ratio: 1;
+    height: var(--font-size-large);
+}
+
+img {
+    -webkit-user-drag: none;
+    /* user-drag: none; */
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Icon Default Style */
+.icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 0;
+
+    width: var(--application-icon-size);
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    padding: 8px;
+    gap: 6px;
+
+    position: absolute;
+
+    .icon_img {
+        aspect-ratio: 1;
+        height: var(--application-icon-image-size);
+
+        border-radius: 16px;
+        box-shadow: 0 0 12px black;
+    }
+
+    .icon_name {
+        flex: 1;
+
         padding: 0;
         margin: 0;
-    }
-
-    ul,
-    li {
-        margin: 0;
-    }
-
-    hr {
-        border-color: var(--font-color);
-        box-shadow: none;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-
-        :visited {
-            color: white
-        }
-    }
-
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: var(--border-color);
-        /* border-radius: 5px; */
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--border-color);
-    }
-
-    /* Add this to remove the white corner */
-    ::-webkit-scrollbar-corner {
-        background: transparent;
-    }
-
-    /* Image Display */
-    .svg {
-        aspect-ratio: 1;
-        height: var(--font-size-large);
-    }
-
-    img {
-        -webkit-user-drag: none;
-        /* user-drag: none; */
-        -webkit-user-select: none;
-        user-select: none;
-    }
-
-    /* App Icon Default Style */
-    .app {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        z-index: 0;
 
         width: var(--application-icon-size);
 
-        -webkit-user-select: none;
-        user-select: none;
+        font-family: var(--font-family);
+        font-size: var(--application-icon-font-size);
+        text-align: center;
+        text-shadow: 0 0 6px black;
+        word-wrap: break-word;
 
-        padding: 8px;
-        gap: 6px;
+        color: var(--desktop-font-color);
 
-        position: absolute;
-
-        .app_icon {
-            aspect-ratio: 1;
-            height: var(--application-icon-image-size);
-
-            border-radius: 16px;
-            box-shadow: 0 0 12px black;
-        }
-
-        .app_name {
-            flex: 1;
-
-            padding: 0;
-            margin: 0;
-
-            width: var(--application-icon-size);
-
-            font-family: var(--font-family);
-            font-size: var(--application-icon-font-size);
-            text-align: center;
-            text-shadow: 0 0 6px black;
-            word-wrap: break-word;
-
-            color: var(--desktop-font-color);
-
-        }
     }
+}
 
-    .app:hover {
-        background-color: var(--application-icon-background-hover);
-    }
+.icon:hover {
+    background-color: var(--application-icon-background-hover);
+}
 
-    .selected {
-        outline: 2px solid var(--border-color);
-    }
+.selected {
+    outline: 2px solid var(--border-color);
+}
 
-    /* App Windows Default Style */
-    [id]:not(#Topbar_Container *) {
+/* Windows Default Style */
+[id$="_Container"]:not(#Topbar_Container *) {
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 1);
+
+    [class$="_header"] {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
 
+        overflow: hidden;
+        text-wrap: nowrap;
 
-        [class$="_header"] {
+        font-weight: 800;
+
+        margin: 0;
+        padding: 8px 5px;
+
+        /* Act like a border for the content */
+        height: 30px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--border-color);
+        backdrop-filter: unset;
+
+        * {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-
-            overflow: hidden;
-            text-wrap: nowrap;
-
-            font-weight: 800;
-
-            margin: 0;
-            padding: 8px 5px;
-
-            /* Act like a border for the content */
-            height: 30px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--border-color);
-            backdrop-filter: unset;
-
-            * {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
         }
+    }
 
-        [class$="_main"] {
-            flex: 1;
-            position: relative;
+    [class$="_main"] {
+        flex: 1;
+        position: relative;
 
-            border: var(--border-size-around) var(--border-color) solid;
-            border-top: none;
+        border: var(--border-size-around) var(--border-color) solid;
+        border-top: none;
 
-            background-color: var(--application-background-color);
+        background-color: var(--application-background-color);
 
-            backdrop-filter: var(--application-background-blur);
-        }
+        backdrop-filter: var(--application-background-blur);
     }
 }

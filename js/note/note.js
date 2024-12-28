@@ -19,7 +19,7 @@ fetch("../../app/note.html")
         // element.style.display = "flex"
 
         // Add open and close button
-        const {btnOpen, btnClose} = btnOpenAndClose(element, header_action);
+        const { btnOpen, btnClose } = btnOpenAndClose(element, header_action);
 
         // Add Drag Element function
         dragElement(element, header); // Windows
@@ -43,16 +43,16 @@ fetch("../../app/note.html")
         btnOpen.addEventListener("dblclick", () => {
             // this will remember the last note when open
             const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-            
+
             setTimeout(() => {
-                notePageLoad(notePage, noteIDHeader); 
+                notePageLoad(notePage, noteIDHeader);
                 noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
             }, 100);
         })
-        
+
         btnClose.addEventListener("click", () => {
-            notePageAnimationUnload(notePage);
-            noteHeaderAnimation(noteTitleHeaderName, 0)
+            notePageUnloadAnimation(notePage);
+            noteHeaderAnimation(noteTitleHeaderName, 1)
         })
 
         //#region Sidebar Button
@@ -316,7 +316,7 @@ fetch("../../app/note.html")
 
         // Note Default Page
         function notePageLoad(notePage, noteId) {
-            notePageAnimation(notePage);
+            notePageLoadAnimation(notePage);
             noteId = parseInt(noteId);
 
             setTimeout(() => {
@@ -363,13 +363,8 @@ fetch("../../app/note.html")
 
         }
 
-        // TODO: make animation when note page is load
-        function notePageAnimation(notePage) {
-            const overlay = window.getComputedStyle(notePage, '::after');
-
-            // Now you can access the computed styles of the ::after element
-            // But to modify it, you should use CSS custom properties on the parent
-
+        // Note Page Loading Animation 
+        function notePageLoadAnimation(notePage) {
             setTimeout(() => {
                 notePage.style.setProperty('--width', '100%');
                 notePage.style.setProperty('--height', '100%');
@@ -381,12 +376,8 @@ fetch("../../app/note.html")
             }, 500);
         }
 
-        function notePageAnimationUnload(notePage) {
-            const overlay = window.getComputedStyle(notePage, '::after');
-
-            // Now you can access the computed styles of the ::after element
-            // But to modify it, you should use CSS custom properties on the parent
-
+        // Note Page Unloading Animation 
+        function notePageUnloadAnimation(notePage) {
             notePage.style.setProperty('--width', '100%');
             notePage.style.setProperty('--height', '100%');
         }

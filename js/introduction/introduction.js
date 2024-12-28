@@ -15,7 +15,7 @@ fetch("../../app/introduction.html")
         } = windowElement(introductionWindow);
 
         // Add open and close button
-        const btnOpen = btnOpenAndClose(element, header_action);
+        const {btnOpen: btnOpen, btnClose: btnClose} = btnOpenAndClose(element, header_action);
 
         // Add draggable function to this windows
         dragElement(element, header); // Windows

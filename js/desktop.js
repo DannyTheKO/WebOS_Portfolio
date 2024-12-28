@@ -67,7 +67,7 @@ export function btnOpenAndClose(element, header_action) {
 
         // Add click listener to document to handle clicking outside
         document.addEventListener("click", (event) => {
-            if (!event.target.closest(".app")) {
+            if (!event.target.closest(".icon")) {
                 btnOpen.classList.remove("selected");
             }
         })

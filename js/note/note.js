@@ -1,7 +1,7 @@
 import { windowElement, dragElement, btnOpenAndClose } from "../desktop.js";
 import { NoteManager } from "./note_class.js";
 
-fetch("/app/note.html")
+fetch("../../app/note.html")
     .then(response => response.text())
     .then(data => {
         // Initialize Note HTML Body

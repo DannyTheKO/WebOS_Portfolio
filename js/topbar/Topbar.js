@@ -1,4 +1,4 @@
-fetch("app/topbar.html")
+fetch("../../app/topbar.html")
     .then(response => response.text())
     .then(data => {
         // Only after content is loaded, then initialize the window functionality

@@ -29,7 +29,7 @@ export class NoteManager {
                 <p>Hi, this is a note</p>
             </div>
                 `),
-            new Note(2, "Testing 2", "[ 08/08/2002 | 11:00:00 PM ]", ``)
+            new Note(2, "Someone's Else Note", "[ 08/08/2002 | 11:00:00 PM ]", ``)
         ];
     }
 
@@ -37,10 +37,13 @@ export class NoteManager {
         return this.notes;
     }
 
-    getNoteById(id) {
-        return this.notes.find(note => note.noteId === id)
+    getNoteById(noteId) {
+        noteId = parseInt(noteId);
+        if (noteId == NaN) {
+            console.error(`invalid ${noteId}`);
+        }
+        return this.notes.find(note => note.noteId === noteId);
     }
-
 
     getNoteContent(noteId) {
         const note = this.notes.find(note => note.noteId === noteId);
@@ -60,4 +63,3 @@ export class NoteManager {
 
 // Testing Purpose
 const noteManager = new NoteManager();
-console.log(noteManager.getAllNotes());

@@ -219,3 +219,9 @@ export function dragElement(element, header) {
         }
     }
 }
+
+
+// TODO: make this
+function resizeElement(element) {
+
+}

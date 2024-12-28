@@ -106,6 +106,7 @@
                 
                 /* This look good on animation */
                 text-wrap: nowrap;
+                user-select: none;
                 
                 display: flex;
                 flex-direction: column;
@@ -113,20 +114,18 @@
                 padding: 48px 0 0 0;
                 
                 /* Note Title Element */
-                [id^="noteTitleId_"]{
+                [id^="noteId_"]{
                     user-select: none;
                     cursor: pointer;
 
-                    /* width: fit-content; */
-
                     font-family: var(--font-family);
-                    font-size: var(--font-size-small);
+                    font-size: var(--font-size-x-small);
 
                     display: flex;
                     flex-direction: column;
 
                     color: white;
-                    padding: 0 0 12px 0;
+                    padding: 5px 5px 12px 5px;
 
                     word-break: keep-all;
                     margin-bottom: 10px;
@@ -142,8 +141,8 @@
                     }
                 }
 
-                [id^="noteTitleId_"]:hover {
-                    outline: 2px solid var(--border-color);
+                [id^="noteId_"]:hover {
+                    background-color: rgb(50, 146, 225, 0.5);
                 }
             }
 

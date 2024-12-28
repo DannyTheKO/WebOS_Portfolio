@@ -68,7 +68,7 @@ fetch("../../app/note.html")
                     toggleSidebar.style.height = "36px"
                     toggleSidebar.style.padding = "6px"
                     toggleSidebar_Btn_Image.src = "svg/enlarge-btn.svg"
-                }, 300)
+                }, 250)
             }
             else {
                 setTimeout(() => {
@@ -78,21 +78,21 @@ fetch("../../app/note.html")
                     toggleSidebar.style.height = "36px"
                     toggleSidebar.style.padding = "6px"
                     toggleSidebar_Btn_Image.src = "svg/collapse-btn.svg"
-                }, 300)
+                }, 250)
             }
         }
 
         function sidebarReaction(containerGrid, noteTitle, state) {
             // S: 0s, D: 0.3s, E: 0.3s
             containerGrid.style.transition = `
-                        grid-template-columns 0.3s ease 0s,
-                        column-gap 0.1s ease 0.2s,
-                        padding 0.1s ease 0.2s`
+                grid-template-columns 0.3s ease 0s,
+                column-gap 0.1s ease 0.2s,
+                padding 0.1s ease 0.2s`
 
             // S: 0s, D: 0.3s + 0.1s, E: 0.3s
             noteTitle.style.transition = `
-                        opacity 0.3s ease 0s,
-                        padding 0.1s ease 0.1s`
+                opacity 0.3s ease 0s,
+                padding 0.1s ease 0.1s`
 
             if (state) {
                 // Start animation with 0 sec delay
@@ -139,40 +139,55 @@ fetch("../../app/note.html")
         // with every note, we print the title and date first into a noteTitle
         listNote.forEach(note => {
             // We create a div
-            const noteTitleElement = document.createElement('div');
+            const noteTitleContent = document.createElement("div");
 
             // Then we customize id into a div
-            noteTitleElement.id = `noteTitleId_${note.noteId}`
+            noteTitleContent.id = `noteId_${note.noteId}`
+            noteTitleContent.style.setProperty("--note-id", note.noteId);
 
-            // Add content inside it
-            noteTitleElement.innerHTML = `
+            // Add note title content inside it
+            noteTitleContent.innerHTML = `
             <h2>${note.title}</h2>
             <p>${note.date}</p>
             `
-            noteTitle.appendChild(noteTitleElement);
 
-            noteTitleElement.addEventListener("click", () => {
-                const noteTitleName = noteHeader.querySelector("#Note_title_name");
-                noteTitleName.style.transition = `
+            // Then append the child element
+            noteTitle.appendChild(noteTitleContent);
+
+            noteTitleContent.addEventListener("click", () => {
+                const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
+                const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
+                const noteContent = noteManager.getNoteById(noteId);
+
+                // Create a div
+                const notePageContent = document.createElement("div")
+
+                // Customize it
+                notePageContent.id = `noteContentId_${noteContent.noteId}`
+                notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+
+                noteHeaderAnimation(noteTitleHeaderName);
+            })
+
+            // Animation
+            function noteHeaderAnimation(noteTitleHeaderName) {
+                noteTitleHeaderName.style.transition = `
                 padding 0.1s ease 0s,
                 opacity 0.1s ease 0s
                 `
 
                 setTimeout(() => {
-                    noteTitleName.style.padding = "0 0 0 128px"
-                    noteTitleName.style.opacity = "0"
+                    noteTitleHeaderName.style.padding = "0 0 64px 0"
+                    noteTitleHeaderName.style.opacity = "0"
                 }, 100)
-                
+
                 setTimeout(() => {
-                    noteTitleName.innerHTML = `[ Note ] - [ ${note.title} ]`;
-                    noteTitleName.style.padding = "0"
-                    noteTitleName.style.opacity = "1"
+                    noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
+                    noteTitleHeaderName.style.padding = "0"
+                    noteTitleHeaderName.style.opacity = "1"
                 }, 200)
-
-            })
+            }
         })
-
-
         //#endregion
 
     })

@@ -61,10 +61,6 @@ fetch("../../app/note.html")
             const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
             var notePrev = noteIDHeader - 1;
 
-            if (notePrev <= 0) {
-                notePrev = 1;
-            }
-
             previousBtn.style.transition = `
             height 0.1s ease 0.1s,
             width 0.1s ease 0.1s,
@@ -72,25 +68,46 @@ fetch("../../app/note.html")
             opacity 0.1s ease 0.12s
             `
 
-            setTimeout(() => {
-                previousBtn.style.opacity = "0"
-                previousBtn.style.cursor = "default"
-                previousBtn.style.width = "36px"
-                previousBtn.style.height = "36px"
-                previousBtn.style.padding = "12px"
-            }, 0)
+            if (!(notePrev <= 0)) {
 
-            setTimeout(() => {
-                previousBtn.style.opacity = "1"
-                previousBtn.style.cursor = "pointer"
-                previousBtn.style.width = "36px"
-                previousBtn.style.height = "36px"
-                previousBtn.style.padding = "6px"
-            }, 250)
+                setTimeout(() => {
+                    previousBtn.style.opacity = "0"
+                    previousBtn.style.cursor = "default"
+                    previousBtn.style.width = "36px"
+                    previousBtn.style.height = "36px"
+                    previousBtn.style.padding = "12px"
+                }, 0)
 
-            noteHeaderAnimation(noteTitleHeaderName, notePrev)
-            notePageLoad(notePage, notePrev)
-            noteTitleHeaderName.style.setProperty("--note-id", notePrev)
+                setTimeout(() => {
+                    previousBtn.style.opacity = "1"
+                    previousBtn.style.cursor = "pointer"
+                    previousBtn.style.width = "36px"
+                    previousBtn.style.height = "36px"
+                    previousBtn.style.padding = "6px"
+                }, 250)
+
+                noteHeaderAnimation(noteTitleHeaderName, notePrev)
+                notePageLoad(notePage, notePrev)
+                noteTitleHeaderName.style.setProperty("--note-id", notePrev)
+            } else {
+                notePrev = 1;
+
+                setTimeout(() => {
+                    previousBtn.style.opacity = "0"
+                    previousBtn.style.cursor = "default"
+                    previousBtn.style.width = "36px"
+                    previousBtn.style.height = "36px"
+                    previousBtn.style.padding = "12px"
+                }, 0)
+
+                setTimeout(() => {
+                    previousBtn.style.opacity = "1"
+                    previousBtn.style.cursor = "pointer"
+                    previousBtn.style.width = "36px"
+                    previousBtn.style.height = "36px"
+                    previousBtn.style.padding = "6px"
+                }, 250)
+            }
         })
 
         // Next Note
@@ -99,36 +116,53 @@ fetch("../../app/note.html")
             const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
             var noteNext = noteIDHeader + 1;
 
-            if (noteNext >= count) {
-                noteNext = count;
-            }
-
             nextBtn.style.transition = `
-            height 0.1s ease 0.1s,
-            width 0.1s ease 0.1s,
-            padding 0.1s ease 0.15s,
-            opacity 0.1s ease 0.12s
+                height 0.1s ease 0.1s,
+                width 0.1s ease 0.1s,
+                padding 0.1s ease 0.15s,
+                opacity 0.1s ease 0.12s
             `
 
-            setTimeout(() => {
-                nextBtn.style.opacity = "0"
-                nextBtn.style.cursor = "default"
-                nextBtn.style.width = "36px"
-                nextBtn.style.height = "36px"
-                nextBtn.style.padding = "12px"
-            }, 0)
+            if (!(noteNext > count)) {
 
-            setTimeout(() => {
-                nextBtn.style.opacity = "1"
-                nextBtn.style.cursor = "pointer"
-                nextBtn.style.width = "36px"
-                nextBtn.style.height = "36px"
-                nextBtn.style.padding = "6px"
-            }, 250)
+                setTimeout(() => {
+                    nextBtn.style.opacity = "0"
+                    nextBtn.style.cursor = "default"
+                    nextBtn.style.width = "36px"
+                    nextBtn.style.height = "36px"
+                    nextBtn.style.padding = "12px"
+                }, 0)
 
-            noteHeaderAnimation(noteTitleHeaderName, noteNext)
-            notePageLoad(notePage, noteNext)
-            noteTitleHeaderName.style.setProperty("--note-id", noteNext)
+                setTimeout(() => {
+                    nextBtn.style.opacity = "1"
+                    nextBtn.style.cursor = "pointer"
+                    nextBtn.style.width = "36px"
+                    nextBtn.style.height = "36px"
+                    nextBtn.style.padding = "6px"
+                }, 250)
+
+                noteHeaderAnimation(noteTitleHeaderName, noteNext)
+                notePageLoad(notePage, noteNext)
+                noteTitleHeaderName.style.setProperty("--note-id", noteNext)
+            } else {
+                noteNext = count;
+
+                setTimeout(() => {
+                    nextBtn.style.opacity = "0"
+                    nextBtn.style.cursor = "default"
+                    nextBtn.style.width = "36px"
+                    nextBtn.style.height = "36px"
+                    nextBtn.style.padding = "12px"
+                }, 0)
+
+                setTimeout(() => {
+                    nextBtn.style.opacity = "1"
+                    nextBtn.style.cursor = "pointer"
+                    nextBtn.style.width = "36px"
+                    nextBtn.style.height = "36px"
+                    nextBtn.style.padding = "6px"
+                }, 250)
+            }
         })
 
         function btnReaction(btn, container, state) {

@@ -1,6 +1,6 @@
 import { windowElement, dragElement, btnOpenAndClose } from "../desktop.js";
 
-fetch("/app/Introduction.html")
+fetch("/app/introduction.html")
     .then(response => response.text())
     .then(data => {
         // Only after content is loaded, then initialize the window functionality

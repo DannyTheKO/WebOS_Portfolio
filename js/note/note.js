@@ -1,7 +1,7 @@
 import { windowElement, dragElement, btnOpenAndClose } from "../desktop.js";
-import { NoteManager } from "./NotePad_Class.js";
+import { NoteManager } from "./note_class.js";
 
-fetch("/app/NotePad.html")
+fetch("/app/note.html")
     .then(response => response.text())
     .then(data => {
         // Initialize Note HTML Body
@@ -161,13 +161,13 @@ fetch("/app/NotePad.html")
                 setTimeout(() => {
                     noteTitleName.style.padding = "0 0 0 128px"
                     noteTitleName.style.opacity = "0"
-                }, 200)
+                }, 100)
                 
                 setTimeout(() => {
                     noteTitleName.innerHTML = `[ Note ] - [ ${note.title} ]`;
                     noteTitleName.style.padding = "0"
                     noteTitleName.style.opacity = "1"
-                }, 400)
+                }, 200)
 
             })
         })

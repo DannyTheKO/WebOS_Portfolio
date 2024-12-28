@@ -12,7 +12,7 @@ export class NoteManager {
     constructor() {
         this.notes = [
             new Note(1, "Danny's Note", "[ 08/08/2002 | 11:00:00 PM ]", `
-            <div style="padding: 24px 4em;" contenteditable="false">
+            <div style="padding: 3em 4em;" contenteditable="false">
                 <div style="
                     font-family: var(--font-family-special);
                     font-size: var(--font-size-medium);">

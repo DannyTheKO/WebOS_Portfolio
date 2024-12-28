@@ -33,15 +33,17 @@ fetch("../../app/note.html")
         const notePage = noteMain.querySelector(".notePage");
 
         const containerGrid = noteMain.querySelector(".container_grid")
-        
+
         const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container"); // Sidebar Container
         const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn") // Toggle Button
+        const previousBtn = sidebarBtnContainer.querySelector("#previous_btn") // Toggle Button
+        const nextBtn = sidebarBtnContainer.querySelector("#next_btn") // Toggle Button
 
         //#region Sidebar Button
         // Expand and Collapse
         toggleBtn.addEventListener("click", () => {
             const isVisible = getComputedStyle(noteTitle).display !== 'none';
-            btnReaction(toggleBtn, isVisible)
+            btnReaction(toggleBtn, sidebarBtnContainer, isVisible)
 
             setTimeout(() => {
                 if (isVisible) {
@@ -55,10 +57,15 @@ fetch("../../app/note.html")
         });
 
         // Previous Note
-        // Next Note
+        previousBtn.addEventListener("click", () => {
+            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+            var notePrev = noteIDHeader - 1;
 
-        function btnReaction(btn, state) {
-            btn.style.transition = `
+            if (notePrev <= 0) {
+                notePrev = 1;
+            }
+
+            previousBtn.style.transition = `
             height 0.1s ease 0.1s,
             width 0.1s ease 0.1s,
             padding 0.1s ease 0.15s,
@@ -66,14 +73,84 @@ fetch("../../app/note.html")
             `
 
             setTimeout(() => {
+                previousBtn.style.opacity = "0"
+                previousBtn.style.cursor = "default"
+                previousBtn.style.width = "36px"
+                previousBtn.style.height = "36px"
+                previousBtn.style.padding = "12px"
+            }, 0)
+
+            setTimeout(() => {
+                previousBtn.style.opacity = "1"
+                previousBtn.style.cursor = "pointer"
+                previousBtn.style.width = "36px"
+                previousBtn.style.height = "36px"
+                previousBtn.style.padding = "6px"
+            }, 250)
+
+            notePageLoad(notePage, notePrev)
+        })
+
+        // Next Note
+        nextBtn.addEventListener("click", () => {
+            const count = noteManager.getAllNotes().length;
+            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+            var noteNext = noteIDHeader + 1;
+
+            if (noteNext >= count) {
+                noteNext = count;
+            }
+
+            nextBtn.style.transition = `
+            height 0.1s ease 0.1s,
+            width 0.1s ease 0.1s,
+            padding 0.1s ease 0.15s,
+            opacity 0.1s ease 0.12s
+            `
+
+            setTimeout(() => {
+                nextBtn.style.opacity = "0"
+                nextBtn.style.cursor = "default"
+                nextBtn.style.width = "36px"
+                nextBtn.style.height = "36px"
+                nextBtn.style.padding = "12px"
+            }, 0)
+
+            setTimeout(() => {
+                nextBtn.style.opacity = "1"
+                nextBtn.style.cursor = "pointer"
+                nextBtn.style.width = "36px"
+                nextBtn.style.height = "36px"
+                nextBtn.style.padding = "6px"
+            }, 250)
+
+            notePageLoad(notePage, noteNext)
+        })
+
+        function btnReaction(btn, container, state) {
+            btn.style.transition = `
+            height 0.1s ease 0.1s,
+            width 0.1s ease 0.1s,
+            padding 0.1s ease 0.15s,
+            opacity 0.1s ease 0.12s
+            `
+
+            container.style.transition = `opacity 0.1s ease 0.12s`
+
+            setTimeout(() => {
+                container.style.opacity = "0"
+                btn.style.opacity = "0"
                 btn.style.cursor = "default"
                 btn.style.width = "36px"
-                btn.style.height = "0"
-                btn.style.padding = "0"
+                btn.style.height = "36px"
+                btn.style.padding = "12px"
             }, 0)
 
             if (state) {
                 setTimeout(() => {
+                    container.style.flexDirection = "column"
+                    container.style.opacity = "1"
+                    btn.style.opacity = "1"
                     btn.style.cursor = "pointer"
                     btn.style.width = "36px"
                     btn.style.height = "36px"
@@ -82,12 +159,16 @@ fetch("../../app/note.html")
             }
             else {
                 setTimeout(() => {
+                    container.style.flexDirection = "row"
+                    container.style.opacity = "1"
+                    btn.style.opacity = "1"
                     btn.style.cursor = "pointer"
                     btn.style.width = "36px"
                     btn.style.height = "36px"
                     btn.style.padding = "6px"
                 }, 250)
             }
+
         }
 
         function sidebarReaction(containerGrid, noteTitle, state) {
@@ -145,7 +226,7 @@ fetch("../../app/note.html")
         var listNote = noteManager.getAllNotes();
 
         const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
-        noteTitleHeaderName.style.setProperty("--note-id", 0);
+        noteTitleHeaderName.style.setProperty("--note-id", 1);
 
         // with every note, we print the title and date first into a noteTitle
         listNote.forEach(note => {
@@ -177,73 +258,75 @@ fetch("../../app/note.html")
                     noteTitleHeaderName.style.setProperty("--note-id", noteId)
                 }
             })
+        })
 
-            // Note Default Page
-            function notePageLoad(notePage, noteId) {
-                notePageAnimation(notePage);
+        // Note Default Page
+        function notePageLoad(notePage, noteId) {
+            notePageAnimation(notePage);
+            noteId = parseInt(noteId);
 
-                setTimeout(() => {
-                    // Remove any child in note page
-                    while (notePage.firstChild) {
-                        notePage.removeChild(notePage.firstChild);
-                    }
-    
-                    // Get content
-                    const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
-    
-                    // Create a div
-                    const notePageContent = document.createElement("div")
-    
-                    // Customize it
-                    notePageContent.id = `noteContentId_${noteContent.noteId}`
-                    notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
-                    notePageContent.innerHTML = `${noteContent.contentURL}`
-    
-                    // Append into note page
-                    notePage.appendChild(notePageContent);
-                }, 500);
-            }
-            // Load Default Page
-            notePageLoad(notePage, "1");
+            setTimeout(() => {
+                // Remove any child in note page
+                while (notePage.firstChild) {
+                    notePage.removeChild(notePage.firstChild);
+                }
 
-            // Animation
-            function noteHeaderAnimation(noteTitleHeaderName) {
-                noteTitleHeaderName.style.transition = `
+                // Get content
+                const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
+
+                // Create a div
+                const notePageContent = document.createElement("div")
+
+                // Customize it
+                notePageContent.id = `noteContentId_${noteContent.noteId}`
+                notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+                notePageContent.innerHTML = `${noteContent.contentURL}`
+
+                // Append into note page
+                notePage.appendChild(notePageContent);
+            }, 500);
+        }
+        // Load Default Page
+        notePageLoad(notePage, "1");
+
+        // Animation
+        function noteHeaderAnimation(noteTitleHeaderName) {
+            noteTitleHeaderName.style.transition = `
                 padding 0.1s ease 0s,
                 opacity 0.1s ease 0s
                 `
 
-                setTimeout(() => {
-                    noteTitleHeaderName.style.padding = "0 0 64px 0"
-                    noteTitleHeaderName.style.opacity = "0"
-                }, 100)
+            setTimeout(() => {
+                noteTitleHeaderName.style.padding = "0 0 64px 0"
+                noteTitleHeaderName.style.opacity = "0"
+            }, 100)
 
-                setTimeout(() => {
-                    noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
-                    noteTitleHeaderName.style.padding = "0"
-                    noteTitleHeaderName.style.opacity = "1"
-                }, 700)
+            setTimeout(() => {
+                noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
+                noteTitleHeaderName.style.padding = "0"
+                noteTitleHeaderName.style.opacity = "1"
+            }, 700)
 
-            }
+        }
 
-            // TODO: make animation when note page is load
-            function notePageAnimation(notePage) {
-                const overlay = window.getComputedStyle(notePage, '::after');
-                
-                // Now you can access the computed styles of the ::after element
-                // But to modify it, you should use CSS custom properties on the parent
-                
-                setTimeout(() => {
-                    notePage.style.setProperty('--width', '100%');
-                    notePage.style.setProperty('--height', '100%');
-                }, 100);
-            
-                setTimeout(() => {
-                    notePage.style.setProperty('--width', '100%');
-                    notePage.style.setProperty('--height', '0%');
-                }, 500);
-            }
-        })
+        // TODO: make animation when note page is load
+        function notePageAnimation(notePage) {
+            const overlay = window.getComputedStyle(notePage, '::after');
+
+            // Now you can access the computed styles of the ::after element
+            // But to modify it, you should use CSS custom properties on the parent
+
+            setTimeout(() => {
+                notePage.style.setProperty('--width', '100%');
+                notePage.style.setProperty('--height', '100%');
+            }, 100);
+
+            setTimeout(() => {
+                notePage.style.setProperty('--width', '100%');
+                notePage.style.setProperty('--height', '0%');
+            }, 500);
+        }
+
         //#endregion
 
     })

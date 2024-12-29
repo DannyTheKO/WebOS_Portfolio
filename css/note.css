@@ -1,7 +1,8 @@
 .Note_Icon,
 #Note_Container {
+    /* == Windows Setting == */
     /* Icon Position */
-    --icon-position-top: 10%;
+    --icon-position-top: 25%;
     --icon-position-left: 1%;
 
     /* Windows Position */
@@ -9,21 +10,25 @@
     --window-position-left: 10%;
 
     /* Windows Size */
-    --window-size-width: 75vw;
-    --window-size-height: 80vh;
+    --window-size-width: 65vw;
+    --window-size-height: 60vh;
     --window-aspect-ratio: 4/1;
 
+    /* Window Background */
+    --application-background-color: rgba(0, 0, 0, 0.8);
+    --application-background-blur: blur(4px);
+
+    /* == Note Content Setting == */
+    /* Font Family */
     --font-family: "consolas", sans-serif;
     --font-family-special: "Stretch Pro", sans-serif;
 
-    /* Note Application, this will overwrite the default beheavior */
-    /* --application-icon-size: 64px; */
-    /* --application-icon-image-size: 64px; */
-    /* --application-icon-font-size: 16px; */
-
-    /* --application-icon-background-hover: rgb(50, 146, 225, 0.5); */
-    /* --application-background-color: rgba(0, 0, 0, 0.8); */
-    /* --application-background-blur: blur(2px); */
+    /* Font Size */
+    --font-size-x-small: 0.8rem;
+    --font-size-small: 0.9rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.5rem;
+    --font-size-x-large: 1.8rem;
 }
 
 /* Note Icon */
@@ -34,6 +39,7 @@
 
 /* Note Windows */
 #Note {
+    --window-status: close;
     flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
@@ -74,13 +80,13 @@
             z-index: 5;
 
             cursor: pointer;
-            
+
             [id] {
                 padding: 6px;
-                
+
                 width: 36px;
                 height: 36px;
-                
+
                 transform: translate(0%, 0%);
                 overflow: hidden;
 
@@ -103,7 +109,7 @@
         .container_grid {
             /* Setting up display grid */
             display: grid;
-            grid-template-columns: 0.7fr 3fr;
+            grid-template-columns: 0.9fr 3.1fr;
             grid-template-areas: "noteTitle notePage";
             column-gap: 12px;
 
@@ -144,21 +150,17 @@
                     padding: 5px 5px 12px 5px;
 
                     word-break: keep-all;
-                    margin-bottom: 10px;
+                    /* margin-bottom: 10px; */
 
                     p {
-                        margin: 6px 0 10px 0;
-                    }
-
-                    h2,
-                    p {
-                        max-width: 100%;
-                        white-space: nowrap;
+                        margin: 0;
+                        padding: 6px 0 10px 0;
                     }
                 }
 
                 [id^="noteId_"]:hover {
-                    background-color: rgba(50, 146, 225, 0.5);
+                    background-color: rgba(50, 146, 225, 0.3);
+                    transition: background-color 0.2s ease 0s;
                 }
             }
 
@@ -179,12 +181,11 @@
                 top: 0;
                 left: 0;
 
-                background: linear-gradient(180deg, 
-                rgb(20, 100, 225), 
-                rgb(0, 0, 0)
-                );
+                background: linear-gradient(180deg,
+                        rgb(20, 100, 225),
+                        rgb(0, 0, 0));
 
-                background-size: cover ;
+                background-size: cover;
 
                 /* Change transition property */
                 transition: width 0.2s ease 0s, height 0.2s ease 0s;

@@ -1,3 +1,4 @@
+/* Import font here */
 @font-face {
     font-family: "Stretch Pro";
     src: url(../font/StretchPro.otf) format("opentype");
@@ -9,37 +10,39 @@
 }
 
 :root {
-    /* General var */
-    --pfp-size-small: 64px;
-    --pfp-size-normal: 128px;
-    --pfp-size-big: 256px;
-
+    /* == Default Setting == */
+    /* Font Color */
     --font-color: rgb(255, 255, 255);
 
+    /* Font Family */
     --font-family: "consolas", sans-serif;
     --font-family-special: "Stretch Pro", sans-serif;
 
+    /* Font Size */
     --font-size-x-small: 0.85rem;
     --font-size-small: 0.9rem;
     --font-size-medium: 1.2rem;
     --font-size-large: 1.5rem;
     --font-size-x-large: 1.8rem;
 
+    /* Border Color */
     --border-color: rgb(20, 100, 225);
     --border-size-top: 30px;
     --border-size-around: 5px;
 
-    /* Application Default Style */
+    /* == Desktop Setting == */
+    /* Icon */
     --application-icon-size: 80px;
     --application-icon-image-size: 64px;
     --application-icon-font-size: 16px;
+    
+    /* Icon >> When Hover */
     --application-icon-background-hover: rgb(50, 146, 225, 0.5);
 
+    /* == Window Setting == */
+    /* Window Background */
     --application-background-color: rgba(0, 0, 0, 0.8);
     --application-background-blur: blur(4px);
-
-    /* Desktop */
-    --desktop-font-color: rgb(255, 255, 255);
 }
 
 * {
@@ -164,7 +167,7 @@ img {
         text-shadow: 0 0 6px black;
         word-wrap: break-word;
 
-        color: var(--desktop-font-color);
+        color: var(--font-color);
 
     }
 }

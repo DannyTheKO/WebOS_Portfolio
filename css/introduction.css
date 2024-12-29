@@ -1,26 +1,39 @@
 .Introduction_Icon,
 #Introduction_Container {
+    /* == Windows Setting == */
     /* Icon Position */
-    --icon-position-top: 25%;
+    --icon-position-top: 10%;
     --icon-position-left: 1%;
+
+    /* Windows Position */
+    --window-position-top: 25%;
+    --window-position-left: 30%;
 
     /* Windows Size */
     --window-size-width: 700px;
     --window-size-height: auto;
     --window-aspect-ratio: 4/1;
 
-    /* Windows Position */
-    --window-position-top: 25%;
-    --window-position-left: 30%;
-
-    /* Introduction Application, this will overwrite the default beheavior */
-    /* --application-icon-size: 64px;
-    --application-icon-image-size: 64px;
-    --application-icon-font-size: 16px;
-
-    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
+    /* Window Background */
     --application-background-color: rgba(0, 0, 0, 0.8);
-    --application-background-blur: blur(2px); */
+    --application-background-blur: blur(4px);
+
+    /* == Introduction Content Setting == */
+    /* Font Family */
+    --font-family: "consolas", sans-serif;
+    --font-family-special: "Stretch Pro", sans-serif;
+
+    /* Font Size */
+    --font-size-x-small: 0.8rem;
+    --font-size-small: 0.9rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.5rem;
+    --font-size-x-large: 1.8rem;
+
+    /* Profile Picture Size */
+    --pfp-size-small: 64px;
+    --pfp-size-normal: 128px;
+    --pfp-size-big: 256px;
 }
 
 

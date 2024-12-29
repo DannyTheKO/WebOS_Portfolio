@@ -36,7 +36,7 @@ export function btnOpenAndClose(element, header_action) {
         // Open Button Action
         btnOpen.addEventListener("dblclick", () => {
             if (element.style.display === "none") {
-
+                element.style.setProperty("--window-status", "open");
                 windowsRiseZIndex(element)
                 element.style.display = "flex";
                 element.style.flexDirection = "column";
@@ -51,6 +51,8 @@ export function btnOpenAndClose(element, header_action) {
         // Close Button Action
         btnClose.addEventListener("click", () => {
             element.style.opacity = 0;
+            element.style.setProperty("--window-status", "close");
+
             setTimeout(() => {
                 element.style.display = "none";
             }, 200);
@@ -71,6 +73,7 @@ export function windowElement(element) {
     element.style.display = "none";
     element.style.transition = `opacity 0.1s ease 0s`
     element.style.opacity = 0;
+    element.style.setProperty("--window-status", "close")
 
     // Header action styling
     if (header_action != null) {
@@ -172,7 +175,7 @@ export function dragElement(element, header) {
         if (appWindows) {
             header.style.cursor = "grabbing";
         } else {
-            element.style.cursor = "move";
+            element.style.cursor = "grabbing";
         }
     }
 

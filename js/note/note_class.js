@@ -6,6 +6,21 @@ class Note {
         this.contentURL = contentURL;
         this.URL = URL
     }
+
+    async loadNoteContent() {
+        try {
+            // Load Template
+            const response = await fetch(`../../data_storage/note/noteId_${this.noteId}.html`)
+            let template = await response.text();
+
+            // Replace Template >> To pass in value into template
+            template = template.replace('${noteId}', this.noteId)
+                            .replace('${title}', this.title)
+                            .replace('${date}', this.date)
+        } catch (error) {
+            
+        }
+    }
 }
 
 
@@ -138,21 +153,6 @@ export class NoteManager {
         ];
     }
 
-    async loadNoteContent() {
-        try {
-            // Load Template
-            const response = await fetch(`../../data_storage/note/noteId_${this.noteId}.html`)
-            let template = await response.text();
-
-            // Replace Template >> To pass in value into template
-            template = template.replace('${noteId}', this.noteId)
-                            .replace('${title}', this.title)
-                            .replace('${date}', this.date)
-        } catch (error) {
-            
-        }
-    }
-
     getAllNotes() {
         return this.notes;
     }
@@ -183,4 +183,5 @@ export class NoteManager {
 
 // Testing Purpose
 const noteManager = new NoteManager();
-console.log(noteManager.getAllNotes());
+const note = new Note(1, "Test Title", "Test Date", "Test Content", "Test URL");
+console.log(note.loadNoteContent());

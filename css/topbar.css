@@ -1,14 +1,18 @@
 #Topbar_Container {
-    /* Topbar custom var */
+    /* == Topbar Setting == */
+    /* Button Size */
     --topbar-button-width: 350px;
     --topbar-button-height: 40px;
 
+    /* Background */
     --topbar-background-color: rgb(0, 0, 0, 0.5);
     --topbar-background-blur: blur(10px);
 
+    /* Font */
     --topbar-font-family: "Stretch Pro", sans-serif;
     --topbar-font-size: var(--font-size-small);
     
+    /* Button */
     --topbar-btn-color: rgb(0, 0, 0, 0.7);
 }
 

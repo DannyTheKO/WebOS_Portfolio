@@ -1,16 +1,17 @@
 class Note {
-    constructor(noteId, title, date, contentURL) {
+    constructor(noteId, title, date, contentURL, URL) {
         this.noteId = noteId;
         this.title = title;
         this.date = date;
         this.contentURL = contentURL;
+        this.URL = URL
     }
 }
 
 
 // TODO: Move the contentURL into an URL for better clarity
 export class NoteManager {
-    // Seed data
+    // Seed data    
     constructor() {
         this.notes = [
             new Note(1, "Danny's Note", "[ 08/08/2002 | 11:00:00 PM ]", `
@@ -135,6 +136,21 @@ export class NoteManager {
                 </div>
             `)
         ];
+    }
+
+    async loadNoteContent() {
+        try {
+            // Load Template
+            const response = await fetch(`../../data_storage/note/noteId_${this.noteId}.html`)
+            let template = await response.text();
+
+            // Replace Template >> To pass in value into template
+            template = template.replace('${noteId}', this.noteId)
+                            .replace('${title}', this.title)
+                            .replace('${date}', this.date)
+        } catch (error) {
+            
+        }
     }
 
     getAllNotes() {

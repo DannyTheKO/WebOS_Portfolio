@@ -1,42 +1,3 @@
-function toggleElement(element) {
-    const status = window.getComputedStyle(element);
-    if (status.display === "none") {
-        element.style.display = "flex";
-        element.style.flexDirection = "column";
-    } else {
-        element.style.display = "none";
-    }
-}
-
-function windowsRiseZIndex(element) {
-    const currentZIndex = parseInt(getComputedStyle(element).getPropertyValue("--desktop-zIndex"));
-    const thresholdZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--desktop-zIndex-threshold"));
-
-    if (currentZIndex < thresholdZIndex) {
-        const newZIndex = thresholdZIndex + 1;
-
-        // Update element z-index
-        element.style.zIndex = newZIndex;
-        element.style.setProperty("--desktop-zIndex", newZIndex);
-
-        // Update threshold
-        document.documentElement.style.setProperty("--desktop-zIndex-threshold", newZIndex);
-    }
-}
-
-// Z-index management
-function initializeZIndex(element) {
-    // Initial values
-    element.style.setProperty("--desktop-zIndex", "1");
-    document.documentElement.style.setProperty("--desktop-zIndex-threshold", "2");
-
-    // Click handler for z-index updates
-    element.addEventListener("click", () => {
-        windowsRiseZIndex(element)
-    });
-}
-
-
 export function btnOpenAndClose(element, header_action) {
     var btnOpen = document.querySelector(`#${element.id}_btn_open`);
     var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
@@ -234,4 +195,42 @@ export function dragElement(element, header) {
 // TODO: make this
 function resizeElement(element) {
 
+}
+
+// function toggleElement(element) {
+//     const status = window.getComputedStyle(element);
+//     if (status.display === "none") {
+//         element.style.display = "flex";
+//         element.style.flexDirection = "column";
+//     } else {
+//         element.style.display = "none";
+//     }
+// }
+
+function windowsRiseZIndex(element) {
+    const currentZIndex = parseInt(getComputedStyle(element).getPropertyValue("--desktop-zIndex"));
+    const thresholdZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--desktop-zIndex-threshold"));
+
+    if (currentZIndex < thresholdZIndex) {
+        const newZIndex = thresholdZIndex + 1;
+
+        // Update element z-index
+        element.style.zIndex = newZIndex;
+        element.style.setProperty("--desktop-zIndex", newZIndex);
+
+        // Update threshold
+        document.documentElement.style.setProperty("--desktop-zIndex-threshold", newZIndex);
+    }
+}
+
+// Z-index management
+function initializeZIndex(element) {
+    // Initial values
+    element.style.setProperty("--desktop-zIndex", "1");
+    document.documentElement.style.setProperty("--desktop-zIndex-threshold", "2");
+
+    // Click handler for z-index updates
+    element.addEventListener("click", () => {
+        windowsRiseZIndex(element)
+    });
 }

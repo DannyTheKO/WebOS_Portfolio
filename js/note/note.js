@@ -1,393 +1,691 @@
 import { windowElement, dragElement, btnOpenAndClose } from "../desktop.js";
 import { NoteManager } from "./note_class.js";
 
-fetch("../../app/note.html")
-    .then(response => response.text())
-    .then(data => {
-        // Initialize Note HTML Body
-        document.getElementById("Note_Container").innerHTML = data;
+// Create noteManager instance at module level
+const noteManager = new NoteManager();
 
-        // Get and extract element
-        const noteWindow = document.querySelector("#Note")
-        const {
-            element: element,
-            header: header,
-            header_action: header_action
-        } = windowElement(noteWindow);
+export function initializeNote() {
+    return fetch("../../app/note.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("Note_Container").innerHTML = data;
+            const noteWindow = document.querySelector("#Note");
+            const {
+                element: element,
+                header: header,
+                header_action: header_action
+            } = windowElement(noteWindow);
 
-        // HEY, this will show window of note
-        // element.style.display = "flex"
+            // Initialize basic window functionality
+            const { btnOpen, btnClose } = btnOpenAndClose(element, header_action);
+            dragElement(element, header);
+            dragElement(btnOpen);
 
-        // Add open and close button
-        const { btnOpen, btnClose } = btnOpenAndClose(element, header_action);
+            // Add startup behavior
+            const noteHeader = element.querySelector(".Note_header");
+            const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
+            const notePage = element.querySelector(".notePage");
 
-        // Add Drag Element function
-        dragElement(element, header); // Windows
-        dragElement(btnOpen); // Icon
-
-        // Initialize Note Application Logic
-        const noteHeader = noteWindow.querySelector(".Note_header");
-        const noteMain = noteWindow.querySelector(".Note_main");
-
-        const noteTitle = noteMain.querySelector(".noteTitle");
-        const notePage = noteMain.querySelector(".notePage");
-
-        const containerGrid = noteMain.querySelector(".container_grid")
-
-        const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container"); // Sidebar Container
-        const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn") // Toggle Button
-        const previousBtn = sidebarBtnContainer.querySelector("#previous_btn") // Toggle Button
-        const nextBtn = sidebarBtnContainer.querySelector("#next_btn") // Toggle Button
-
-        // Start up behaviour
-        btnOpen.addEventListener("dblclick", () => {
-            // this will remember the last note when open
-            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-
-            setTimeout(() => {
-                notePageLoad(notePage, noteIDHeader);
-                noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
-            }, 100);
-        })
-
-        btnClose.addEventListener("click", () => {
-            notePageUnloadAnimation(notePage);
-            noteHeaderAnimation(noteTitleHeaderName, null)
-        })
-
-        //#region Sidebar Button
-        // Expand and Collapse
-        toggleBtn.addEventListener("click", () => {
-            const isVisible = getComputedStyle(noteTitle).display !== 'none';
-            btnReaction(toggleBtn, sidebarBtnContainer, isVisible)
-
-            setTimeout(() => {
-                if (isVisible) {
-                    toggleBtn.src = "svg/enlarge-btn.svg"
-                } else {
-                    toggleBtn.src = "svg/collapse-btn.svg"
-                }
-            }, 250);
-
-            sidebarReaction(containerGrid, noteTitle, isVisible)
-        });
-
-        // Previous Note
-        previousBtn.addEventListener("click", () => {
-            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-            var notePrev = noteIDHeader - 1;
-
-            previousBtn.style.transition = `
-            height 0.1s ease 0.1s,
-            width 0.1s ease 0.1s,
-            padding 0.1s ease 0.15s,
-            opacity 0.1s ease 0.12s
-            `
-
-            if (!(notePrev <= 0)) {
-
+            btnOpen.addEventListener("dblclick", () => {
+                const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
                 setTimeout(() => {
-                    previousBtn.style.opacity = "0"
-                    previousBtn.style.cursor = "default"
-                    previousBtn.style.width = "36px"
-                    previousBtn.style.height = "36px"
-                    previousBtn.style.padding = "12px"
-                }, 0)
-
-                setTimeout(() => {
-                    previousBtn.style.opacity = "1"
-                    previousBtn.style.cursor = "pointer"
-                    previousBtn.style.width = "36px"
-                    previousBtn.style.height = "36px"
-                    previousBtn.style.padding = "6px"
-                }, 250)
-
-                noteHeaderAnimation(noteTitleHeaderName, notePrev)
-                notePageLoad(notePage, notePrev)
-                noteTitleHeaderName.style.setProperty("--note-id", notePrev)
-            } else {
-                notePrev = 1;
-
-                setTimeout(() => {
-                    previousBtn.style.opacity = "0"
-                    previousBtn.style.cursor = "default"
-                    previousBtn.style.width = "36px"
-                    previousBtn.style.height = "36px"
-                    previousBtn.style.padding = "12px"
-                }, 0)
-
-                setTimeout(() => {
-                    previousBtn.style.opacity = "1"
-                    previousBtn.style.cursor = "pointer"
-                    previousBtn.style.width = "36px"
-                    previousBtn.style.height = "36px"
-                    previousBtn.style.padding = "6px"
-                }, 250)
-            }
-        })
-
-        // Next Note
-        nextBtn.addEventListener("click", () => {
-            const count = noteManager.getAllNotes().length;
-            const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-            var noteNext = noteIDHeader + 1;
-
-            nextBtn.style.transition = `
-                height 0.1s ease 0.1s,
-                width 0.1s ease 0.1s,
-                padding 0.1s ease 0.15s,
-                opacity 0.1s ease 0.12s
-            `
-
-            if (!(noteNext > count)) {
-
-                setTimeout(() => {
-                    nextBtn.style.opacity = "0"
-                    nextBtn.style.cursor = "default"
-                    nextBtn.style.width = "36px"
-                    nextBtn.style.height = "36px"
-                    nextBtn.style.padding = "12px"
-                }, 0)
-
-                setTimeout(() => {
-                    nextBtn.style.opacity = "1"
-                    nextBtn.style.cursor = "pointer"
-                    nextBtn.style.width = "36px"
-                    nextBtn.style.height = "36px"
-                    nextBtn.style.padding = "6px"
-                }, 250)
-
-                noteHeaderAnimation(noteTitleHeaderName, noteNext)
-                notePageLoad(notePage, noteNext)
-                noteTitleHeaderName.style.setProperty("--note-id", noteNext)
-            } else {
-                noteNext = count;
-
-                setTimeout(() => {
-                    nextBtn.style.opacity = "0"
-                    nextBtn.style.cursor = "default"
-                    nextBtn.style.width = "36px"
-                    nextBtn.style.height = "36px"
-                    nextBtn.style.padding = "12px"
-                }, 0)
-
-                setTimeout(() => {
-                    nextBtn.style.opacity = "1"
-                    nextBtn.style.cursor = "pointer"
-                    nextBtn.style.width = "36px"
-                    nextBtn.style.height = "36px"
-                    nextBtn.style.padding = "6px"
-                }, 250)
-            }
-        })
-
-        function btnReaction(btn, container, state) {
-            btn.style.transition = `
-            height 0.1s ease 0.1s,
-            width 0.1s ease 0.1s,
-            padding 0.1s ease 0.15s,
-            opacity 0.1s ease 0.12s
-            `
-
-            container.style.transition = `opacity 0.1s ease 0.12s`
-
-            setTimeout(() => {
-                container.style.opacity = "0"
-                btn.style.opacity = "0"
-                btn.style.cursor = "default"
-                btn.style.width = "36px"
-                btn.style.height = "36px"
-                btn.style.padding = "12px"
-            }, 0)
-
-            if (state) {
-                setTimeout(() => {
-                    container.style.flexDirection = "column"
-                    container.style.opacity = "1"
-                    btn.style.opacity = "1"
-                    btn.style.cursor = "pointer"
-                    btn.style.width = "36px"
-                    btn.style.height = "36px"
-                    btn.style.padding = "6px"
-                }, 250)
-            }
-            else {
-                setTimeout(() => {
-                    container.style.flexDirection = "row"
-                    container.style.opacity = "1"
-                    btn.style.opacity = "1"
-                    btn.style.cursor = "pointer"
-                    btn.style.width = "36px"
-                    btn.style.height = "36px"
-                    btn.style.padding = "6px"
-                }, 250)
-            }
-
-        }
-
-        function sidebarReaction(containerGrid, noteTitle, state) {
-            // S: 0s, D: 0.3s, E: 0.3s
-            containerGrid.style.transition = `
-                grid-template-columns 0.3s ease 0s,
-                column-gap 0.1s ease 0.2s,
-                padding 0.1s ease 0.2s`
-
-            // S: 0s, D: 0.3s + 0.1s, E: 0.3s
-            noteTitle.style.transition = `
-                opacity 0.3s ease 0s,
-                padding 0.1s ease 0.1s`
-
-            if (state) {
-                // Start animation with 0 sec delay
-                setTimeout(() => {
-                    containerGrid.style.columnGap = "0px"
-                    containerGrid.style.gridTemplateColumns = "0.75fr 3fr"
-                }, 0);
-
-                setTimeout(() => {
-                    noteTitle.style.padding = "128px 6px 0 0" // Start going down
-                    noteTitle.style.opacity = "0"
-                    containerGrid.style.gridTemplateColumns = "0fr 1fr"
+                    notePageLoad(notePage, noteIDHeader);
+                    noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
                 }, 100);
+            });
 
-                setTimeout(() => {
-                    noteTitle.style.display = 'none';
-                }, 250);
-            }
-            else {
-                // Start animation with 0 sec delay
-                noteTitle.style.display = 'flex';
+            btnClose.addEventListener("click", () => {
+                notePageUnloadAnimation(notePage);
+                noteHeaderAnimation(noteTitleHeaderName, null);
+            });
 
-                setTimeout(() => {
-                    containerGrid.style.columnGap = "12px"
-                    noteTitle.style.opacity = "1"
-                    noteTitle.style.padding = "48px 0 0 0" // Start going up
-                }, 0);
+            // Initialize note specific functionality
+            initializeNoteComponents(element);
+        })
+        .catch(error => console.error('Error loading note:', error));
+}
 
-                setTimeout(() => {
-                    containerGrid.style.gridTemplateColumns = "0.9fr 3fr"
-                }, 100)
+// Component initialization function
+function initializeNoteComponents(noteWindow) {
+    const noteHeader = noteWindow.querySelector(".Note_header");
+    const noteMain = noteWindow.querySelector(".Note_main");
+    const noteTitle = noteMain.querySelector(".noteTitle");
+    const notePage = noteMain.querySelector(".notePage");
+    const containerGrid = noteMain.querySelector(".container_grid");
 
-                setTimeout(() => {
-                    containerGrid.style.gridTemplateColumns = "0.7fr 3fr"
-                }, 250);
-            }
+    initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage);
+    initializeNoteContent(noteTitle, notePage, noteHeader);
+}
+
+function initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage) {
+    const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container");
+    const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn");
+    const previousBtn = sidebarBtnContainer.querySelector("#previous_btn");
+    const nextBtn = sidebarBtnContainer.querySelector("#next_btn");
+
+    // Toggle button functionality
+    toggleBtn.addEventListener("click", () => {
+        const isVisible = getComputedStyle(noteTitle).display !== 'none';
+        handleButtonReaction(toggleBtn, sidebarBtnContainer, isVisible);
+        handleSidebarReaction(containerGrid, noteTitle, isVisible);
+
+        setTimeout(() => {
+            toggleBtn.src = isVisible ? "svg/enlarge-btn.svg" : "svg/collapse-btn.svg";
+        }, 250);
+    });
+
+    // Previous/Next button functionality
+    initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle);
+}
+
+function handleButtonReaction(btn, container, state) {
+    const transitionStyle = `
+        height 0.1s ease 0.1s,
+        width 0.1s ease 0.1s,
+        padding 0.1s ease 0.15s,
+        opacity 0.1s ease 0.12s
+    `;
+
+    btn.style.transition = transitionStyle;
+    container.style.transition = `opacity 0.1s ease 0.12s`;
+
+    setTimeout(() => {
+        container.style.opacity = "0";
+        btn.style.opacity = "0";
+        btn.style.cursor = "default";
+        btn.style.width = "36px";
+        btn.style.height = "36px";
+        btn.style.padding = "12px";
+    }, 0);
+
+    if (state) {
+        setTimeout(() => {
+            container.style.flexDirection = "column";
+            container.style.opacity = "1";
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+            btn.style.width = "36px";
+            btn.style.height = "36px";
+            btn.style.padding = "6px";
+        }, 250);
+    } else {
+        setTimeout(() => {
+            container.style.flexDirection = "row";
+            container.style.opacity = "1";
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+            btn.style.width = "36px";
+            btn.style.height = "36px";
+            btn.style.padding = "6px";
+        }, 250);
+    }
+}
+
+function handleSidebarReaction(containerGrid, noteTitle, state) {
+    containerGrid.style.transition = `
+        grid-template-columns 0.3s ease 0s,
+        column-gap 0.1s ease 0.2s,
+        padding 0.1s ease 0.2s`;
+
+    noteTitle.style.transition = `
+        opacity 0.3s ease 0s,
+        padding 0.1s ease 0.1s`;
+
+    if (state) {
+        setTimeout(() => {
+            containerGrid.style.columnGap = "0px";
+            containerGrid.style.gridTemplateColumns = "0.75fr 3fr";
+        }, 0);
+
+        setTimeout(() => {
+            noteTitle.style.padding = "128px 6px 0 0";
+            noteTitle.style.opacity = "0";
+            containerGrid.style.gridTemplateColumns = "0fr 1fr";
+        }, 100);
+
+        setTimeout(() => {
+            noteTitle.style.display = 'none';
+        }, 250);
+    } else {
+        noteTitle.style.display = 'flex';
+
+        setTimeout(() => {
+            containerGrid.style.columnGap = "12px";
+            noteTitle.style.opacity = "1";
+            noteTitle.style.padding = "48px 0 0 0";
+        }, 0);
+
+        setTimeout(() => {
+            containerGrid.style.gridTemplateColumns = "0.9fr 3fr";
+        }, 100);
+
+        setTimeout(() => {
+            containerGrid.style.gridTemplateColumns = "0.7fr 3fr";
+        }, 250);
+    }
+}
+
+function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) {
+    previousBtn.addEventListener("click", () => {
+        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        var notePrev = noteIDHeader - 1;
+
+        previousBtn.style.transition = transitionStyle;
+
+        if (!(notePrev <= 0)) {
+            handleButtonAnimation(previousBtn);
+            noteHeaderAnimation(noteTitleHeaderName, notePrev);
+            notePageLoad(notePage, notePrev);
+            noteTitleHeaderName.style.setProperty("--note-id", notePrev);
+        } else {
+            notePrev = 1;
+            handleButtonAnimation(previousBtn);
         }
-        //#endregion
+    });
 
-        //#region Note Content Loader
-        var noteManager = new NoteManager();
-        var listNote = noteManager.getAllNotes();
+    nextBtn.addEventListener("click", () => {
+        const count = noteManager.getAllNotes().length;
+        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        var noteNext = noteIDHeader + 1;
 
-        const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
-        noteTitleHeaderName.style.setProperty("--note-id", 1);
+        nextBtn.style.transition = transitionStyle;
 
-        // with every note, we print the title and date first into a noteTitle
-        listNote.forEach(note => {
-            const noteTitleContent = document.createElement("div");
+        if (!(noteNext > count)) {
+            handleButtonAnimation(nextBtn);
+            noteHeaderAnimation(noteTitleHeaderName, noteNext);
+            notePageLoad(notePage, noteNext);
+            noteTitleHeaderName.style.setProperty("--note-id", noteNext);
+        } else {
+            noteNext = count;
+            handleButtonAnimation(nextBtn);
+        }
+    });
+}
 
-            // Then we customize id into a div
-            noteTitleContent.id = `noteId_${note.noteId}`
-            noteTitleContent.style.setProperty("--note-id", note.noteId);
+function initializeNoteContent(noteTitle, notePage, noteHeader) {
+    const noteManager = new NoteManager();
+    const listNote = noteManager.getAllNotes();
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
-            // Add note title content inside it
-            noteTitleContent.innerHTML = `
+    // Set initial note ID
+    noteTitleHeaderName.style.setProperty("--note-id", 1);
+
+    // Initialize note titles
+    listNote.forEach(note => {
+        const noteTitleContent = document.createElement("div");
+        noteTitleContent.id = `noteId_${note.noteId}`;
+        noteTitleContent.style.setProperty("--note-id", note.noteId);
+        noteTitleContent.innerHTML = `
             <h2>${note.title}</h2>
             <p>${note.date}</p>
-            `
+        `;
 
-            // Then append the child element
-            noteTitle.appendChild(noteTitleContent);
+        noteTitle.appendChild(noteTitleContent);
 
-            noteTitleContent.addEventListener("click", () => {
-                const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id"); // Get ID when click
-                const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
+        noteTitleContent.addEventListener("click", () => {
+            const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
+            const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
 
-
-                if (noteId != noteIDHeader) {
-                    notePageLoad(notePage, noteId);
-                    noteHeaderAnimation(noteTitleHeaderName, noteId);
-
-                    // Set the noteIDHeader back
-                    noteTitleHeaderName.style.setProperty("--note-id", noteId)
-                }
-            })
-        })
-
-        // Note Default Page
-        function notePageLoad(notePage, noteId) {
-            notePageLoadAnimation(notePage);
-            noteId = parseInt(noteId);
-
-            setTimeout(() => {
-                // Remove any child in note page
-                while (notePage.firstChild) {
-                    notePage.removeChild(notePage.firstChild);
-                }
-
-                // Get content
-                const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
-
-                // Create a div
-                const notePageContent = document.createElement("div")
-
-                // Customize it
-                notePageContent.id = `noteContentId_${noteContent.noteId}`
-                notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
-                notePageContent.innerHTML = `${noteContent.contentURL}`
-
-                // Append into note page
-                notePage.appendChild(notePageContent);
-            }, 500);
-        }
-
-        // Animation
-        function noteHeaderAnimation(noteTitleHeaderName, noteId) {
-            noteTitleHeaderName.style.transition = `
-                padding 0.1s ease 0s,
-                opacity 0.1s ease 0s
-                `
-
-            if (noteId != null) { // LOAD
-                const note = noteManager.getNoteById(noteId)
-
-                setTimeout(() => {
-                    noteTitleHeaderName.style.padding = "0 0 64px 0"
-                    noteTitleHeaderName.style.opacity = "0"
-                }, 100)
-
-                setTimeout(() => {
-                    noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
-                    noteTitleHeaderName.style.padding = "0"
-                    noteTitleHeaderName.style.opacity = "1"
-                }, 700)
-            } else { // UNLOAD
-                setTimeout(() => {
-                    noteTitleHeaderName.style.padding = "0 0 64px 0"
-                    noteTitleHeaderName.style.opacity = "0"
-                }, 100)
+            if (noteId != noteIDHeader) {
+                notePageLoad(notePage, noteId);
+                noteHeaderAnimation(noteTitleHeaderName, noteId);
+                noteTitleHeaderName.style.setProperty("--note-id", noteId);
             }
+        });
+    });
+}
+
+function notePageLoad(notePage, noteId) {
+    notePageLoadAnimation(notePage);
+    noteId = parseInt(noteId);
+
+    setTimeout(() => {
+        while (notePage.firstChild) {
+            notePage.removeChild(notePage.firstChild);
         }
 
-        // Note Page Loading Animation 
-        function notePageLoadAnimation(notePage) {
-            setTimeout(() => {
-                notePage.style.setProperty('--width', '100%');
-                notePage.style.setProperty('--height', '100%');
-            }, 0);
+        const noteContent = noteManager.getNoteById(noteId);
+        const notePageContent = document.createElement("div");
+        notePageContent.id = `noteContentId_${noteContent.noteId}`;
+        notePageContent.style.setProperty("--note-content-id", noteContent.noteId);
+        notePageContent.innerHTML = noteContent.contentURL;
 
-            setTimeout(() => {
-                notePage.style.setProperty('--width', '100%');
-                notePage.style.setProperty('--height', '0%');
-            }, 500);
-        }
+        notePage.appendChild(notePageContent);
+    }, 500);
+}
 
-        // Note Page Unloading Animation 
-        function notePageUnloadAnimation(notePage) {
-            notePage.style.setProperty('--width', '100%');
-            notePage.style.setProperty('--height', '100%');
-        }
-        //#endregion
+function noteHeaderAnimation(noteTitleHeaderName, noteId) {
+    noteTitleHeaderName.style.transition = `
+        padding 0.1s ease 0s,
+        opacity 0.1s ease 0s
+    `;
 
-    })
-    .catch(error => console.error('Error loading introduction:', error));
+    if (noteId != null) {
+        const note = noteManager.getNoteById(noteId);
+
+        setTimeout(() => {
+            noteTitleHeaderName.style.padding = "0 0 64px 0";
+            noteTitleHeaderName.style.opacity = "0";
+        }, 100);
+
+        setTimeout(() => {
+            noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
+            noteTitleHeaderName.style.padding = "0";
+            noteTitleHeaderName.style.opacity = "1";
+        }, 700);
+    } else {
+        setTimeout(() => {
+            noteTitleHeaderName.style.padding = "0 0 64px 0";
+            noteTitleHeaderName.style.opacity = "0";
+        }, 100);
+    }
+}
+
+function notePageLoadAnimation(notePage) {
+    setTimeout(() => {
+        notePage.style.setProperty('--width', '100%');
+        notePage.style.setProperty('--height', '100%');
+    }, 0);
+
+    setTimeout(() => {
+        notePage.style.setProperty('--width', '100%');
+        notePage.style.setProperty('--height', '0%');
+    }, 500);
+}
+
+function notePageUnloadAnimation(notePage) {
+    notePage.style.setProperty('--width', '100%');
+    notePage.style.setProperty('--height', '100%');
+}
+
+
+// fetch("../../app/note.html")
+//     .then(response => response.text())
+//     .then(data => {
+//         // Initialize Note HTML Body
+//         document.getElementById("Note_Container").innerHTML = data;
+
+//         // Get and extract element
+//         const noteWindow = document.querySelector("#Note")
+//         const {
+//             element: element,
+//             header: header,
+//             header_action: header_action
+//         } = windowElement(noteWindow);
+
+//         // HEY, this will show window of the note
+//         // element.style.display = "flex"
+
+//         // Add open and close button
+//         const { btnOpen, btnClose } = btnOpenAndClose(element, header_action);
+
+//         // Add Drag Element function
+//         dragElement(element, header); // Windows
+//         dragElement(btnOpen); // Icon
+
+//         // Initialize Note Application Logic
+//         const noteHeader = noteWindow.querySelector(".Note_header");
+//         const noteMain = noteWindow.querySelector(".Note_main");
+
+//         const noteTitle = noteMain.querySelector(".noteTitle");
+//         const notePage = noteMain.querySelector(".notePage");
+
+//         const containerGrid = noteMain.querySelector(".container_grid")
+
+//         const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container"); // Sidebar Container
+//         const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn") // Toggle Button
+//         const previousBtn = sidebarBtnContainer.querySelector("#previous_btn") // Toggle Button
+//         const nextBtn = sidebarBtnContainer.querySelector("#next_btn") // Toggle Button
+
+// // Start up behaviour
+// btnOpen.addEventListener("dblclick", () => {
+//     // this will remember the last note when open
+//     const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+
+//     setTimeout(() => {
+//         notePageLoad(notePage, noteIDHeader);
+//         noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
+//     }, 100);
+// })
+
+// btnClose.addEventListener("click", () => {
+//     notePageUnloadAnimation(notePage);
+//     noteHeaderAnimation(noteTitleHeaderName, null)
+// })
+
+//         //#region Sidebar Button
+//         // Expand and Collapse
+//         toggleBtn.addEventListener("click", () => {
+//             const isVisible = getComputedStyle(noteTitle).display !== 'none';
+//             btnReaction(toggleBtn, sidebarBtnContainer, isVisible)
+
+//             setTimeout(() => {
+//                 if (isVisible) {
+//                     toggleBtn.src = "svg/enlarge-btn.svg"
+//                 } else {
+//                     toggleBtn.src = "svg/collapse-btn.svg"
+//                 }
+//             }, 250);
+
+//             sidebarReaction(containerGrid, noteTitle, isVisible)
+//         });
+
+//         // Previous Note
+//         previousBtn.addEventListener("click", () => {
+//             const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+//             var notePrev = noteIDHeader - 1;
+
+//             previousBtn.style.transition = `
+//             height 0.1s ease 0.1s,
+//             width 0.1s ease 0.1s,
+//             padding 0.1s ease 0.15s,
+//             opacity 0.1s ease 0.12s
+//             `
+
+//             if (!(notePrev <= 0)) {
+
+//                 setTimeout(() => {
+//                     previousBtn.style.opacity = "0"
+//                     previousBtn.style.cursor = "default"
+//                     previousBtn.style.width = "36px"
+//                     previousBtn.style.height = "36px"
+//                     previousBtn.style.padding = "12px"
+//                 }, 0)
+
+//                 setTimeout(() => {
+//                     previousBtn.style.opacity = "1"
+//                     previousBtn.style.cursor = "pointer"
+//                     previousBtn.style.width = "36px"
+//                     previousBtn.style.height = "36px"
+//                     previousBtn.style.padding = "6px"
+//                 }, 250)
+
+//                 noteHeaderAnimation(noteTitleHeaderName, notePrev)
+//                 notePageLoad(notePage, notePrev)
+//                 noteTitleHeaderName.style.setProperty("--note-id", notePrev)
+//             } else {
+//                 notePrev = 1;
+
+//                 setTimeout(() => {
+//                     previousBtn.style.opacity = "0"
+//                     previousBtn.style.cursor = "default"
+//                     previousBtn.style.width = "36px"
+//                     previousBtn.style.height = "36px"
+//                     previousBtn.style.padding = "12px"
+//                 }, 0)
+
+//                 setTimeout(() => {
+//                     previousBtn.style.opacity = "1"
+//                     previousBtn.style.cursor = "pointer"
+//                     previousBtn.style.width = "36px"
+//                     previousBtn.style.height = "36px"
+//                     previousBtn.style.padding = "6px"
+//                 }, 250)
+//             }
+//         })
+
+//         // Next Note
+//         nextBtn.addEventListener("click", () => {
+//             const count = noteManager.getAllNotes().length;
+//             const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+//             var noteNext = noteIDHeader + 1;
+
+//             nextBtn.style.transition = `
+//                 height 0.1s ease 0.1s,
+//                 width 0.1s ease 0.1s,
+//                 padding 0.1s ease 0.15s,
+//                 opacity 0.1s ease 0.12s
+//             `
+
+//             if (!(noteNext > count)) {
+
+//                 setTimeout(() => {
+//                     nextBtn.style.opacity = "0"
+//                     nextBtn.style.cursor = "default"
+//                     nextBtn.style.width = "36px"
+//                     nextBtn.style.height = "36px"
+//                     nextBtn.style.padding = "12px"
+//                 }, 0)
+
+//                 setTimeout(() => {
+//                     nextBtn.style.opacity = "1"
+//                     nextBtn.style.cursor = "pointer"
+//                     nextBtn.style.width = "36px"
+//                     nextBtn.style.height = "36px"
+//                     nextBtn.style.padding = "6px"
+//                 }, 250)
+
+//                 noteHeaderAnimation(noteTitleHeaderName, noteNext)
+//                 notePageLoad(notePage, noteNext)
+//                 noteTitleHeaderName.style.setProperty("--note-id", noteNext)
+//             } else {
+//                 noteNext = count;
+
+//                 setTimeout(() => {
+//                     nextBtn.style.opacity = "0"
+//                     nextBtn.style.cursor = "default"
+//                     nextBtn.style.width = "36px"
+//                     nextBtn.style.height = "36px"
+//                     nextBtn.style.padding = "12px"
+//                 }, 0)
+
+//                 setTimeout(() => {
+//                     nextBtn.style.opacity = "1"
+//                     nextBtn.style.cursor = "pointer"
+//                     nextBtn.style.width = "36px"
+//                     nextBtn.style.height = "36px"
+//                     nextBtn.style.padding = "6px"
+//                 }, 250)
+//             }
+//         })
+
+//         function btnReaction(btn, container, state) {
+//             btn.style.transition = `
+//             height 0.1s ease 0.1s,
+//             width 0.1s ease 0.1s,
+//             padding 0.1s ease 0.15s,
+//             opacity 0.1s ease 0.12s
+//             `
+
+//             container.style.transition = `opacity 0.1s ease 0.12s`
+
+//             setTimeout(() => {
+//                 container.style.opacity = "0"
+//                 btn.style.opacity = "0"
+//                 btn.style.cursor = "default"
+//                 btn.style.width = "36px"
+//                 btn.style.height = "36px"
+//                 btn.style.padding = "12px"
+//             }, 0)
+
+//             if (state) {
+//                 setTimeout(() => {
+//                     container.style.flexDirection = "column"
+//                     container.style.opacity = "1"
+//                     btn.style.opacity = "1"
+//                     btn.style.cursor = "pointer"
+//                     btn.style.width = "36px"
+//                     btn.style.height = "36px"
+//                     btn.style.padding = "6px"
+//                 }, 250)
+//             }
+//             else {
+//                 setTimeout(() => {
+//                     container.style.flexDirection = "row"
+//                     container.style.opacity = "1"
+//                     btn.style.opacity = "1"
+//                     btn.style.cursor = "pointer"
+//                     btn.style.width = "36px"
+//                     btn.style.height = "36px"
+//                     btn.style.padding = "6px"
+//                 }, 250)
+//             }
+
+//         }
+
+//         function sidebarReaction(containerGrid, noteTitle, state) {
+//             // S: 0s, D: 0.3s, E: 0.3s
+//             containerGrid.style.transition = `
+//                 grid-template-columns 0.3s ease 0s,
+//                 column-gap 0.1s ease 0.2s,
+//                 padding 0.1s ease 0.2s`
+
+//             // S: 0s, D: 0.3s + 0.1s, E: 0.3s
+//             noteTitle.style.transition = `
+//                 opacity 0.3s ease 0s,
+//                 padding 0.1s ease 0.1s`
+
+//             if (state) {
+//                 // Start animation with 0 sec delay
+//                 setTimeout(() => {
+//                     containerGrid.style.columnGap = "0px"
+//                     containerGrid.style.gridTemplateColumns = "0.75fr 3fr"
+//                 }, 0);
+
+//                 setTimeout(() => {
+//                     noteTitle.style.padding = "128px 6px 0 0" // Start going down
+//                     noteTitle.style.opacity = "0"
+//                     containerGrid.style.gridTemplateColumns = "0fr 1fr"
+//                 }, 100);
+
+//                 setTimeout(() => {
+//                     noteTitle.style.display = 'none';
+//                 }, 250);
+//             }
+//             else {
+//                 // Start animation with 0 sec delay
+//                 noteTitle.style.display = 'flex';
+
+//                 setTimeout(() => {
+//                     containerGrid.style.columnGap = "12px"
+//                     noteTitle.style.opacity = "1"
+//                     noteTitle.style.padding = "48px 0 0 0" // Start going up
+//                 }, 0);
+
+//                 setTimeout(() => {
+//                     containerGrid.style.gridTemplateColumns = "0.9fr 3fr"
+//                 }, 100)
+
+//                 setTimeout(() => {
+//                     containerGrid.style.gridTemplateColumns = "0.7fr 3fr"
+//                 }, 250);
+//             }
+//         }
+//         //#endregion
+
+//         //#region Note Content Loader
+//         var noteManager = new NoteManager();
+//         var listNote = noteManager.getAllNotes();
+
+//         const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name"); // Header Style
+//         noteTitleHeaderName.style.setProperty("--note-id", 1);
+
+//         // with every note, we print the title and date first into a noteTitle
+//         listNote.forEach(note => {
+//             const noteTitleContent = document.createElement("div");
+
+//             // Then we customize id into a div
+//             noteTitleContent.id = `noteId_${note.noteId}`
+//             noteTitleContent.style.setProperty("--note-id", note.noteId);
+
+//             // Add note title content inside it
+//             noteTitleContent.innerHTML = `
+//             <h2>${note.title}</h2>
+//             <p>${note.date}</p>
+//             `
+
+//             // Then append the child element
+//             noteTitle.appendChild(noteTitleContent);
+
+//             noteTitleContent.addEventListener("click", () => {
+//                 const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id"); // Get ID when click
+//                 const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
+
+
+//                 if (noteId != noteIDHeader) {
+//                     notePageLoad(notePage, noteId);
+//                     noteHeaderAnimation(noteTitleHeaderName, noteId);
+
+//                     // Set the noteIDHeader back
+//                     noteTitleHeaderName.style.setProperty("--note-id", noteId)
+//                 }
+//             })
+//         })
+
+//         // Note Default Page
+//         function notePageLoad(notePage, noteId) {
+//             notePageLoadAnimation(notePage);
+//             noteId = parseInt(noteId);
+
+//             setTimeout(() => {
+//                 // Remove any child in note page
+//                 while (notePage.firstChild) {
+//                     notePage.removeChild(notePage.firstChild);
+//                 }
+
+//                 // Get content
+//                 const noteContent = noteManager.getNoteById(noteId); // Get all information about that note ID
+
+//                 // Create a div
+//                 const notePageContent = document.createElement("div")
+
+//                 // Customize it
+//                 notePageContent.id = `noteContentId_${noteContent.noteId}`
+//                 notePageContent.style.setProperty("--note-content-id", noteContent.noteId)
+//                 notePageContent.innerHTML = `${noteContent.contentURL}`
+
+//                 // Append into note page
+//                 notePage.appendChild(notePageContent);
+//             }, 500);
+//         }
+
+//         // Animation
+//         function noteHeaderAnimation(noteTitleHeaderName, noteId) {
+//             noteTitleHeaderName.style.transition = `
+//                 padding 0.1s ease 0s,
+//                 opacity 0.1s ease 0s
+//                 `
+
+//             if (noteId != null) { // LOAD
+//                 const note = noteManager.getNoteById(noteId)
+
+//                 setTimeout(() => {
+//                     noteTitleHeaderName.style.padding = "0 0 64px 0"
+//                     noteTitleHeaderName.style.opacity = "0"
+//                 }, 100)
+
+//                 setTimeout(() => {
+//                     noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
+//                     noteTitleHeaderName.style.padding = "0"
+//                     noteTitleHeaderName.style.opacity = "1"
+//                 }, 700)
+//             } else { // UNLOAD
+//                 setTimeout(() => {
+//                     noteTitleHeaderName.style.padding = "0 0 64px 0"
+//                     noteTitleHeaderName.style.opacity = "0"
+//                 }, 100)
+//             }
+//         }
+
+//         // Note Page Loading Animation
+//         function notePageLoadAnimation(notePage) {
+//             setTimeout(() => {
+//                 notePage.style.setProperty('--width', '100%');
+//                 notePage.style.setProperty('--height', '100%');
+//             }, 0);
+
+//             setTimeout(() => {
+//                 notePage.style.setProperty('--width', '100%');
+//                 notePage.style.setProperty('--height', '0%');
+//             }, 500);
+//         }
+
+//         // Note Page Unloading Animation
+//         function notePageUnloadAnimation(notePage) {
+//             notePage.style.setProperty('--width', '100%');
+//             notePage.style.setProperty('--height', '100%');
+//         }
+//         //#endregion
+
+//     })
+//     .catch(error => console.error('Error loading introduction:', error));

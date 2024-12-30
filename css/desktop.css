@@ -37,7 +37,7 @@
     --application-icon-font-size: 16px;
     
     /* Icon >> When Hover */
-    --application-icon-background-hover: rgb(50, 146, 225, 0.5);
+    --application-icon-background-hover: rgb(20, 100, 225, 0.4);
 
     /* == Window Setting == */
     /* Window Background */
@@ -60,7 +60,7 @@ body {
     margin: 0;
 
     background-color: black;
-    background-image: url(../img/xp.jpg);
+    background-image: url(../img/desert.jpg);
     background-size: cover;
 
 }

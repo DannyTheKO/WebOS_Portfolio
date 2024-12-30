@@ -6,8 +6,8 @@
     --icon-position-left: 1%;
 
     /* Windows Position */
-    --window-position-top: 9%;
-    --window-position-left: 68%;
+    --window-position-top: 8%;
+    --window-position-left: 67%;
 
     /* Windows Size */
     --window-size-width: 500px;
@@ -78,12 +78,29 @@
         padding: 0.5em;
 
         .content {
-            padding: 0.5em;
+            position: relative;
+            padding: 0.2em;
             overflow: scroll;
-            height: var(--window-size-height);
+            min-height: var(--window-size-height);
+            max-height: calc(var(--window-size-height) + 150px);
+            
+            h2 {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+            }
+
+            hr {
+                margin: 12px 0 24px 0;
+            }
+
+            ul {
+                padding: 0;
+            }
 
             li {
                 margin-bottom: 12px;
+                list-style: inside;
             }
         }
     }

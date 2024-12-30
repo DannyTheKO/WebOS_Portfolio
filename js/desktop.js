@@ -196,19 +196,9 @@ export function dragElement(element, header) {
 
 
 // TODO: make this
-function resizeElement(element) {
+function windowResize(element) {
 
 }
-
-// function toggleElement(element) {
-//     const status = window.getComputedStyle(element);
-//     if (status.display === "none") {
-//         element.style.display = "flex";
-//         element.style.flexDirection = "column";
-//     } else {
-//         element.style.display = "none";
-//     }
-// }
 
 function windowsRiseZIndex(element) {
     const currentZIndex = parseInt(getComputedStyle(element).getPropertyValue("--desktop-zIndex"));

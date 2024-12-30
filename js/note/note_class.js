@@ -6,8 +6,6 @@ class Note {
     }
 }
 
-
-// TODO: Move the contentURL into an URL for better clarity
 export class NoteManager {
     // Seed data    
     constructor() {

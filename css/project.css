@@ -83,12 +83,6 @@
             overflow: scroll;
             min-height: var(--window-size-height);
             max-height: calc(var(--window-size-height) + 150px);
-            
-            h2 {
-                position: sticky;
-                top: 0;
-                z-index: 1;
-            }
 
             hr {
                 margin: 12px 0 24px 0;

@@ -1,0 +1,71 @@
+.Project_Icon,
+#Project_Container {
+    /* == Windows Setting == */
+    /* Icon Position */
+    --icon-position-top: 40%;
+    --icon-position-left: 1%;
+
+    /* Windows Position */
+    --window-position-top: 25%;
+    --window-position-left: 30%;
+
+    /* Windows Size */
+    --window-size-width: 700px;
+    --window-size-height: auto;
+    --window-aspect-ratio: 4/1;
+
+    /* Window Background */
+    --application-background-color: rgba(0, 0, 0, 0.8);
+    --application-background-blur: blur(4px);
+
+    /* == Introduction Content Setting == */
+    /* Font Family */
+    --font-family: "consolas", sans-serif;
+    --font-family-special: "Stretch Pro", sans-serif;
+
+    /* Font Size */
+    --font-size-x-small: 0.8rem;
+    --font-size-small: 0.9rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.5rem;
+    --font-size-x-large: 1.8rem;
+
+    /* Profile Picture Size */
+    --pfp-size-small: 64px;
+    --pfp-size-normal: 128px;
+    --pfp-size-big: 256px;
+}
+
+.Project_Icon {
+    top: var(--icon-position-top);
+    left: var(--icon-position-left);
+}
+
+#Project {
+    flex: 1;
+    /* Custom Width and Height for the app */
+    width: var(--window-size-width);
+    /* height: var(--window-size-height); */
+    /* aspect-ratio: var(--window-aspect-ratio); */
+    color: var(--font-color);
+
+    /* Custom Position for the app on the desktop  */
+    position: absolute;
+    top: var(--window-position-top);
+    left: var(--window-position-top);
+
+    /* This will break the screen limit of the desktop but this will stay here for... idk development purpose :) */
+    /* transform: translate(-50%, -50%);  */
+
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 1);
+
+    .Project_header {
+        margin: 0;
+        padding: 0 5px;
+    }
+
+    .Project_main {
+        position: relative;
+        padding: 0.5em;
+    }
+}

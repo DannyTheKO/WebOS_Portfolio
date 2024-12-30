@@ -172,8 +172,10 @@ export function dragElement(element, header) {
         element.style.top = newTop + "px";
         element.style.left = newLeft + "px";
 
+        // Style base on situation
         if (appWindows) {
             header.style.cursor = "grabbing";
+            element.style.opacity = "0.4"
         } else {
             element.style.cursor = "grabbing";
         }
@@ -188,6 +190,7 @@ export function dragElement(element, header) {
         // Style base on situation
         if (appWindows) {
             header.style.cursor = "grab";
+            element.style.opacity = "1"
         } else {
             element.style.cursor = "pointer";
         }

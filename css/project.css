@@ -6,12 +6,12 @@
     --icon-position-left: 1%;
 
     /* Windows Position */
-    --window-position-top: 25%;
-    --window-position-left: 30%;
+    --window-position-top: 9%;
+    --window-position-left: 68%;
 
     /* Windows Size */
-    --window-size-width: 700px;
-    --window-size-height: auto;
+    --window-size-width: 500px;
+    --window-size-height: 600px;
     --window-aspect-ratio: 4/1;
 
     /* Window Background */
@@ -41,31 +41,50 @@
     left: var(--icon-position-left);
 }
 
+/* Introduction Windows */
 #Project {
     flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
-    /* height: var(--window-size-height); */
+    min-height: var(--window-size-height);
     /* aspect-ratio: var(--window-aspect-ratio); */
     color: var(--font-color);
 
     /* Custom Position for the app on the desktop  */
     position: absolute;
     top: var(--window-position-top);
-    left: var(--window-position-top);
+    left: var(--window-position-left);
 
     /* This will break the screen limit of the desktop but this will stay here for... idk development purpose :) */
-    /* transform: translate(-50%, -50%);  */
+    /* transform: translate(-50%, -50%); */
 
     box-shadow: 0px 0px 20px rgb(0, 0, 0, 1);
 
+    /* Custom Header if you want to style it */
     .Project_header {
         margin: 0;
         padding: 0 5px;
+
+        * {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     }
 
+    /* This is where you're edit your style inside the content */
     .Project_main {
-        position: relative;
         padding: 0.5em;
+
+        .content {
+            padding: 0.5em;
+            overflow: scroll;
+            height: var(--window-size-height);
+
+            li {
+                margin-bottom: 12px;
+            }
+        }
     }
 }

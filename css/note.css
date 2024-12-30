@@ -39,7 +39,6 @@
 
 /* Note Windows */
 #Note {
-    --window-status: close;
     flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);

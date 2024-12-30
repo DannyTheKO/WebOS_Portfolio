@@ -36,7 +36,6 @@ export function btnOpenAndClose(element, header_action) {
         // Open Button Action
         btnOpen.addEventListener("dblclick", () => {
             if (element.style.display === "none") {
-                element.style.setProperty("--window-status", "open");
                 windowsRiseZIndex(element)
                 element.style.display = "flex";
                 element.style.flexDirection = "column";
@@ -51,7 +50,6 @@ export function btnOpenAndClose(element, header_action) {
         // Close Button Action
         btnClose.addEventListener("click", () => {
             element.style.opacity = 0;
-            element.style.setProperty("--window-status", "close");
 
             setTimeout(() => {
                 element.style.display = "none";
@@ -71,9 +69,8 @@ export function windowElement(element) {
     
     // Element style when start up
     element.style.display = "none";
-    element.style.transition = `opacity 0.1s ease 0s`
+    element.style.transition = `opacity 0.2s ease 0s`
     element.style.opacity = 0;
-    element.style.setProperty("--window-status", "close")
 
     // Header action styling
     if (header_action != null) {
@@ -94,23 +91,8 @@ export function dragElement(element, header) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Get Topbar height with error handling
-    const getTopBarHeight = () => {
-        const topBarElement = document.querySelector("#Topbar_Container .Topbar");
-        let topBarHeight = 0; // Default fallback value
-
-        if (topBarElement) {
-            try {
-                topBarHeight = topBarElement.getBoundingClientRect().height;
-            } catch (error) {
-                console.warn('Failed to get topbar height:', error);
-            }
-        }
-
-        return topBarHeight || 40; // Return fallback value of 40px if height is 0 or undefined
-    };
-
-    const topBarHeight = getTopBarHeight();
+    const topBarElement = document.querySelector("#Topbar_Container .Topbar");
+    const topBarHeight = topBarElement.getBoundingClientRect().height;
 
     var appWindows = false;
 

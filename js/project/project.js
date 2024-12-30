@@ -21,6 +21,15 @@ export async function initializeProject() {
             // Add draggable function to this windows
             dragElement(element, header); // Windows
             dragElement(btnOpen); // Icon
+
+            testingProject(element)
         })
         .catch(error => console.error('Error loading project:', error));
+}
+
+// Testing Purpose
+function testingProject(element) {
+    element.style.display = "flex";
+    element.style.flexDirection = "column";
+    element.style.opacity = "1"
 }

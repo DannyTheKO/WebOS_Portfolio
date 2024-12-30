@@ -44,14 +44,14 @@ async function initializeNoteComponents(noteWindow) {
     const notePage = noteMain.querySelector(".notePage");
     const containerGrid = noteMain.querySelector(".container_grid");
 
+    await initializeStartUp(noteHeader, notePage, btnOpen, btnClose);
     await initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage);
     await initializeNoteContent(noteHeader, noteTitle, notePage);
-    await initializeStartUp(element, noteHeader, notePage, btnOpen, btnClose);
 }
 //#endregion
 
 // #region Startup Behaviour
-async function initializeStartUp(element, noteHeader, notePage, btnOpen, btnClose) {
+async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
     btnOpen.addEventListener("dblclick", () => {
@@ -152,7 +152,7 @@ function handleToggleAnimation(containerGrid, noteTitle, state) {
         }, 0);
 
         setTimeout(() => {
-            noteTitle.style.padding = "128px 6px 0 0";
+            noteTitle.style.padding = "128px 8px 0 0";
             noteTitle.style.opacity = "0";
             containerGrid.style.gridTemplateColumns = "0fr 1fr";
         }, 100);
@@ -164,9 +164,9 @@ function handleToggleAnimation(containerGrid, noteTitle, state) {
         noteTitle.style.display = 'flex';
 
         setTimeout(() => {
+            noteTitle.style.padding = "48px 8px 0 0";
             containerGrid.style.columnGap = "12px";
             noteTitle.style.opacity = "1";
-            noteTitle.style.padding = "48px 0 0 0";
         }, 0);
 
         setTimeout(() => {

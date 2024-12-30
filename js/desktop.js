@@ -162,7 +162,11 @@ export function dragElement(element, header) {
         let newLeft = element.offsetLeft - initialX;
 
         // Ensure window stays within viewport
-        const maxTop = viewportHeight - header.offsetHeight;
+        if (appWindows) {
+            var maxTop = viewportHeight - header.offsetHeight;
+        } else {
+            var maxTop = viewportHeight - element.offsetHeight;
+        }
         const maxLeft = viewportWidth - element.offsetWidth;
         const minTop = topBarHeight;
 

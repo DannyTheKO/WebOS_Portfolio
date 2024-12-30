@@ -196,11 +196,15 @@
 
             .notePage {
                 /* for the ::after element */
-
                 grid-area: notePage;
                 position: relative;
+
                 font-family: var(--font-family);
                 font-size: var(--font-size-small);
+
+                [id^="noteContentId_"] {
+                    padding: 3em 3em;
+                }
             }
         }
 

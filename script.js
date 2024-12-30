@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Load Introduction
         await initializeIntroduction();
 
-        // Load Note
+        // Load Notex
         await initializeNote();
     } catch (error) {
         console.error('Error during initialization:', error);

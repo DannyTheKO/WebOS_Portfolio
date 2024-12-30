@@ -1,6 +1,6 @@
 import { windowElement, dragElement, btnOpenAndClose } from "../desktop.js";
 
-export function initializeIntroduction() {
+export async function initializeIntroduction() {
     fetch("../../app/introduction.html")
         .then(response => response.text())
         .then(data => {

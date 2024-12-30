@@ -47,8 +47,25 @@ async function initializeNoteComponents(noteWindow) {
     await initializeStartUp(noteHeader, notePage, btnOpen, btnClose);
     await initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage);
     await initializeNoteContent(noteHeader, noteTitle, notePage);
+
+    // Testing Function
+    await testingNote(element, noteHeader, notePage)
 }
 //#endregion
+
+async function testingNote(element, noteHeader, notePage) {
+    // Testing Purpose
+    element.style.display = "flex"
+    element.style.flexDirection = "column"
+    element.style.opacity = "1"
+
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
+    const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+    setTimeout(() => {
+        notePageLoad(notePage, noteIDHeader);
+        noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
+    }, 100);
+}
 
 // #region Startup Behaviour
 async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
@@ -278,23 +295,25 @@ async function initializeNoteContent(noteHeader, noteTitle, notePage) {
     });
 }
 
-function notePageLoad(notePage, noteId) {
+async function notePageLoad(notePage, noteId) {
     notePageLoadAnimation(notePage);
-    noteId = parseInt(noteId);
 
-    setTimeout(() => {
+    setTimeout(async () => {
         while (notePage.firstChild) {
             notePage.removeChild(notePage.firstChild);
         }
 
-        const noteContent = noteManager.getNoteById(noteId);
-        const notePageContent = document.createElement("div");
-        notePageContent.id = `noteContentId_${noteContent.noteId}`;
-        notePageContent.style.setProperty("--note-content-id", noteContent.noteId);
-        notePageContent.innerHTML = noteContent.contentURL;
+        try {
+            const noteContent = await noteManager.loadNoteContent(noteId);
+            const notePageContent = document.createElement("div");
+            notePageContent.id = `noteContentId_${noteId}`;
+            notePageContent.innerHTML = noteContent;
 
-        notePage.appendChild(notePageContent);
-    }, 500);
+            notePage.appendChild(notePageContent);
+        } catch (error) {
+            console.error('Error loading note content:', error);
+        }
+    }, 300);
 }
 
 function noteHeaderAnimation(noteTitleHeaderName, noteId) {
@@ -330,7 +349,7 @@ function notePageLoadAnimation(notePage) {
         notePage.style.setProperty('--height', '100%');
     }, 0);
 
-    setTimeout(() => {
+    setTimeout( async () => {
         notePage.style.setProperty('--width', '100%');
         notePage.style.setProperty('--height', '0%');
     }, 500);

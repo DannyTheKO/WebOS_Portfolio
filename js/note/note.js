@@ -49,7 +49,7 @@ async function initializeNoteComponents(noteWindow) {
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
-    await testingNote(element, noteHeader, notePage)
+    // await testingNote(element, noteHeader, notePage)
 }
 //#endregion
 

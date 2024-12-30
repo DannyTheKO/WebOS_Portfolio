@@ -7,6 +7,7 @@ export function initializeTopbar() {
         })
         .catch(error => console.error('Error loading topbar:', error));
 }
+
 function initializeDateTime() {
     function dateTime() {
         var date = new Date();

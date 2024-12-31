@@ -79,7 +79,7 @@
 
         .content {
             position: relative;
-            padding: 0.2em;
+            padding: 0.3em;
             overflow: scroll;
             min-height: var(--window-size-height);
             max-height: calc(var(--window-size-height) + 150px);
@@ -93,13 +93,9 @@
                 margin-bottom: 6px;
             }
 
-            ul#commitLog > li {
-                margin-bottom: 24px;
-            }
-
             li {
                 margin-bottom: 12px;
-                list-style: square  ;
+                list-style: square;
 
                 p {
                     margin-top: 0;
@@ -109,6 +105,24 @@
 
             hr {
                 margin: 24px 0 12px 0;
+            }
+
+            ul {
+                padding-left: 30px;
+            }
+
+            ul#commitLog>li {
+                margin-bottom: 24px;
+                padding: 12px;
+
+                transition: background-color 0.2s ease 0s, outline 0.1s ease 0s;
+                background-color: rgba(50, 146, 225, 0.1);
+                outline: rgba(50, 146, 255, 0) 2px solid;
+
+                &:hover { /* Add a colon here */
+                    background-color: rgba(50, 146, 225, 0.4);
+                    outline: rgb(50, 146, 255) 2px solid;
+                }
             }
         }
     }

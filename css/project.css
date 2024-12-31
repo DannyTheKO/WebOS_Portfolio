@@ -84,17 +84,31 @@
             min-height: var(--window-size-height);
             max-height: calc(var(--window-size-height) + 150px);
 
-            hr {
-                margin: 12px 0 24px 0;
+            h2 {
+                margin-bottom: 6px;
             }
 
-            ul {
-                padding: 0;
+            h3 {
+                margin-top: 18px;
+                margin-bottom: 6px;
+            }
+
+            ul#commitLog > li {
+                margin-bottom: 24px;
             }
 
             li {
                 margin-bottom: 12px;
-                list-style: inside;
+                list-style: square  ;
+
+                p {
+                    margin-top: 0;
+                    margin-bottom: 4px;
+                }
+            }
+
+            hr {
+                margin: 24px 0 12px 0;
             }
         }
     }

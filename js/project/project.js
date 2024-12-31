@@ -65,7 +65,7 @@ async function fetchGitHubCommits(commitLog) {
                 const formatDate = () => {
                     const date = new Date(commit.commit.author.date)
 
-                    const format = date.toLocaleString("en-US", {
+                    const format = date.toLocaleString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",

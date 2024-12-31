@@ -69,7 +69,7 @@ export function windowElement(element) {
     
     // Element style when start up
     element.style.display = "none";
-    element.style.transition = `opacity 0.2s ease 0s`
+    element.style.transition = `opacity 0.1s ease 0s`
     element.style.opacity = 0;
 
     // Header action styling

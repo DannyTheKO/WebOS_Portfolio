@@ -77,8 +77,11 @@ async function fetchGitHubCommits(commitLog) {
                 };
                 commitElement.id = formatDate();
                 commitElement.innerHTML = `
+                <a href="${commit.html_url}" target="_blank">
                     <p>Date: ${formatDate()}</p>
-                    <p><strong> >> ${commit.commit.message}</strong></p>`;
+                    <p><strong> >> ${commit.commit.message}</strong></p>
+                </a>
+                `
 
                 commitLog.appendChild(commitElement);
             });
@@ -87,4 +90,5 @@ async function fetchGitHubCommits(commitLog) {
             console.error('Error fetching commit history:', error);
         });
 }
+
 //#endregion

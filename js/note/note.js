@@ -294,14 +294,14 @@ async function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage
 }
 
 async function notePageLoadOrder(notePage, noteId, noteTitleHeaderName) {
+    
     await notePageCloseAnimation(notePage)
-    await notePageLoad(notePage, noteId)
-
-    setTimeout(() => {
-        notePageOpenAnimation(notePage)
-    }, 300);
-
     noteHeaderAnimation(noteTitleHeaderName, noteId)
+    await notePageLoad(notePage, noteId)
+    
+    setTimeout( async () => {
+        notePageOpenAnimation(notePage)
+    }, 500);
 }
 
 async function notePageLoad(notePage, noteId) {
@@ -338,30 +338,27 @@ async function notePageLoad(notePage, noteId) {
     }, 500);
 }
 
-function noteHeaderAnimation(noteTitleHeaderName, noteId) {
+async function noteHeaderAnimation(noteTitleHeaderName, noteId) {
     noteTitleHeaderName.style.transition = `
         padding 0.1s ease 0s,
         opacity 0.1s ease 0s
     `;
 
     if (noteId != null) {
-        const note = noteManager.getNoteById(noteId);
+        const note = await noteManager.getNoteById(noteId);
 
-        setTimeout(() => {
-            noteTitleHeaderName.style.padding = "0 0 64px 0";
-            noteTitleHeaderName.style.opacity = "0";
-        }, 100);
+        noteTitleHeaderName.style.padding = "0 0 64px 0";
+        noteTitleHeaderName.style.opacity = "0";
 
         setTimeout(() => {
             noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
             noteTitleHeaderName.style.padding = "0";
             noteTitleHeaderName.style.opacity = "1";
-        }, 500);
+        }, 250);
+
     } else {
-        setTimeout(() => {
-            noteTitleHeaderName.style.padding = "0 0 64px 0";
-            noteTitleHeaderName.style.opacity = "0";
-        }, 100);
+        noteTitleHeaderName.style.padding = "0 0 64px 0";
+        noteTitleHeaderName.style.opacity = "0";
     }
 }
 

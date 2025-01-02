@@ -61,9 +61,11 @@ async function testingNote(element, noteHeader, notePage) {
 
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
     const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-    setTimeout(() => {
-        notePageLoad(notePage, noteIDHeader);
+    setTimeout(async () => {
+        await notePageCloseAnimation(notePage)
+        await notePageLoad(notePage, noteIDHeader);
         noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
+        notePageOpenAnimation(notePage);
     }, 100);
 }
 
@@ -72,16 +74,18 @@ async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
     btnOpen.addEventListener("dblclick", () => {
-        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        const noteId = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
 
-        setTimeout(() => {
-            notePageLoad(notePage, noteIDHeader);
-            noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
+        setTimeout( async () => {
+            noteHeaderAnimation(noteTitleHeaderName, noteId);
+            await notePageCloseAnimation(notePage);
+            await notePageLoad(notePage, noteId);
+            notePageOpenAnimation(notePage);
         }, 100);
     });
 
     btnClose.addEventListener("click", () => {
-        notePageUnloadAnimation(notePage);
+        notePageCloseAnimation(notePage);
         noteHeaderAnimation(noteTitleHeaderName, null);
     });
 }
@@ -263,7 +267,6 @@ function handleButtonAnimation(button) {
 
 // #region Note Content Loader
 async function initializeNoteContent(noteHeader, noteTitle, notePage) {
-    const noteManager = new NoteManager();
     const listNote = noteManager.getAllNotes();
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
@@ -271,6 +274,10 @@ async function initializeNoteContent(noteHeader, noteTitle, notePage) {
     noteTitleHeaderName.style.setProperty("--note-id", 1);
 
     // Initialize note titles
+    getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage)
+}
+
+function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage) {
     listNote.forEach(note => {
         const noteTitleContent = document.createElement("div");
         noteTitleContent.id = `noteId_${note.noteId}`;
@@ -282,38 +289,48 @@ async function initializeNoteContent(noteHeader, noteTitle, notePage) {
 
         noteTitle.appendChild(noteTitleContent);
 
-        noteTitleContent.addEventListener("click", () => {
+        // Assign Event Listener
+        noteTitleContent.addEventListener("click", async () => {
             const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
             const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
 
             if (noteId != noteIDHeader) {
-                notePageLoad(notePage, noteId);
                 noteHeaderAnimation(noteTitleHeaderName, noteId);
+                await notePageCloseAnimation(notePage);
+                await notePageLoad(notePage, noteId);
+                notePageOpenAnimation(notePage);
+
                 noteTitleHeaderName.style.setProperty("--note-id", noteId);
             }
         });
     });
 }
 
-async function notePageLoad(notePage, noteId) {
-    notePageLoadAnimation(notePage);
+function notePageLoad(notePage, noteId) {
+    //Return a promise that will resolve after the timeout AND after the content is loaded
+    return new Promise(resolve => {
+        notePageCloseAnimation(notePage);
 
-    setTimeout(async () => {
-        while (notePage.firstChild) {
-            notePage.removeChild(notePage.firstChild);
-        }
+        setTimeout(async () => {
+            while (notePage.firstChild) {
+                notePage.removeChild(notePage.firstChild);
+            }
 
-        try {
-            const noteContent = await noteManager.loadNoteContent(noteId);
-            const notePageContent = document.createElement("div");
-            notePageContent.id = `noteContentId_${noteId}`;
-            notePageContent.innerHTML = noteContent;
+            try {
+                // Await the content loading
+                const noteContent = await noteManager.loadNoteContent(noteId);
+                const notePageContent = document.createElement("div");
+                notePageContent.id = `noteContentId_${noteId}`;
+                notePageContent.innerHTML = noteContent;
 
-            notePage.appendChild(notePageContent);
-        } catch (error) {
-            console.error('Error loading note content:', error);
-        }
-    }, 300);
+                notePage.appendChild(notePageContent);
+                resolve(); // Resolve the promise after content is loaded
+            } catch (error) {
+                console.error('Error loading note content:', error);
+                reject(error); //Reject the promise if there is an error
+            }
+        }, 500);
+    });
 }
 
 function noteHeaderAnimation(noteTitleHeaderName, noteId) {
@@ -334,7 +351,7 @@ function noteHeaderAnimation(noteTitleHeaderName, noteId) {
             noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
             noteTitleHeaderName.style.padding = "0";
             noteTitleHeaderName.style.opacity = "1";
-        }, 700);
+        }, 500);
     } else {
         setTimeout(() => {
             noteTitleHeaderName.style.padding = "0 0 64px 0";
@@ -343,20 +360,23 @@ function noteHeaderAnimation(noteTitleHeaderName, noteId) {
     }
 }
 
-function notePageLoadAnimation(notePage) {
-    setTimeout(() => {
+async function notePageCloseAnimation(notePage) {
+    return new Promise(resolve => {
         notePage.style.setProperty('--width', '100%');
         notePage.style.setProperty('--height', '100%');
-    }, 0);
 
-    setTimeout( async () => {
-        notePage.style.setProperty('--width', '100%');
-        notePage.style.setProperty('--height', '0%');
-    }, 500);
+        // Wait for animation to complete
+        setTimeout(resolve, 500);
+    })
 }
 
-function notePageUnloadAnimation(notePage) {
-    notePage.style.setProperty('--width', '100%');
-    notePage.style.setProperty('--height', '100%');
+async function notePageOpenAnimation(notePage) {
+    return new Promise(resolve => {
+        notePage.style.setProperty('--width', '100%');
+        notePage.style.setProperty('--height', '0%');
+
+        // Wait for animation to complete
+        setTimeout(resolve, 500);
+    })
 }
 // #endregion

@@ -1,5 +1,5 @@
 class Note {
-    constructor(noteId, title, date, contentURL) {
+    constructor(noteId, title, date) {
         this.noteId = noteId;
         this.title = title;
         this.date = date;
@@ -7,7 +7,7 @@ class Note {
 }
 
 export class NoteManager {
-    // Seed data    
+    // Seed data
     constructor() {
         this.notes = [
             new Note(1, "Danny's Note", "[ 08/08/2002 | 11:00:00 PM ]"),

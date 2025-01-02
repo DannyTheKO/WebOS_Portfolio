@@ -1,3 +1,5 @@
 {
-    "liveServer.settings.multiRootWorkspaceName": "WebOS_Portfolio"
+    "liveServer.settings.multiRootWorkspaceName": "WebOS_Portfolio",
+    "liveServer.settings.root": "/",
+    "liveServer.settings.file": "/index.html",
 }

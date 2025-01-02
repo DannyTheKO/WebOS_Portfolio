@@ -49,7 +49,7 @@ async function initializeNoteComponents(noteWindow) {
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
-    // await testingNote(element, noteHeader, notePage)
+    await testingNote(element, noteHeader, notePage)
 }
 //#endregion
 
@@ -62,29 +62,22 @@ async function testingNote(element, noteHeader, notePage) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
     const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
     setTimeout(async () => {
-        await notePageCloseAnimation(notePage)
-        await notePageLoad(notePage, noteIDHeader);
-        noteHeaderAnimation(noteTitleHeaderName, noteIDHeader);
-        notePageOpenAnimation(notePage);
-    }, 100);
+        await notePageLoadOrder(notePage, noteIDHeader, noteTitleHeaderName);
+    }, 500);
 }
 
 // #region Startup Behaviour
 async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
-    btnOpen.addEventListener("dblclick", () => {
+    btnOpen.addEventListener("dblclick", async () => {
         const noteId = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
 
-        setTimeout( async () => {
-            noteHeaderAnimation(noteTitleHeaderName, noteId);
-            await notePageCloseAnimation(notePage);
-            await notePageLoad(notePage, noteId);
-            notePageOpenAnimation(notePage);
-        }, 100);
+        noteHeaderAnimation(noteTitleHeaderName, noteId);
+        await notePageLoadOrder(notePage, noteId, noteTitleHeaderName);
     });
 
-    btnClose.addEventListener("click", () => {
+    btnClose.addEventListener("click", async () => {
         notePageCloseAnimation(notePage);
         noteHeaderAnimation(noteTitleHeaderName, null);
     });
@@ -112,6 +105,8 @@ async function initializeSidebarButtons(noteMain, containerGrid, noteTitle, note
     // Previous/Next button functionality
     initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle);
 }
+
+
 
 function buttonToggleAnimation(btn, container, state) {
     const transitionStyle = `
@@ -208,7 +203,7 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
     opacity 0.1s ease 0.12s
     `;
 
-    previousBtn.addEventListener("click", () => {
+    previousBtn.addEventListener("click", async () => {
         const noteTitleHeaderName = document.querySelector("#Note_title_name");
         const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
         var notePrev = noteIDHeader - 1;
@@ -217,8 +212,7 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
 
         if (!(notePrev <= 0)) {
             handleButtonAnimation(previousBtn);
-            noteHeaderAnimation(noteTitleHeaderName, notePrev);
-            notePageLoad(notePage, notePrev);
+            await notePageLoadOrder(notePage, notePrev, noteTitleHeaderName);
             noteTitleHeaderName.style.setProperty("--note-id", notePrev);
         } else {
             notePrev = 1;
@@ -226,7 +220,7 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
         }
     });
 
-    nextBtn.addEventListener("click", () => {
+    nextBtn.addEventListener("click", async () => {
         const noteTitleHeaderName = document.querySelector("#Note_title_name");
         const count = noteManager.getAllNotes().length;
         const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
@@ -236,8 +230,7 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
 
         if (!(noteNext > count)) {
             handleButtonAnimation(nextBtn);
-            noteHeaderAnimation(noteTitleHeaderName, noteNext);
-            notePageLoad(notePage, noteNext);
+            await notePageLoadOrder(notePage, noteNext, noteTitleHeaderName);
             noteTitleHeaderName.style.setProperty("--note-id", noteNext);
         } else {
             noteNext = count;
@@ -274,10 +267,10 @@ async function initializeNoteContent(noteHeader, noteTitle, notePage) {
     noteTitleHeaderName.style.setProperty("--note-id", 1);
 
     // Initialize note titles
-    getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage)
+    await getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage);
 }
 
-function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage) {
+async function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage) {
     listNote.forEach(note => {
         const noteTitleContent = document.createElement("div");
         noteTitleContent.id = `noteId_${note.noteId}`;
@@ -290,47 +283,40 @@ function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage) {
         noteTitle.appendChild(noteTitleContent);
 
         // Assign Event Listener
-        noteTitleContent.addEventListener("click", async () => {
+        noteTitleContent.addEventListener("click", async () => { // Add async here
             const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
             const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
 
             if (noteId != noteIDHeader) {
-                noteHeaderAnimation(noteTitleHeaderName, noteId);
-                await notePageCloseAnimation(notePage);
-                await notePageLoad(notePage, noteId);
-                notePageOpenAnimation(notePage);
-
+                await notePageLoadOrder(notePage, noteId, noteTitleHeaderName);
                 noteTitleHeaderName.style.setProperty("--note-id", noteId);
             }
         });
     });
 }
 
-function notePageLoad(notePage, noteId) {
-    //Return a promise that will resolve after the timeout AND after the content is loaded
-    return new Promise(resolve => {
-        notePageCloseAnimation(notePage);
+async function notePageLoadOrder(notePage, noteId, noteTitleHeaderName) {
+    await notePageCloseAnimation(notePage)
+    await notePageLoad(notePage, noteId)
+    notePageOpenAnimation(notePage)
+    noteHeaderAnimation(noteTitleHeaderName, noteId)
+}
 
-        setTimeout(async () => {
-            while (notePage.firstChild) {
-                notePage.removeChild(notePage.firstChild);
-            }
+async function notePageLoad(notePage, noteId) {
+    return new Promise(async resolve => {
+        while (notePage.firstChild) {
+            notePage.removeChild(notePage.firstChild);
+        }
 
-            try {
-                // Await the content loading
-                const noteContent = await noteManager.loadNoteContent(noteId);
-                const notePageContent = document.createElement("div");
-                notePageContent.id = `noteContentId_${noteId}`;
-                notePageContent.innerHTML = noteContent;
+        // Await the content loading
+        const noteContent = await noteManager.loadNoteContent(noteId);
+        const notePageContent = document.createElement("div");
+        notePageContent.id = `noteContentId_${noteId}`;
+        notePageContent.innerHTML = noteContent;
 
-                notePage.appendChild(notePageContent);
-                resolve(); // Resolve the promise after content is loaded
-            } catch (error) {
-                console.error('Error loading note content:', error);
-                reject(error); //Reject the promise if there is an error
-            }
-        }, 500);
-    });
+        notePage.appendChild(notePageContent);
+        resolve(); // Resolve the promise after content is loaded   
+    }, 500);
 }
 
 function noteHeaderAnimation(noteTitleHeaderName, noteId) {
@@ -360,23 +346,34 @@ function noteHeaderAnimation(noteTitleHeaderName, noteId) {
     }
 }
 
-async function notePageCloseAnimation(notePage) {
+function notePageCloseAnimation(notePage) {
     return new Promise(resolve => {
+        // Trigger reflow for animation
+        notePage.getBoundingClientRect();
+
+        // Delay before resolving the promise
         notePage.style.setProperty('--width', '100%');
         notePage.style.setProperty('--height', '100%');
-
-        // Wait for animation to complete
-        setTimeout(resolve, 500);
-    })
+        
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
 }
 
-async function notePageOpenAnimation(notePage) {
+function notePageOpenAnimation(notePage) {
     return new Promise(resolve => {
+        // Trigger reflow for animation
+        notePage.getBoundingClientRect();
+
+        // Delay before resolving the promise
         notePage.style.setProperty('--width', '100%');
         notePage.style.setProperty('--height', '0%');
 
-        // Wait for animation to complete
-        setTimeout(resolve, 500);
-    })
+        setTimeout(() => {
+            resolve();
+        }, 500);
+    });
 }
+
 // #endregion

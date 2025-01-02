@@ -61,9 +61,7 @@ async function testingNote(element, noteHeader, notePage) {
 
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
     const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-    setTimeout(async () => {
-        await notePageLoadOrder(notePage, noteIDHeader, noteTitleHeaderName);
-    }, 500);
+    await notePageLoadOrder(notePage, noteIDHeader, noteTitleHeaderName);
 }
 
 // #region Startup Behaviour
@@ -298,7 +296,11 @@ async function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage
 async function notePageLoadOrder(notePage, noteId, noteTitleHeaderName) {
     await notePageCloseAnimation(notePage)
     await notePageLoad(notePage, noteId)
-    notePageOpenAnimation(notePage)
+
+    setTimeout(() => {
+        notePageOpenAnimation(notePage)
+    }, 300);
+
     noteHeaderAnimation(noteTitleHeaderName, noteId)
 }
 
@@ -313,6 +315,23 @@ async function notePageLoad(notePage, noteId) {
         const notePageContent = document.createElement("div");
         notePageContent.id = `noteContentId_${noteId}`;
         notePageContent.innerHTML = noteContent;
+
+        // Find images within the loaded content
+        const images = notePageContent.querySelectorAll('img');
+
+        // Wait for all images to load
+        await Promise.all(Array.from(images).map(img => {
+            return new Promise(resolve => {
+                if (img.complete) {
+                    resolve(); // Image is cached, resolve immediately
+                } else {
+                    img.addEventListener('load', resolve, { once: true });
+                    img.addEventListener('error', resolve, { once: true }); // Resolve on error as well
+                }
+            });
+        }));
+
+        console.log('All images have finished loading!');
 
         notePage.appendChild(notePageContent);
         resolve(); // Resolve the promise after content is loaded   
@@ -354,7 +373,7 @@ function notePageCloseAnimation(notePage) {
         // Delay before resolving the promise
         notePage.style.setProperty('--width', '100%');
         notePage.style.setProperty('--height', '100%');
-        
+
         setTimeout(() => {
             resolve();
         }, 500);

@@ -111,9 +111,12 @@
                 padding-left: 30px;
             }
 
+            /* Project Commits Section */
             ul#commitLog>li {
                 margin-bottom: 24px;
                 padding: 12px;
+
+                cursor: pointer;
 
                 transition: background-color 0.2s ease 0s, outline 0.1s ease 0s;
                 background-color: rgba(50, 146, 225, 0.1);

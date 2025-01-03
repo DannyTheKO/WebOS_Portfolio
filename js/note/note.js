@@ -284,10 +284,13 @@ async function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage
         noteTitleContent.addEventListener("click", async () => { // Add async here
             const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
             const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
+            const noteTitleContentID = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
 
             if (noteId != noteIDHeader) {
                 await notePageLoadOrder(notePage, noteId, noteTitleHeaderName);
                 noteTitleHeaderName.style.setProperty("--note-id", noteId);
+                // noteTitleContent.style.backgroundColor = "rgba(50, 146, 225, 0.7)"
+                // noteTitleContent.style.setProperty("--hover-background", "rgba(50, 146, 225, 0.9)")
             }
         });
     });
@@ -331,7 +334,7 @@ async function notePageLoad(notePage, noteId) {
             });
         }));
 
-        console.log('All images have finished loading!');
+        console.log(`All images in noteID: ${noteId} have finished loading!`);
 
         notePage.appendChild(notePageContent);
         resolve(); // Resolve the promise after content is loaded   

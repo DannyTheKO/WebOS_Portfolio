@@ -8,6 +8,11 @@
         --font-size-large: 1.5rem;
         --font-size-x-large: 1.8rem;
 
+        .content {
+            font-family: var(--font-family);
+            font-size: var(--font-size-small);
+        }
+
         .noteContent {
             font-size: var(--font-size-medium);
         }
@@ -17,15 +22,17 @@
             font-size: var(--font-size-medium);
         }
 
-        img {
-            object-fit: contain;
-            width: 100%;
+        #imageWindows {
+            max-height: 300px;
+            overflow: hidden;
+            
+            img {
+                object-fit: contain;
+                object-position: 0 -100px;
+                width: 100%;
+            }
         }
 
-        .content {
-            font-family: var(--font-family);
-            font-size: var(--font-size-small);
-        }
     }
 </style>
 
@@ -35,12 +42,34 @@
         <h2>${date}</h2>
         <hr>
     </div>
-    <img src="../img/background/building.jpg" alt="Image">
+    <div id="imageWindows">
+        <img src="../img/background/building.jpg" alt="Image">
+    </div>
+
     <div class="content">
         <p>Original content here... Hi, i'm Danny</p>
     </div>
 </div>
 
-<script>
+<script type="module">
+    import { windowElement, dragElement, btnOpenAndClose } from "../../js/desktop.js";
+    document.addEventListener("DOMContentLoaded", () => {
+        initializeScript();
+    })
+
+
+    function initializeScript() {
+        imageWindows()
+    }
+
+    function imageWindows() {
+    const imageWindow = document.querySelector("#imageWindows"); 
+    const element = imageWindow.querySelector('.element-class'); // Replace with the actual class 
+    const header = imageWindow.querySelector('.header-class');   // Replace with the actual class
+    const headerAction = imageWindow.querySelector('.header-action-class'); // Replace with the actual class
+
+    console.log("ping");
+    console.log(element, header, headerAction);
+}
 
 </script>

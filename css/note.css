@@ -136,6 +136,9 @@
 
                 /* Note Title Element */
                 [id^="noteId_"] {
+                    /* for the :hover element */
+                    --hover-background: rgba(50, 146, 225, 0.3);
+
                     user-select: none;
                     cursor: pointer;
 
@@ -158,7 +161,7 @@
                 }
 
                 [id^="noteId_"]:hover {
-                    background-color: rgba(50, 146, 225, 0.3);
+                    background-color: var(--hover-background);
                     transition: background-color 0.2s ease 0s;
                 }
             }
@@ -195,6 +198,8 @@
 
             .notePage {
                 /* for the ::after element */
+
+
                 grid-area: notePage;
                 position: relative;
 
@@ -202,7 +207,7 @@
                 font-size: var(--font-size-small);
 
                 [id^="noteContentId_"] {
-                    padding: 3em 3em;
+                    padding: 3em;
                 }
             }
         }

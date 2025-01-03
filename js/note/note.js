@@ -49,7 +49,7 @@ async function initializeNoteComponents(noteWindow) {
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
-    await testingNote(element, noteHeader, notePage)
+    // await testingNote(element, noteHeader, notePage)
 }
 //#endregion
 
@@ -71,13 +71,12 @@ async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     btnOpen.addEventListener("dblclick", async () => {
         const noteId = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
 
-        noteHeaderAnimation(noteTitleHeaderName, noteId);
         await notePageLoadOrder(noteHeader, notePage, noteId);
     });
 
     btnClose.addEventListener("click", async () => {
-        notePageCloseAnimation(notePage);
         noteHeaderAnimation(noteTitleHeaderName, null);
+        notePageCloseAnimation(notePage);
     });
 }
 // #endregion
@@ -212,7 +211,7 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteHeader)
             handleButtonAnimation(previousBtn);
             await notePageLoadOrder(noteHeader, notePage, notePrev);
             noteTitleHeaderName.style.setProperty("--note-header-id", notePrev);
-            
+
             // After loading the new note content, select the corresponding title
             const noteTitle = document.querySelector('.noteTitle'); // Get the noteTitle container
             const noteTitleContent = noteTitle.querySelector(`[style*="--note-id: ${notePrev}"]`); // Select by notePrev
@@ -306,17 +305,16 @@ async function getNoteContent(noteHeader, notePage, noteTitle) {
 }
 
 async function notePageLoadOrder(noteHeader, notePage, noteId) {
+    noteHeaderAnimation(noteHeader, noteId)
 
     await notePageCloseAnimation(notePage)
-    noteHeaderAnimation(noteHeader, noteId)
     await notePageLoad(notePage, noteId)
-
+    
     setTimeout(async () => {
         notePageOpenAnimation(notePage)
     }, 500);
 }
 
-// TODO: do this please, how do we find noteTitleContent for the Btn ?
 function selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, noteId) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
     const noteHeaderID = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
@@ -372,10 +370,12 @@ async function notePageLoad(notePage, noteId) {
 
 async function noteHeaderAnimation(noteHeader, noteId) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name")
+
     noteTitleHeaderName.style.transition = `
-        padding 0.1s ease 0s,
-        opacity 0.1s ease 0s
+    padding 0.1s ease 0s,
+    opacity 0.1s ease 0s
     `;
+
 
     if (noteId != null) {
         const note = noteManager.getNoteById(noteId);

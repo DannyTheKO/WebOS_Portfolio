@@ -124,6 +124,7 @@
 
             .noteTitle {
                 grid-area: noteTitle;
+                gap: 8px;
 
                 /* This look good on animation */
                 text-wrap: nowrap;
@@ -136,9 +137,6 @@
 
                 /* Note Title Element */
                 [id^="noteId_"] {
-                    /* for the :hover element */
-                    --hover-background: rgba(50, 146, 225, 0.3);
-
                     user-select: none;
                     cursor: pointer;
 
@@ -161,9 +159,15 @@
                 }
 
                 [id^="noteId_"]:hover {
-                    background-color: var(--hover-background);
+                    background-color: rgba(50, 146, 225, 0.3);
                     transition: background-color 0.2s ease 0s;
                 }
+            }
+
+            .noteTitleSelected {
+                color: black;
+                background-color: rgba(50, 146, 225, 0.5);
+                border: 2px solid var(--border-color);
             }
 
             /* Overlay when page load */

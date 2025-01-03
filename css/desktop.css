@@ -36,9 +36,6 @@
     --application-icon-image-size: 64px;
     --application-icon-font-size: 16px;
     
-    /* Icon >> When Hover */
-    --application-icon-background-hover: rgb(20, 100, 225, 0.4);
-
     /* == Window Setting == */
     /* Window Background */
     --application-background-color: rgba(0, 0, 0, 0.8);
@@ -132,7 +129,7 @@ img {
     justify-content: center;
     align-items: center;
 
-    z-index: 0;
+    z-index: 1;
 
     width: var(--application-icon-size);
 
@@ -172,7 +169,7 @@ img {
 }
 
 .icon:hover {
-    background-color: var(--application-icon-background-hover);
+    background-color: rgb(20, 100, 225, 0.7);
 }
 
 .selected {

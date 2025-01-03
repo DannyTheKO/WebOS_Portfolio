@@ -45,7 +45,7 @@ async function initializeNoteComponents(noteWindow) {
     const containerGrid = noteMain.querySelector(".container_grid");
 
     await initializeStartUp(noteHeader, notePage, btnOpen, btnClose);
-    await initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage);
+    await initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage, noteHeader);
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
@@ -60,8 +60,8 @@ async function testingNote(element, noteHeader, notePage) {
     element.style.opacity = "1"
 
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
-    const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
-    await notePageLoadOrder(notePage, noteIDHeader, noteTitleHeaderName);
+    const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
+    await notePageLoadOrder(noteHeader, notePage, noteIDHeader);
 }
 
 // #region Startup Behaviour
@@ -69,10 +69,10 @@ async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
 
     btnOpen.addEventListener("dblclick", async () => {
-        const noteId = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        const noteId = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
 
         noteHeaderAnimation(noteTitleHeaderName, noteId);
-        await notePageLoadOrder(notePage, noteId, noteTitleHeaderName);
+        await notePageLoadOrder(noteHeader, notePage, noteId);
     });
 
     btnClose.addEventListener("click", async () => {
@@ -83,7 +83,7 @@ async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
 // #endregion
 
 // #region Side Bar
-async function initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage) {
+async function initializeSidebarButtons(noteMain, containerGrid, noteTitle, notePage, noteHeader) {
     const sidebarBtnContainer = noteMain.querySelector("#sidebar_btn_container");
     const toggleBtn = sidebarBtnContainer.querySelector("#toggle_btn");
     const previousBtn = sidebarBtnContainer.querySelector("#previous_btn");
@@ -101,7 +101,7 @@ async function initializeSidebarButtons(noteMain, containerGrid, noteTitle, note
     });
 
     // Previous/Next button functionality
-    initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle);
+    initializeNavigationButtons(previousBtn, nextBtn, notePage, noteHeader);
 }
 
 
@@ -193,7 +193,7 @@ function handleToggleAnimation(containerGrid, noteTitle, state) {
     }
 }
 
-function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) {
+function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteHeader) {
     const transitionStyle = `
     height 0.1s ease 0.1s,
     width 0.1s ease 0.1s,
@@ -203,15 +203,20 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
 
     previousBtn.addEventListener("click", async () => {
         const noteTitleHeaderName = document.querySelector("#Note_title_name");
-        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
         var notePrev = noteIDHeader - 1;
 
         previousBtn.style.transition = transitionStyle;
 
         if (!(notePrev <= 0)) {
             handleButtonAnimation(previousBtn);
-            await notePageLoadOrder(notePage, notePrev, noteTitleHeaderName);
-            noteTitleHeaderName.style.setProperty("--note-id", notePrev);
+            await notePageLoadOrder(noteHeader, notePage, notePrev);
+            noteTitleHeaderName.style.setProperty("--note-header-id", notePrev);
+            
+            // After loading the new note content, select the corresponding title
+            const noteTitle = document.querySelector('.noteTitle'); // Get the noteTitle container
+            const noteTitleContent = noteTitle.querySelector(`[style*="--note-id: ${notePrev}"]`); // Select by notePrev
+            selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, notePrev);
         } else {
             notePrev = 1;
             handleButtonAnimation(previousBtn);
@@ -221,15 +226,20 @@ function initializeNavigationButtons(previousBtn, nextBtn, notePage, noteTitle) 
     nextBtn.addEventListener("click", async () => {
         const noteTitleHeaderName = document.querySelector("#Note_title_name");
         const count = noteManager.getAllNotes().length;
-        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id"));
+        const noteIDHeader = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
         var noteNext = noteIDHeader + 1;
 
         nextBtn.style.transition = transitionStyle;
 
         if (!(noteNext > count)) {
             handleButtonAnimation(nextBtn);
-            await notePageLoadOrder(notePage, noteNext, noteTitleHeaderName);
-            noteTitleHeaderName.style.setProperty("--note-id", noteNext);
+            await notePageLoadOrder(noteHeader, notePage, noteNext);
+            noteTitleHeaderName.style.setProperty("--note-header-id", noteNext);
+
+            // After loading the new note content, select the corresponding title 
+            const noteTitle = document.querySelector('.noteTitle'); // Get the noteTitle container
+            const noteTitleContent = noteTitle.querySelector(`[style*="--note-id: ${noteNext}"]`); // Select by noteNext
+            selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, noteNext);
         } else {
             noteNext = count;
             handleButtonAnimation(nextBtn);
@@ -258,53 +268,72 @@ function handleButtonAnimation(button) {
 
 // #region Note Content Loader
 async function initializeNoteContent(noteHeader, noteTitle, notePage) {
-    const listNote = noteManager.getAllNotes();
-    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
-
     // Set initial note ID
-    noteTitleHeaderName.style.setProperty("--note-id", 1);
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
+    noteTitleHeaderName.style.setProperty("--note-header-id", 1);
 
     // Initialize note titles
-    await getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage);
+    await getNoteContent(noteHeader, notePage, noteTitle);
 }
 
-async function getNoteContent(listNote, noteTitleHeaderName, noteTitle, notePage) {
+async function getNoteContent(noteHeader, notePage, noteTitle) {
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
+    const listNote = noteManager.getAllNotes();
     listNote.forEach(note => {
         const noteTitleContent = document.createElement("div");
         noteTitleContent.id = `noteId_${note.noteId}`;
         noteTitleContent.style.setProperty("--note-id", note.noteId);
         noteTitleContent.innerHTML = `
-            <h2>${note.title}</h2>
-            <p>${note.date}</p>
+        <h2>${note.title}</h2>
+        <p>${note.date}</p>
         `;
 
         noteTitle.appendChild(noteTitleContent);
+        selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, note.noteId)
 
         // Assign Event Listener
-        noteTitleContent.addEventListener("click", async () => { // Add async here
-            const noteId = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
-            const noteIDHeader = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-id");
+        noteTitleContent.addEventListener("click", async () => {
             const noteTitleContentID = getComputedStyle(noteTitleContent).getPropertyValue("--note-id");
+            const noteHeaderID = getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id");
 
-            if (noteId != noteIDHeader) {
-                await notePageLoadOrder(notePage, noteId, noteTitleHeaderName);
-                noteTitleHeaderName.style.setProperty("--note-id", noteId);
-                // noteTitleContent.style.backgroundColor = "rgba(50, 146, 225, 0.7)"
-                // noteTitleContent.style.setProperty("--hover-background", "rgba(50, 146, 225, 0.9)")
+            if (noteTitleContentID != noteHeaderID) {
+                await notePageLoadOrder(noteHeader, notePage, noteTitleContentID);
+                noteTitleHeaderName.style.setProperty("--note-header-id", noteTitleContentID);
+                selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, noteTitleContentID)
             }
         });
     });
 }
 
-async function notePageLoadOrder(notePage, noteId, noteTitleHeaderName) {
-    
+async function notePageLoadOrder(noteHeader, notePage, noteId) {
+
     await notePageCloseAnimation(notePage)
-    noteHeaderAnimation(noteTitleHeaderName, noteId)
+    noteHeaderAnimation(noteHeader, noteId)
     await notePageLoad(notePage, noteId)
-    
-    setTimeout( async () => {
+
+    setTimeout(async () => {
         notePageOpenAnimation(notePage)
     }, 500);
+}
+
+// TODO: do this please, how do we find noteTitleContent for the Btn ?
+function selectedNoteTitle(noteHeader, noteTitle, noteTitleContent, noteId) {
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name");
+    const noteHeaderID = parseInt(getComputedStyle(noteTitleHeaderName).getPropertyValue("--note-header-id"));
+    // Remove all selected class
+    const otherSelected = noteTitle.querySelectorAll(".noteTitleSelected")
+    otherSelected.forEach(other => {
+        var ID = other.style.getPropertyValue("--note-id")
+        // Prevent remove class on start up
+        if (ID != noteHeaderID) {
+            other.classList.remove("noteTitleSelected")
+        }
+    })
+
+    // if noteId === noteHeaderID, we asign class selected
+    if (noteId == noteHeaderID) {
+        noteTitleContent.classList.add("noteTitleSelected")
+    }
 }
 
 async function notePageLoad(notePage, noteId) {
@@ -341,14 +370,15 @@ async function notePageLoad(notePage, noteId) {
     }, 500);
 }
 
-async function noteHeaderAnimation(noteTitleHeaderName, noteId) {
+async function noteHeaderAnimation(noteHeader, noteId) {
+    const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name")
     noteTitleHeaderName.style.transition = `
         padding 0.1s ease 0s,
         opacity 0.1s ease 0s
     `;
 
     if (noteId != null) {
-        const note = await noteManager.getNoteById(noteId);
+        const note = noteManager.getNoteById(noteId);
 
         noteTitleHeaderName.style.padding = "0 0 64px 0";
         noteTitleHeaderName.style.opacity = "0";

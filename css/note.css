@@ -140,6 +140,8 @@
                     user-select: none;
                     cursor: pointer;
 
+                    background-color: rgba(50, 146, 225, 0.1);
+
                     font-family: var(--font-family);
                     font-size: var(--font-size-x-small);
 
@@ -159,16 +161,16 @@
                 }
 
                 [id^="noteId_"]:hover {
-                    background-color: rgba(50, 146, 225, 0.3);
+                    background-color: rgba(50, 146, 225, 0.2);
                     transition: background-color 0.2s ease 0s;
+                }
+                
+                .noteTitleSelected {
+                    background-color: rgba(50, 146, 225, 0.5);
+                    border: 2px solid var(--border-color);
                 }
             }
 
-            .noteTitleSelected {
-                color: black;
-                background-color: rgba(50, 146, 225, 0.5);
-                border: 2px solid var(--border-color);
-            }
 
             /* Overlay when page load */
             .notePage::after {

@@ -12,6 +12,12 @@ export class NoteManager {
         this.notes = [
             new Note(1, "Danny's Note", "[ 08/08/2002 | 11:00:00 PM ]"),
             new Note(2, "Someone's Note", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(3, "Note ID 3", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(4, "Note ID 4", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(5, "Note ID 5", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(6, "Note ID 6", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(7, "Note ID 7", "[ 08/08/2003 | 11:00:00 PM ]"),
+            new Note(8, "Note ID 8", "[ 08/08/2003 | 11:00:00 PM ]"),
         ]
     }
 

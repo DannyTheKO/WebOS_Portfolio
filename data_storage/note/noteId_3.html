@@ -1,0 +1,75 @@
+<!-- We gonna do style and script here -->
+<style>
+    .noteSetting {
+        /* == Note Content Setting == */
+        --font-size-x-small: 0.85rem;
+        --font-size-small: 0.9rem;
+        --font-size-medium: 1.2rem;
+        --font-size-large: 1.5rem;
+        --font-size-x-large: 1.8rem;
+
+        .content {
+            font-family: var(--font-family);
+            font-size: var(--font-size-small);
+        }
+
+        .noteContent {
+            font-size: var(--font-size-medium);
+        }
+
+        .title {
+            font-family: var(--font-family-special);
+            font-size: var(--font-size-medium);
+        }
+
+        #imageWindows {
+            max-height: 300px;
+            overflow: hidden;
+            
+            img {
+                object-fit: contain;
+                object-position: 0 -100px;
+                width: 100%;
+            }
+        }
+
+    }
+</style>
+
+<div class="noteContent noteSetting" contenteditable="false;">
+    <div class="title">
+        <h1>${title}</h1>
+        <h2>${date}</h2>
+        <hr>
+    </div>
+    <div id="imageWindows">
+        <img src="../img/background/building.jpg" alt="Image">
+    </div>
+
+    <div class="content">
+        <p>Original content here... Hi, i'm Danny</p>
+    </div>
+</div>
+
+<script type="module">
+    import { windowElement, dragElement, btnOpenAndClose } from "../../js/desktop.js";
+    document.addEventListener("DOMContentLoaded", () => {
+        initializeScript();
+    })
+
+
+    function initializeScript() {
+        imageWindows()
+    }
+
+    function imageWindows() {
+    const imageWindow = document.querySelector("#imageWindows"); 
+    const element = imageWindow.querySelector('.element-class'); // Replace with the actual class 
+    const header = imageWindow.querySelector('.header-class');   // Replace with the actual class
+    const headerAction = imageWindow.querySelector('.header-action-class'); // Replace with the actual class
+
+    console.log("ping");
+    console.log(element, header, headerAction);
+}
+
+</script>

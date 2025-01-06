@@ -176,10 +176,6 @@ img {
     outline: 2px solid var(--border-color);
 }
 
-#windowPopup {
-    position: absolute;
-}
-
 /* Windows Default Style */
 [id$="_Container"]:not(#Topbar_Container *) {
     display: flex;

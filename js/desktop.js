@@ -61,31 +61,42 @@ export function btnOpenAndClose(element, header_action) {
 }
 
 // TODO: Popup Windows >> Improve into indepentdent windows popup
-export function popupElement(element, header_action) {
-    // The element is the container for the windows popup
-    // First, get the element parent
-    var parent = element.parentElement;
-    // console.log(parent)
+export function popupElement(content) {
+    // Get the Popup Container from index.html
+    var container = document.querySelector(`#Popup_Container`)
+    // console.log(container);
 
-    // Second, find all id that trigger that popup windows element
-    var popupOpenZone = parent.querySelectorAll(`#${element.id}Element`)
-    // console.log(popupOpenZone);
+    // Scan all the #windowPopupElement
+    var popupContents = content.querySelectorAll(`#windowPopupElement`);
+    popupContents.forEach(popupContent => {
+        // Template windows for popup
+        const insertContent = document.createElement("div")
+        insertContent.style.position = "absolute"
+        // Get container temp popup id
+        insertContent.dataset.popupId = parseInt(container.dataset.tempPopupId) + 1;
+        container.dataset.tempPopupId++;
 
-    // Third, find the close btn for Popup windows
-    var popupCloseBtn = header_action.querySelector(`#${element.id}_btn_close`);
+        popupContent.addEventListener("click", () => {
+            insertContent.innerHTML = `
+            <div id="windowPopup">
+                <div class="windowPopup_header">
+                    <div class="windowPopup_header_name">
+                        <p>[ Name ]</p>
+                    </div>
+                    <div class="windowPopup_header_action">
+                        <img id="windowPopup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
+                    </div>
+                </div>
+                <div class="windowPopup_main">
+                ${popupContent.outerHTML}
+                </div>
+            </div>
+            `
 
-    // Fourth, find the windows Popup main that store content
-    var popupMainContainer = element.querySelector(`.${element.id}_main`)
-    // console.log(popupMainContainer);
-
-    // Assign each event listener to open Popup window
-    popupOpenZone.forEach(popup => {
-        // console.log(popup)
-        popup.addEventListener("click", () => {
-            // remove previous element
-            while (popupMainContainer.firstChild) {
-                popupMainContainer.removeChild(popupMainContainer.firstChild)
-            }
+            container.appendChild(insertContent)
+            // Dont look, please dont look, look away, PLEASE I BEEEG YOOU
+            const windowPopup = container.querySelector(`[data-popup-id="${insertContent.dataset.popupId}"]`).querySelector("#windowPopup")
+            const { element, header, header_action } = windowElement(windowPopup)
 
             if (element.style.display === "none") {
                 windowsRiseZIndex(element)
@@ -97,22 +108,18 @@ export function popupElement(element, header_action) {
                 }, 200);
             }
 
-            // create new div container
-            var popupContent = document.createElement("div")
-            popupContent.innerHTML = popup.outerHTML;
-            popupMainContainer.appendChild(popupContent);
-        })
+            const btnClose = header_action.querySelector(`#windowPopup_btn_close`)
+            btnClose.addEventListener("click", () => {
+                element.style.opacity = 0;
 
-        popupCloseBtn.addEventListener("click", async () => {
-            element.style.opacity = 0;
+                setTimeout(() => {
+                    element.style.display = "none";
+                }, 300);
 
-            setTimeout(() => {
-                element.style.display = "none";
-            }, 300);
-
-            while (popupMainContainer.firstChild) {
-                popupMainContainer.removeChild(popupMainContainer.firstChild)
-            }
+                setTimeout(() => {
+                    windowPopup.remove();
+                }, 500)
+            })
         })
     })
 }
@@ -124,8 +131,9 @@ export function windowElement(element) {
     var header = element.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
 
-    // Element style when start up
+    // Default windows style when start up
     element.style.display = "none";
+    element.style.position = "absolute"
     element.style.transition = `opacity 0.1s ease 0s`
     element.style.opacity = 0;
 

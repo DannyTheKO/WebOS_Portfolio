@@ -46,27 +46,20 @@
         <img src="../img/background/building.jpg" alt="Image">
     </div>
 
+    <div id="windowPopupElement" class="imageWindow">
+        <img src="../img/background/desert.jpg" alt="Image">
+    </div>
+
+    <div id="windowPopupElement" class="imageWindow">
+        <img src="../img/background/ferret.jpg" alt="Image">
+    </div>
+
     <div class="content">
         <p>Original content here... Hi, i'm Danny</p>
     </div>
-
-    <div id="windowPopup">
-        <div class="windowPopup_header">
-            <div class="windowPopup_header_name">
-                <p>[ Image ]</p>
-            </div>
-            <div class="windowPopup_header_action">
-                <img id="windowPopup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
-            </div>
-        </div>
-        <div class="windowPopup_main">
-            <p>hi</p>
-        </div>
-
-    </div>
 </div>
 
-<script async type="module">
+<script type="module">
     import { windowElement, dragElement, popupElement } from "../../js/desktop.js";
     await console.log("ping");
     await scriptsLoadOrder();
@@ -76,15 +69,9 @@
     };
 
     async function initializeWindowPopup() {
-        // initialize window
-        const windowPopup = document.querySelector("#windowPopup")
-        const {
-            element: element,
-            header: header,
-            header_action: header_action
-        } = await windowElement(windowPopup)
-
-        popupElement(element, header_action)
-        dragElement(element, header)
+        
     };
+
+    const content = document.querySelector(`.noteContent`)
+    popupElement(content)
 </script>

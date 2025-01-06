@@ -60,13 +60,70 @@ export function btnOpenAndClose(element, header_action) {
     return { btnOpen: btnOpen, btnClose: btnClose };
 }
 
+// TODO: Popup Windows >> Improve into indepentdent windows popup
+export function popupElement(element, header_action) {
+    // The element is the container for the windows popup
+    // First, get the element parent
+    var parent = element.parentElement;
+    // console.log(parent)
+
+    // Second, find all id that trigger that popup windows element
+    var popupOpenZone = parent.querySelectorAll(`#${element.id}Element`)
+    // console.log(popupOpenZone);
+
+    // Third, find the close btn for Popup windows
+    var popupCloseBtn = header_action.querySelector(`#${element.id}_btn_close`);
+
+    // Fourth, find the windows Popup main that store content
+    var popupMainContainer = element.querySelector(`.${element.id}_main`)
+    // console.log(popupMainContainer);
+
+    // Assign each event listener to open Popup window
+    popupOpenZone.forEach(popup => {
+        // console.log(popup)
+        popup.addEventListener("click", () => {
+            // remove previous element
+            while (popupMainContainer.firstChild) {
+                popupMainContainer.removeChild(popupMainContainer.firstChild)
+            }
+
+            if (element.style.display === "none") {
+                windowsRiseZIndex(element)
+                element.style.display = "flex";
+                element.style.flexDirection = "column";
+
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                }, 200);
+            }
+
+            // create new div container
+            var popupContent = document.createElement("div")
+            popupContent.innerHTML = popup.outerHTML;
+            popupMainContainer.appendChild(popupContent);
+        })
+
+        popupCloseBtn.addEventListener("click", async () => {
+            element.style.opacity = 0;
+
+            setTimeout(() => {
+                element.style.display = "none";
+            }, 300);
+
+            while (popupMainContainer.firstChild) {
+                popupMainContainer.removeChild(popupMainContainer.firstChild)
+            }
+        })
+    })
+}
+
 // Get windows position and other element inside of that
 export function windowElement(element) {
     var element = document.querySelector(`#${element.id}`);
-    
-    var header = document.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
+
+    var header = element.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
-    
+
     // Element style when start up
     element.style.display = "none";
     element.style.transition = `opacity 0.1s ease 0s`
@@ -94,14 +151,14 @@ export function dragElement(element, header) {
     const topBarElement = document.querySelector("#Topbar_Container .Topbar");
     const topBarHeight = topBarElement.getBoundingClientRect().height;
 
-    var appWindows = false;
+    var isWindows = false;
 
     // Check element if there is a header ? if not, we use the whole div
     if (header) {
         // Topbar styling
         header.style.cursor = "grab";
         header.style.userSelect = "none";
-        appWindows = true;
+        isWindows = true;
 
         // Window mode - drag from header
         header.onmousedown = (e) => {
@@ -110,7 +167,7 @@ export function dragElement(element, header) {
         };
     } else {
         element.style.cursor = "pointer";
-        appWindows = false;
+        isWindows = false;
 
         // Icon mode - drag from anywhere
         element.onmousedown = (e) => {
@@ -144,7 +201,7 @@ export function dragElement(element, header) {
         let newLeft = element.offsetLeft - initialX;
 
         // Ensure window stays within viewport
-        if (appWindows) {
+        if (isWindows) {
             var maxTop = viewportHeight - header.offsetHeight;
         } else {
             var maxTop = viewportHeight - element.offsetHeight;
@@ -159,9 +216,9 @@ export function dragElement(element, header) {
         element.style.left = newLeft + "px";
 
         // Style base on situation
-        if (appWindows) {
+        if (isWindows) {
             header.style.cursor = "grabbing";
-            element.style.opacity = "0.4"
+            element.style.opacity = "0.9"
         } else {
             element.style.cursor = "grabbing";
         }
@@ -174,7 +231,7 @@ export function dragElement(element, header) {
         document.onmousemove = null;
 
         // Style base on situation
-        if (appWindows) {
+        if (isWindows) {
             header.style.cursor = "grab";
             element.style.opacity = "1"
         } else {

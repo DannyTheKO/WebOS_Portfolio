@@ -5,7 +5,7 @@ import { NoteManager } from "./note_class.js";
 const noteManager = new NoteManager();
 
 // #region Initialize
-export function initializeNote() {
+export async function initializeNote() {
     return fetch("../../app/note.html")
         .then(response => response.text())
         .then(data => {
@@ -49,7 +49,7 @@ async function initializeNoteComponents(noteWindow) {
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
-    // await testingNote(element, noteHeader, notePage)
+    await testingNote(element, noteHeader, notePage)
 }
 //#endregion
 
@@ -309,7 +309,7 @@ async function notePageLoadOrder(noteHeader, notePage, noteId) {
 
     await notePageCloseAnimation(notePage)
     await notePageLoad(notePage, noteId)
-    
+
     setTimeout(async () => {
         notePageOpenAnimation(notePage)
     }, 500);
@@ -340,7 +340,7 @@ async function notePageLoad(notePage, noteId) {
             notePage.removeChild(notePage.firstChild);
         }
 
-        // Await the content loading
+        // Await for the content finish loading
         const noteContent = await noteManager.loadNoteContent(noteId);
         const notePageContent = document.createElement("div");
         notePageContent.id = `noteContentId_${noteId}`;
@@ -361,9 +361,23 @@ async function notePageLoad(notePage, noteId) {
             });
         }));
 
-        console.log(`All images in noteID: ${noteId} have finished loading!`);
+        // After the notePageContent is loaded, we'll start loading inline script
+        const scripts = notePageContent.querySelectorAll("script");
+
+        // Remove existing script tags
+        const scriptsToRemove = scripts;
+        scriptsToRemove.forEach(script => script.remove());
+
+        // initialize scripts
+        scripts.forEach(script => {
+            const newScript = document.createElement("script")
+            newScript.type = "module"
+            newScript.textContent = script.textContent;
+            notePageContent.appendChild(newScript);
+        })
 
         notePage.appendChild(notePageContent);
+
         resolve(); // Resolve the promise after content is loaded   
     }, 500);
 }

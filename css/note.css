@@ -40,6 +40,8 @@
 /* Note Windows */
 #Note {
     flex: 1;
+    position: absolute;
+
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
     min-height: var(--window-size-height);
@@ -47,7 +49,6 @@
     color: var(--font-color);
 
     /* Custom Position for the app on the desktop  */
-    position: absolute;
     top: var(--window-position-top);
     left: var(--window-position-left);
 
@@ -164,7 +165,7 @@
                     background-color: rgba(50, 146, 225, 0.2);
                     transition: background-color 0.2s ease 0s;
                 }
-                
+
                 .noteTitleSelected {
                     background-color: rgba(50, 146, 225, 0.5);
                     border: 2px solid var(--border-color);

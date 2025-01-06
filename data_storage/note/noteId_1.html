@@ -22,17 +22,16 @@
             font-size: var(--font-size-medium);
         }
 
-        #imageWindows {
+        .imageWindow {
             max-height: 300px;
             overflow: hidden;
-            
+
             img {
                 object-fit: contain;
                 object-position: 0 -100px;
                 width: 100%;
             }
         }
-
     }
 </style>
 
@@ -42,34 +41,50 @@
         <h2>${date}</h2>
         <hr>
     </div>
-    <div id="imageWindows">
+
+    <div id="windowPopupElement" class="imageWindow">
         <img src="../img/background/building.jpg" alt="Image">
     </div>
 
     <div class="content">
         <p>Original content here... Hi, i'm Danny</p>
     </div>
+
+    <div id="windowPopup">
+        <div class="windowPopup_header">
+            <div class="windowPopup_header_name">
+                <p>[ Image ]</p>
+            </div>
+            <div class="windowPopup_header_action">
+                <img id="windowPopup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
+            </div>
+        </div>
+        <div class="windowPopup_main">
+            <p>hi</p>
+        </div>
+
+    </div>
 </div>
 
-<script type="module">
-    import { windowElement, dragElement, btnOpenAndClose } from "../../js/desktop.js";
-    document.addEventListener("DOMContentLoaded", () => {
-        initializeScript();
-    })
+<script async type="module">
+    import { windowElement, dragElement, popupElement } from "../../js/desktop.js";
+    await console.log("ping");
+    await scriptsLoadOrder();
 
+    async function scriptsLoadOrder() {
+        await initializeWindowPopup();
+    };
 
-    function initializeScript() {
-        imageWindows()
-    }
+    async function initializeWindowPopup() {
+        // initialize window
+        const windowPopup = document.querySelector("#windowPopup")
+        const {
+            element: element,
+            header: header,
+            header_action: header_action
+        } = await windowElement(windowPopup)
 
-    function imageWindows() {
-    const imageWindow = document.querySelector("#imageWindows"); 
-    const element = imageWindow.querySelector('.element-class'); // Replace with the actual class 
-    const header = imageWindow.querySelector('.header-class');   // Replace with the actual class
-    const headerAction = imageWindow.querySelector('.header-action-class'); // Replace with the actual class
-
-    console.log("ping");
-    console.log(element, header, headerAction);
-}
-
+        popupElement(element, header_action)
+        dragElement(element, header)
+    };
 </script>

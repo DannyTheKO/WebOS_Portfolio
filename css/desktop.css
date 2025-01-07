@@ -208,7 +208,7 @@ img {
     }
 
     [class$="_main"] {
-        flex: 1;
+        /* flex: 1; */
         position: relative;
 
         border: var(--border-size-around) var(--border-color) solid;

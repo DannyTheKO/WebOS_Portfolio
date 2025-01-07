@@ -62,73 +62,14 @@ export function btnOpenAndClose(element, header_action) {
 
 // TODO: Popup Windows >> Improve into indepentdent windows popup
 export function popupElement(content) {
-    // Get the Popup Container from index.html
-    var container = document.querySelector(`#Popup_Container`)
-    // console.log(container);
-
-    // Scan all the #windowPopupElement
-    var popupContents = content.querySelectorAll(`#windowPopupElement`);
-    popupContents.forEach(popupContent => {
-        // Template windows for popup
-        const insertContent = document.createElement("div")
-        insertContent.style.position = "absolute"
-        // Get container temp popup id
-        insertContent.dataset.popupId = parseInt(container.dataset.tempPopupId) + 1;
-        container.dataset.tempPopupId++;
-
-        popupContent.addEventListener("click", () => {
-            insertContent.innerHTML = `
-            <div id="windowPopup">
-                <div class="windowPopup_header">
-                    <div class="windowPopup_header_name">
-                        <p>[ Name ]</p>
-                    </div>
-                    <div class="windowPopup_header_action">
-                        <img id="windowPopup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
-                    </div>
-                </div>
-                <div class="windowPopup_main">
-                ${popupContent.outerHTML}
-                </div>
-            </div>
-            `
-
-            container.appendChild(insertContent)
-            // Dont look, please dont look, look away, PLEASE I BEEEG YOOU
-            const windowPopup = container.querySelector(`[data-popup-id="${insertContent.dataset.popupId}"]`).querySelector("#windowPopup")
-            const { element, header, header_action } = windowElement(windowPopup)
-
-            if (element.style.display === "none") {
-                windowsRiseZIndex(element)
-                element.style.display = "flex";
-                element.style.flexDirection = "column";
-
-                setTimeout(() => {
-                    element.style.opacity = 1;
-                }, 200);
-            }
-
-            const btnClose = header_action.querySelector(`#windowPopup_btn_close`)
-            btnClose.addEventListener("click", () => {
-                element.style.opacity = 0;
-
-                setTimeout(() => {
-                    element.style.display = "none";
-                }, 300);
-
-                setTimeout(() => {
-                    windowPopup.remove();
-                }, 500)
-            })
-        })
-    })
+    
 }
+
 
 // Get windows position and other element inside of that
 export function windowElement(element) {
-    var element = document.querySelector(`#${element.id}`);
-
-    var header = element.querySelector(`#${element.id} .${element.id}_header`); // DONT FUCKING TOUCH IT
+    var container = element.parentElement;
+    var header = element.querySelector(`.${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
 
     // Default windows style when start up

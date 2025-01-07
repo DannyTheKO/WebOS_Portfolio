@@ -1,38 +1,5 @@
 <!-- We gonna do style and script here -->
 <style>
-    .noteSetting {
-        /* == Note Content Setting == */
-        --font-size-x-small: 0.85rem;
-        --font-size-small: 0.9rem;
-        --font-size-medium: 1.2rem;
-        --font-size-large: 1.5rem;
-        --font-size-x-large: 1.8rem;
-
-        .content {
-            font-family: var(--font-family);
-            font-size: var(--font-size-small);
-        }
-
-        .noteContent {
-            font-size: var(--font-size-medium);
-        }
-
-        .title {
-            font-family: var(--font-family-special);
-            font-size: var(--font-size-medium);
-        }
-
-        .imageWindow {
-            max-height: 300px;
-            overflow: hidden;
-
-            img {
-                object-fit: contain;
-                object-position: 0 -100px;
-                width: 100%;
-            }
-        }
-    }
 </style>
 
 <div class="noteContent noteSetting" contenteditable="false;">
@@ -42,15 +9,7 @@
         <hr>
     </div>
 
-    <div id="windowPopupElement" class="imageWindow">
-        <img src="../img/background/building.jpg" alt="Image">
-    </div>
-
-    <div id="windowPopupElement" class="imageWindow">
-        <img src="../img/background/desert.jpg" alt="Image">
-    </div>
-
-    <div id="windowPopupElement" class="imageWindow">
+    <div class="imageWindows">
         <img src="../img/background/ferret.jpg" alt="Image">
     </div>
 
@@ -59,19 +18,13 @@
     </div>
 </div>
 
-<script type="module">
+<script async type="module">
     import { windowElement, dragElement, popupElement } from "../../js/desktop.js";
-    await console.log("ping");
-    await scriptsLoadOrder();
+    console.log("noteId: 1 script execute");
+    scriptsLoadOrder();
 
     async function scriptsLoadOrder() {
-        await initializeWindowPopup();
-    };
-
-    async function initializeWindowPopup() {
         
     };
 
-    const content = document.querySelector(`.noteContent`)
-    popupElement(content)
 </script>

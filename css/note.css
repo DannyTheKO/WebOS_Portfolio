@@ -204,9 +204,6 @@
             }
 
             .notePage {
-                /* for the ::after element */
-
-
                 grid-area: notePage;
                 position: relative;
 
@@ -214,10 +211,39 @@
                 font-size: var(--font-size-small);
 
                 [id^="noteContentId_"] {
+                    /* == Note Content Setting == */
+                    --font-size-x-small: 0.85rem;
+                    --font-size-small: 0.9rem;
+                    --font-size-medium: 1.2rem;
+                    --font-size-large: 1.5rem;
+                    --font-size-x-large: 1.8rem;
+
+                    font-family: var(--font-family);
+                    font-size: var(--font-size-small);
+
                     padding: 3em;
+
+                    .noteContent {
+                        font-size: var(--font-size-medium);
+
+                        .title {
+                            font-family: var(--font-family-special);
+                            font-size: var(--font-size-medium);
+                        }
+
+                        .imageWindows {
+                            max-height: 300px;
+                            overflow: hidden;
+
+                            img {
+                                object-fit: contain;
+                                object-position: 0 -100px;
+                                width: 100%;
+                            }
+                        }
+                    }
                 }
             }
         }
-
     }
 }

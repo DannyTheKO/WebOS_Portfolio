@@ -35,7 +35,7 @@
     --application-icon-size: 80px;
     --application-icon-image-size: 64px;
     --application-icon-font-size: 16px;
-    
+
     /* == Window Setting == */
     /* Window Background */
     --application-background-color: rgba(0, 0, 0, 0.8);
@@ -129,7 +129,7 @@ img {
     justify-content: center;
     align-items: center;
 
-    z-index: 1;
+    z-index: 0;
 
     width: var(--application-icon-size);
 
@@ -176,12 +176,24 @@ img {
     outline: 2px solid var(--border-color);
 }
 
+/* Popup: image element */
+.popup {
+    overflow: hidden;
+    max-width: 900px;
+    max-height: 700px;
+    img {
+        object-fit: contain;
+        width: 100%;
+    }
+}
+
 /* Windows Default Style */
 [id$="_Container"]:not(#Topbar_Container *) {
     display: flex;
     flex-direction: column;
 
     [class$="_header"] {
+        color: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -210,12 +222,9 @@ img {
     [class$="_main"] {
         /* flex: 1; */
         position: relative;
-
         border: var(--border-size-around) var(--border-color) solid;
         border-top: none;
-
         background-color: var(--application-background-color);
-
         backdrop-filter: var(--application-background-blur);
     }
 }

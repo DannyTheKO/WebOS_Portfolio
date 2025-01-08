@@ -1,6 +1,6 @@
 export function btnOpenAndClose(element, header_action) {
-    var btnOpen = document.querySelector(`#${element.id}_btn_open`);
-    var btnClose = header_action.querySelector(`#${element.id}_btn_close`);
+    let btnOpen = document.querySelector(`#${element.id}_btn_open`);
+    let btnClose = header_action.querySelector(`#${element.id}_btn_close`);
 
     // Open and Close function
     if (btnOpen != null && btnClose != null) {
@@ -57,20 +57,97 @@ export function btnOpenAndClose(element, header_action) {
         });
     }
 
-    return { btnOpen: btnOpen, btnClose: btnClose };
+    return {btnOpen: btnOpen, btnClose: btnClose};
 }
 
-// TODO: Popup Windows >> Improve into indepentdent windows popup
+// TODO: Popup Windows >> Improve into independent windows popup
 export function popupElement(content) {
-    
+    // Get the desktop container
+    let container = document.querySelector("#Popup_Container");
+
+    // Get the specific popup element name #PopupTrigger
+    let popupOpenZone = content.querySelectorAll(".popupTrigger");
+    // console.log(popupOpenZone);
+
+    popupOpenZone.forEach((popupContent) => {
+        /* TODO:
+            We assign ID for the trigger area where the popup element create in the container
+            This is for identify the window if the popup already open of not!
+         */
+
+        // console.log(popupContent)
+
+        popupContent.addEventListener("click", () => {
+            // When the element is click, we create windows element with assign popup ID
+            const popupTemplate = `
+                <div id="Popup">
+                    <div class="Popup_header">
+                        <div class="Popup_header_name">[ Popup ]</div>
+                        <div class="Popup_header_action">
+                            <img id="Popup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
+                        </div>
+                    </div>
+                    <div class="Popup_main popup">
+                        ${popupContent.innerHTML}
+                    </div>
+                </div>
+            `;
+
+            const parser = new DOMParser();
+
+            const popup = parser.parseFromString(popupTemplate, "text/html");
+            // console.log("Header: " + header);
+
+            const popupNode = popup.body.firstChild;
+            // console.log(popupNode)
+
+
+            const {element, header, header_action, main} = windowElement(popupNode)
+            dragElement(element, header);
+            initializeZIndex(element);
+            windowsRiseZIndex(element);
+
+            // Each popup will assign with an ID to identify the window
+            let nextPopupId = parseInt(container.dataset.popupContainerId);
+            popupNode.dataset.popupId = nextPopupId;
+
+            console.log(element)
+
+            // This will check if the element will rise up or not
+            if(element.style.display === "none") {
+                // Style
+                element.style.display = "flex";
+                element.style.flexDirection = "column";
+                element.style.overflow = "hidden"
+                element.style.height = "auto";
+
+                // Animation
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                })
+            }
+
+            container.appendChild(popupNode);
+            // console.log(container);
+
+            container.dataset.popupContainerId = nextPopupId + 1;
+
+            // console.log("Popup Content: " + popupNode.dataset.popupId);
+            // console.log("Container ID: " + container.dataset.popupContainerId);
+            // console.log("==============================")
+        });
+
+        // TODO: this is where the element will be removed when user is click
+        let btnRemove;
+    });
 }
 
 
 // Get windows position and other element inside of that
 export function windowElement(element) {
-    var container = element.parentElement;
     var header = element.querySelector(`.${element.id}_header`); // DONT FUCKING TOUCH IT
     var header_action = header.querySelector(`.${element.id}_header_action`); // DONT YOU EVEN THINK ABOUT IT
+    var main = element.querySelector(`.${element.id}_main`);
 
     // Default windows style when start up
     element.style.display = "none";
@@ -85,22 +162,22 @@ export function windowElement(element) {
 
     initializeZIndex(element);
 
-    return { element, header, header_action };
+    return {element, header, header_action, main};
 }
 
 // Drag function
 export function dragElement(element, header) {
-    var initialX = 0, initialY = 0;
-    var currentX = 0, currentY = 0;
+    let initialX = 0, initialY = 0;
+    let currentX = 0, currentY = 0;
 
-    // Get user screen width and hieght 
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    // Get user screen width and height
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
 
-    const topBarElement = document.querySelector("#Topbar_Container .Topbar");
-    const topBarHeight = topBarElement.getBoundingClientRect().height;
+    let topBarElement = document.querySelector("#Topbar_Container .Topbar");
+    let topBarHeight = topBarElement.getBoundingClientRect().height;
 
-    var isWindows = false;
+    let isWindows = false;
 
     // Check element if there is a header ? if not, we use the whole div
     if (header) {
@@ -150,15 +227,16 @@ export function dragElement(element, header) {
         let newLeft = element.offsetLeft - initialX;
 
         // Ensure window stays within viewport
+        let maxTop;
         if (isWindows) {
-            var maxTop = viewportHeight - header.offsetHeight;
+            maxTop = viewportHeight - header.offsetHeight;
         } else {
-            var maxTop = viewportHeight - element.offsetHeight;
+            maxTop = viewportHeight - element.offsetHeight;
         }
-        const maxLeft = viewportWidth - element.offsetWidth;
-        const minTop = topBarHeight;
 
-        newTop = Math.max(minTop, Math.min(newTop, maxTop));
+        let maxLeft = viewportWidth - element.offsetWidth;
+
+        newTop = Math.max(topBarHeight, Math.min(newTop, maxTop));
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));
 
         element.style.top = newTop + "px";
@@ -167,7 +245,7 @@ export function dragElement(element, header) {
         // Style base on situation
         if (isWindows) {
             header.style.cursor = "grabbing";
-            element.style.opacity = "0.9"
+            element.style.opacity = "0.8"
         } else {
             element.style.cursor = "grabbing";
         }
@@ -215,7 +293,6 @@ function windowsRiseZIndex(element) {
 function initializeZIndex(element) {
     // Initial values
     element.style.setProperty("--desktop-zIndex", "1");
-    document.documentElement.style.setProperty("--desktop-zIndex-threshold", "2");
 
     // Click handler for z-index updates
     element.addEventListener("click", () => {

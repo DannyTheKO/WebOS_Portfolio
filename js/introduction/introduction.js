@@ -21,6 +21,7 @@ async function initializeIntroductionComponents(introductionWindow) {
         element: element,
         header: header,
         header_action: header_action,
+        main: main,
     } = windowElement(introductionWindow);
 
     // Add open and close button

@@ -19,6 +19,7 @@ async function initializeProjectComponents(projectWindow) {
         element: element,
         header: header,
         header_action: header_action,
+        main: main,
     } = windowElement(projectWindow);
 
     // Add open and close button

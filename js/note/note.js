@@ -27,7 +27,8 @@ async function initializeNoteComponents(noteWindow) {
     const {
         element: element,
         header: header,
-        header_action: header_action
+        header_action: header_action,
+        main: main
     } = windowElement(noteWindow);
 
     // Initialize Open and Close Button
@@ -106,14 +107,12 @@ async function initializeSidebarButtons(noteMain, containerGrid, noteTitle, note
 
 
 function buttonToggleAnimation(btn, container, state) {
-    const transitionStyle = `
+    btn.style.transition = `
         height 0.1s ease 0.1s,
         width 0.1s ease 0.1s,
         padding 0.1s ease 0.15s,
         opacity 0.1s ease 0.12s
     `;
-
-    btn.style.transition = transitionStyle;
     container.style.transition = `opacity 0.1s ease 0.12s`;
 
     setTimeout(() => {

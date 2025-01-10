@@ -209,7 +209,7 @@ img {
     }
 
     [class$="_main"] {
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
         position: relative;
         border: var(--border-size-around) var(--border-color) solid;
@@ -222,6 +222,7 @@ img {
 
     [class$="popup"] {
         display: flex;
+        flex-direction: column;
         border: var(--border-size-around) var(--border-color) solid;
         border-top: none;
         background-color: var(--application-background-color);

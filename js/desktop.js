@@ -197,8 +197,11 @@ export function dragElement(element, header) {
     let viewportWidth = window.innerWidth;
     let viewportHeight = window.innerHeight;
 
+    // Get zoom level (assuming it's applied to body)
+    const zoomLevel = parseFloat(document.documentElement.style.zoom) || 1; // Default to 1 if not set
+
     let topBarElement = document.querySelector("#Topbar_Container .Topbar");
-    let topBarHeight = topBarElement.getBoundingClientRect().height;
+    let topBarHeight = topBarElement.getBoundingClientRect().height / zoomLevel;
 
     let isWindows = false;
 
@@ -249,15 +252,15 @@ export function dragElement(element, header) {
         let newTop = element.offsetTop - initialY;
         let newLeft = element.offsetLeft - initialX;
 
-        // Ensure window stays within viewport
+        // Ensure window stays within viewport (adjusted for zoom)
         let maxTop;
         if (isWindows) {
-            maxTop = viewportHeight - header.offsetHeight;
+            maxTop = viewportHeight / zoomLevel - header.offsetHeight;
         } else {
-            maxTop = viewportHeight - element.offsetHeight;
+            maxTop = viewportHeight / zoomLevel - element.offsetHeight;
         }
 
-        let maxLeft = viewportWidth - element.offsetWidth;
+        let maxLeft = viewportWidth / zoomLevel - element.offsetWidth;
 
         newTop = Math.max(topBarHeight, Math.min(newTop, maxTop));
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));

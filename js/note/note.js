@@ -76,8 +76,8 @@ async function initializeStartUp(noteHeader, notePage, btnOpen, btnClose) {
     });
 
     btnClose.addEventListener("click", async () => {
-        noteHeaderAnimation(noteTitleHeaderName, null);
-        notePageCloseAnimation(notePage);
+        await noteHeaderAnimation(noteTitleHeaderName, null);
+        await notePageCloseAnimation(notePage);
     });
 }
 // #endregion
@@ -383,6 +383,12 @@ async function notePageLoad(notePage, noteId) {
 
 async function noteHeaderAnimation(noteHeader, noteId) {
     const noteTitleHeaderName = noteHeader.querySelector("#Note_title_name")
+
+    // Add this null check
+    if (noteTitleHeaderName === null) {
+        console.error("Error: Could not find element with ID 'Note_title_name'");
+        return; // Exit the function to prevent further errors
+    }
 
     noteTitleHeaderName.style.transition = `
     padding 0.1s ease 0s,

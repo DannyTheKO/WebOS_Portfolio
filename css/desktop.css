@@ -28,7 +28,7 @@
     /* Border Color */
     --border-color: rgb(20, 100, 225);
     --border-size-top: 30px;
-    --border-size-around: 5px;
+    --border-size-around: 6px;
 
     /* == Desktop Setting == */
     /* Icon */
@@ -176,17 +176,6 @@ img {
     outline: 2px solid var(--border-color);
 }
 
-/* Popup: image element */
-.popup {
-    overflow: hidden;
-    max-width: 900px;
-    max-height: 700px;
-    img {
-        object-fit: contain;
-        width: 100%;
-    }
-}
-
 /* Windows Default Style */
 [id$="_Container"]:not(#Topbar_Container *) {
     display: flex;
@@ -220,11 +209,34 @@ img {
     }
 
     [class$="_main"] {
-        /* flex: 1; */
+        display: flex;
+        flex-direction: column;
         position: relative;
         border: var(--border-size-around) var(--border-color) solid;
         border-top: none;
         background-color: var(--application-background-color);
         backdrop-filter: var(--application-background-blur);
+    }
+
+    /* Popup: image element */
+
+    [class$="popup"] {
+        display: flex;
+        border: var(--border-size-around) var(--border-color) solid;
+        border-top: none;
+        background-color: var(--application-background-color);
+        backdrop-filter: var(--application-background-blur);
+
+        color: white;
+
+        max-width: 1200px;
+        height: auto;
+
+        img {
+            margin: 0;
+            padding: 0;
+            object-fit: cover;
+            width: 100%;
+        }
     }
 }

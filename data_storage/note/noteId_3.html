@@ -1,6 +1,5 @@
-<!-- We're going to do style and script here -->
+<!-- We gonna do style and script here -->
 <style>
-
 </style>
 
 <div class="noteContent noteSetting" contenteditable="false;">
@@ -11,18 +10,16 @@
     </div>
 
     <div class="imageWindows popupTrigger">
-        <img src="../img/background/ferret.jpg" alt="Image">
+        <img src="../img/background/building.jpg" alt="Image">
     </div>
-    <div class="content popupTrigger">
-        <p>Original content here... Hi, i'm Danny</p>
-    </div>
+
 </div>
 
 <script async type="module">
     import { windowElement, dragElement, popupElement } from "../../js/desktop.js";
-    console.log("noteId script execute: 1");
+    console.log("noteId: 3 script execute");
     console.log("=================================");
-    await scriptsLoadOrder();
+    scriptsLoadOrder();
 
     async function scriptsLoadOrder() {
         let content = document.querySelector(".noteContent");

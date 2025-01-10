@@ -60,85 +60,108 @@ export function btnOpenAndClose(element, header_action) {
     return {btnOpen: btnOpen, btnClose: btnClose};
 }
 
-// TODO: Popup Windows >> Improve into independent windows popup
-export function popupElement(content) {
+// Popup Windows
+export async function popupElement(content) {
     // Get the desktop container
     let container = document.querySelector("#Popup_Container");
 
-    // Get the specific popup element name #PopupTrigger
+    // Get the specific popup element name .PopupTrigger
     let popupOpenZone = content.querySelectorAll(".popupTrigger");
     // console.log(popupOpenZone);
 
+    let nextPopupId = parseInt(container.dataset.popupContainerId);
+
     popupOpenZone.forEach((popupContent) => {
-        /* TODO:
-            We assign ID for the trigger area where the popup element create in the container
-            This is for identify the window if the popup already open of not!
-         */
+        // TODO: Find a way to assign ID when popupOpenZone is loaded from a fetch html file
+        console.log(popupContent.dataset.hasOwnProperty("popupContentId"))
+        console.log(popupContent)
 
-        // console.log(popupContent)
+        if (popupContent.dataset.hasOwnProperty("popupContentId")) {
+            console.log("Already existed: " + popupContent.dataset.popupContentId);
+        } else {
+            popupContent.dataset.popupContentId = container.dataset.popupContainerId;
+            container.dataset.popupContainerId = nextPopupId + 1; // Increment
 
-        popupContent.addEventListener("click", () => {
-            // When the element is click, we create windows element with assign popup ID
-            const popupTemplate = `
+            popupContent.style.cursor = "pointer";
+        }
+
+        popupContent.addEventListener("click", async () => {
+            // We assign ID for the trigger area where the popup element create in the container
+            // This is for identify the window if the popup already open of not!
+            const checkPopupContent = container.querySelector(`[data-popup-id = "${popupContent.dataset.popupContentId}" ]`)
+
+            // if already exist, rise the z index
+            if (checkPopupContent != null) {
+                setTimeout(() => {
+                    windowsRiseZIndex(checkPopupContent)
+                }, 50)
+            } else {
+                // When the element is click, we create windows element with assign popup ID
+                const popupTemplate = `
                 <div id="Popup">
                     <div class="Popup_header">
                         <div class="Popup_header_name">[ Popup ]</div>
                         <div class="Popup_header_action">
-                            <img id="Popup_btn_close" class="svg" src="svg/close-btn.svg" alt="Close">
+                            <img id="Popup_btn_remove" class="svg" src="svg/close-btn.svg" alt="Close">
                         </div>
                     </div>
                     <div class="Popup_main popup">
-                        ${popupContent.innerHTML}
+                        ${await popupContent.innerHTML}
                     </div>
                 </div>
             `;
+                const parser = new DOMParser();
+                const popup = parser.parseFromString(popupTemplate, "text/html");
+                const popupNode = popup.body.firstChild;
 
-            const parser = new DOMParser();
+                const {element, header, header_action, main} = windowElement(popupNode)
+                dragElement(element, header);
+                initializeZIndex(element);
 
-            const popup = parser.parseFromString(popupTemplate, "text/html");
-            // console.log("Header: " + header);
-
-            const popupNode = popup.body.firstChild;
-            // console.log(popupNode)
-
-
-            const {element, header, header_action, main} = windowElement(popupNode)
-            dragElement(element, header);
-            initializeZIndex(element);
-            windowsRiseZIndex(element);
-
-            // Each popup will assign with an ID to identify the window
-            let nextPopupId = parseInt(container.dataset.popupContainerId);
-            popupNode.dataset.popupId = nextPopupId;
-
-            console.log(element)
-
-            // This will check if the element will rise up or not
-            if(element.style.display === "none") {
-                // Style
-                element.style.display = "flex";
-                element.style.flexDirection = "column";
-                element.style.overflow = "hidden"
-                element.style.height = "auto";
-
-                // Animation
                 setTimeout(() => {
-                    element.style.opacity = 1;
+                    // Popup Style
+                    element.style.display = "flex";
+                    element.style.flexDirection = "column";
+                    element.style.overflow = "hidden"
+                    element.style.height = "auto";
+                    element.style.top = "25%";
+                    element.style.left = "25%";
+                    element.style.boxShadow = "0 0 20px rgb(0, 0, 0, 1)";
+
+                    windowsRiseZIndex(element);
+
+                    // Animation
+                    element.style.opacity = "1";
+
+                }, 100)
+
+                // Remove element button
+                // this is where the element will be removed when user is click
+                // After the element is created, we create an event listener at the "Popup_btn_remove"
+                // this will remove the parent element
+                const btnRemove = header_action.querySelector(`#${element.id}_btn_remove`);
+                btnRemove.style.cursor = "pointer";
+                btnRemove.addEventListener("click", () => {
+                    element.style.opacity = "0";
+
+                    setTimeout(() => {
+                        element.remove();
+                    }, 500)
                 })
+
+                // Each popup will assign with an PopupID to identify associate with the PopupContentID
+                // console.log(popupContent.dataset.popupContentId);
+                popupNode.dataset.popupId = popupContent.dataset.popupContentId;
+
+                // Append the element
+                container.appendChild(popupNode);
+                // console.log(popupNode)
+
+                // console.log("Popup Content: " + popupNode.dataset.popupId);
+                // console.log("Container ID: " + container.dataset.popupContainerId);
+                // console.log("==============================")
             }
-
-            container.appendChild(popupNode);
-            // console.log(container);
-
-            container.dataset.popupContainerId = nextPopupId + 1;
-
-            // console.log("Popup Content: " + popupNode.dataset.popupId);
-            // console.log("Container ID: " + container.dataset.popupContainerId);
-            // console.log("==============================")
         });
-
-        // TODO: this is where the element will be removed when user is click
-        let btnRemove;
     });
 }
 

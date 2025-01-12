@@ -403,7 +403,7 @@ async function noteHeaderAnimation(noteHeader, noteId) {
         noteTitleHeaderName.style.opacity = "0";
 
         setTimeout(() => {
-            noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]&nbsp[ Note ID: ${note.noteId} ]`;
+            noteTitleHeaderName.innerHTML = ` &nbsp[ ${note.title} ]`;
             noteTitleHeaderName.style.padding = "0";
             noteTitleHeaderName.style.opacity = "1";
         }, 250);

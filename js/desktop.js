@@ -124,7 +124,7 @@ export async function popupElement(content) {
                     element.style.flexDirection = "column";
                     element.style.overflow = "hidden"
                     element.style.height = "auto";
-                    element.style.top = "25%";
+                    element.style.top = "20%";
                     element.style.left = "25%";
                     element.style.boxShadow = "0 0 20px rgb(0, 0, 0, 1)";
 
@@ -243,8 +243,8 @@ export function dragElement(element, header) {
     // When mouse is pressed, we drag element
     function dragElement(e) {
         e.preventDefault();
-        initialX = currentX - e.clientX;
-        initialY = currentY - e.clientY;
+        initialX = (currentX - e.clientX) / zoomLevel;
+        initialY = (currentY - e.clientY) / zoomLevel;
         currentX = e.clientX;
         currentY = e.clientY;
 
@@ -255,9 +255,9 @@ export function dragElement(element, header) {
         // Ensure window stays within viewport (adjusted for zoom)
         let maxTop;
         if (isWindows) {
-            maxTop = viewportHeight / zoomLevel - header.offsetHeight;
+            maxTop = (viewportHeight / zoomLevel) - header.offsetHeight;
         } else {
-            maxTop = viewportHeight / zoomLevel - element.offsetHeight;
+            maxTop = (viewportHeight / zoomLevel) - element.offsetHeight;
         }
 
         let maxLeft = viewportWidth / zoomLevel - element.offsetWidth;

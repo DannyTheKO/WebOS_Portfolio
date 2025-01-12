@@ -80,7 +80,7 @@ async function fetchGitHubCommits(commitLog) {
                 commitElement.innerHTML = `
                 <a href="${commit.html_url}" target="_blank">
                     <p>Date: ${formatDate()}</p>
-                    <p><strong> >> ${commit.commit.message}</strong></p>
+                    <p>>> ${commit.commit.message}</p>
                 </a>
                 `
 

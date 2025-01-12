@@ -5,11 +5,11 @@ import { initializeProject } from "./js/project/project.js";
 
 // Function to set the zoom level to 90%
 function setZoom() {
-    document.documentElement.style.zoom = "0.9";
+    document.body.style.zoom = "0.9";
 }
 
 // Event listener to call the setZoom function when the page loads
-window.addEventListener('load', setZoom);
+await window.addEventListener('load', setZoom);
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Load Project
         await initializeProject();
-
     } catch (error) {
         console.error('Error during initialization:', error);
     }

@@ -11,7 +11,7 @@
 
     /* Windows Size */
     --window-size-width: 65vw;
-    --window-size-height: 60vh;
+    --window-size-height: 68vh;
     --window-aspect-ratio: 4/1;
 
     /* Window Background */
@@ -235,17 +235,28 @@
                         }
 
                         .imageWindows {
-                            max-height: 300px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            max-height: 250px;
                             overflow: hidden;
+
+                            transition:
+                                    opacity 0.5s ease 0s,
+                                    max-height 0.5s ease 0s;
+
+                            &:hover {
+                                object-fit: contain;
+                                max-height: 450px;
+                                opacity: 1;
+
+                            }
 
                             img {
                                 object-fit: contain;
-                                object-position: 0 -100px;
+                                object-position: 0 50px;
                                 width: 100%;
-
-                                &:hover {
-
-                                }
                             }
                         }
                     }

@@ -100,7 +100,7 @@ export async function popupElement(content) {
                 const popupTemplate = `
                 <div id="Popup">
                     <div class="Popup_header">
-                        <div class="Popup_header_name">[ Popup ]</div>
+                        <div class="Popup_header_name">[ ${popupContent["dataset"].popupTitle} ]</div>
                         <div class="Popup_header_action">
                             <img id="Popup_btn_remove" class="svg" src="svg/close-btn.svg" alt="Close">
                         </div>
@@ -176,7 +176,7 @@ export function windowElement(element) {
     element.style.display = "none";
     element.style.position = "absolute"
     element.style.transition = `opacity 0.1s ease 0s`
-    element.style.opacity = 0;
+    element.style.opacity = "0";
 
     // Header action styling
     if (header_action != null) {
@@ -198,7 +198,7 @@ export function dragElement(element, header) {
     let viewportHeight = window.innerHeight;
 
     // Get zoom level (assuming it's applied to body)
-    const zoomLevel = parseFloat(document.documentElement.style.zoom) || 1; // Default to 1 if not set
+    const zoomLevel = parseFloat(document.body.style.zoom) || 1; // Default to 1 if not set
 
     let topBarElement = document.querySelector("#Topbar_Container .Topbar");
     let topBarHeight = topBarElement.getBoundingClientRect().height / zoomLevel;
@@ -243,14 +243,14 @@ export function dragElement(element, header) {
     // When mouse is pressed, we drag element
     function dragElement(e) {
         e.preventDefault();
-        initialX = (currentX - e.clientX) / zoomLevel;
-        initialY = (currentY - e.clientY) / zoomLevel;
+        initialX = currentX - e.clientX;
+        initialY = currentY - e.clientY;
         currentX = e.clientX;
         currentY = e.clientY;
 
         // Calculate new position
-        let newTop = element.offsetTop - initialY;
-        let newLeft = element.offsetLeft - initialX;
+        let newTop = element.offsetTop - (initialY / zoomLevel);
+        let newLeft = element.offsetLeft - (initialX / zoomLevel);
 
         // Ensure window stays within viewport (adjusted for zoom)
         let maxTop;
@@ -262,6 +262,7 @@ export function dragElement(element, header) {
 
         let maxLeft = viewportWidth / zoomLevel - element.offsetWidth;
 
+        // Element new drag position
         newTop = Math.max(topBarHeight, Math.min(newTop, maxTop));
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));
 

@@ -74,6 +74,8 @@ li {
 
 hr {
     border-color: var(--font-color);
+    width: 100% ;
+    border: 2px solid var(--border-color);
     box-shadow: none;
 }
 
@@ -230,13 +232,13 @@ img {
 
         color: white;
 
-        max-width: 1200px;
+        max-width: 1000px;
         height: auto;
 
         img {
             margin: 0;
             padding: 0;
-            object-fit: cover;
+            object-fit: contain;
             width: 100%;
         }
     }

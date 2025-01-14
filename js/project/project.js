@@ -47,7 +47,7 @@ async function testingProject(element) {
     element.style.opacity = "1"
 }
 
-//#region Fetch Github API
+//#region Fetch GitHub API
 async function fetchGitHubCommits(commitLog) {
     const owner = "DannyTheKO"
     const repo = "WebOS_Portfolio"

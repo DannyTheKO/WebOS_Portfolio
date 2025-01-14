@@ -50,7 +50,7 @@ async function initializeNoteComponents(noteWindow) {
     await initializeNoteContent(noteHeader, noteTitle, notePage);
 
     // Testing Function
-    await testingNote(element, noteHeader, notePage)
+    // await testingNote(element, noteHeader, notePage)
 }
 //#endregion
 
@@ -386,7 +386,6 @@ async function noteHeaderAnimation(noteHeader, noteId) {
 
     // Add this null check
     if (noteTitleHeaderName === null) {
-        console.error("Error: Could not find element with ID 'Note_title_name'");
         return; // Exit the function to prevent further errors
     }
 

@@ -1,12 +1,12 @@
 #Topbar_Container {
     /* == Topbar Setting == */
     /* Button Size */
-    --topbar-button-width: 350px;
-    --topbar-button-height: 35px;
+    --topbar-button-width: 28em;
+    --topbar-button-height: 2.8em;
 
     /* Topbar Size */
     --topbar-width: 100%;
-    --topbar-height: calc(var(--topbar-button-height) + 25px);
+    --topbar-height: calc(var(--topbar-button-height) + 0.5em);
 
     /* Background */
     --topbar-background-color: rgb(0, 0, 0, 0.5);

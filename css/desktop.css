@@ -19,11 +19,11 @@
     --font-family-special: "Stretch Pro", sans-serif;
 
     /* Font Size */
-    --font-size-x-small: 0.85rem;
-    --font-size-small: 0.9rem;
-    --font-size-medium: 1.2rem;
-    --font-size-large: 1.5rem;
-    --font-size-x-large: 1.8rem;
+    --font-size-x-small: 0.75rem;
+    --font-size-small: 0.85rem;
+    --font-size-medium: 1rem;
+    --font-size-large: 1.2rem;
+    --font-size-x-large: 1.5rem;
 
     /* Border Color */
     --border-color: rgb(20, 100, 225);
@@ -144,7 +144,8 @@ img {
     position: absolute;
 
     .icon_img {
-        aspect-ratio: 1;
+        aspect-ratio: 1/1;
+        object-fit: contain;
         height: var(--application-icon-image-size);
 
         border-radius: 16px;
@@ -198,20 +199,21 @@ img {
         padding: 8px 5px;
 
         /* Act like a border for the content */
-        height: 30px;
+        height: 24px;
         border-bottom: 1px solid var(--border-color);
         background-color: var(--border-color);
-        backdrop-filter: unset;
 
         * {
             display: flex;
             justify-content: center;
             align-items: center;
+
+            margin: 0;
         }
     }
 
     [class$="_main"] {
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
         position: relative;
         border: var(--border-size-around) var(--border-color) solid;
@@ -230,10 +232,7 @@ img {
         background-color: var(--application-background-color);
         backdrop-filter: var(--application-background-blur);
 
-        color: white;
-
-        max-width: 1000px;
-        height: auto;
+        max-width: 55vw;
 
         img {
             margin: 0;

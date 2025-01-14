@@ -72,19 +72,6 @@ export async function popupElement(content) {
     let nextPopupId = parseInt(container.dataset.popupContainerId);
 
     popupOpenZone.forEach((popupContent) => {
-        // TODO: Find a way to assign ID when popupOpenZone is loaded from a fetch html file
-        console.log(popupContent.dataset.hasOwnProperty("popupContentId"))
-        console.log(popupContent)
-
-        if (popupContent.dataset.hasOwnProperty("popupContentId")) {
-            console.log("Already existed: " + popupContent.dataset.popupContentId);
-        } else {
-            popupContent.dataset.popupContentId = container.dataset.popupContainerId;
-            container.dataset.popupContainerId = nextPopupId + 1; // Increment
-
-            popupContent.style.cursor = "pointer";
-        }
-
         popupContent.addEventListener("click", async () => {
             // We assign ID for the trigger area where the popup element create in the container
             // This is for identify the window if the popup already open of not!
@@ -146,12 +133,8 @@ export async function popupElement(content) {
 
                     setTimeout(() => {
                         element.remove();
-                    }, 500)
+                    }, 100)
                 })
-
-                // Each popup will assign with an PopupID to identify associate with the PopupContentID
-                // console.log(popupContent.dataset.popupContentId);
-                popupNode.dataset.popupId = popupContent.dataset.popupContentId;
 
                 // Append the element
                 container.appendChild(popupNode);
@@ -197,11 +180,8 @@ export function dragElement(element, header) {
     let viewportWidth = window.innerWidth;
     let viewportHeight = window.innerHeight;
 
-    // Get zoom level (assuming it's applied to body)
-    const zoomLevel = parseFloat(document.body.style.zoom) || 1; // Default to 1 if not set
-
     let topBarElement = document.querySelector("#Topbar_Container .Topbar");
-    let topBarHeight = topBarElement.getBoundingClientRect().height / zoomLevel;
+    let topBarHeight = topBarElement.getBoundingClientRect().height;
 
     let isWindows = false;
 
@@ -249,18 +229,18 @@ export function dragElement(element, header) {
         currentY = e.clientY;
 
         // Calculate new position
-        let newTop = element.offsetTop - (initialY / zoomLevel);
-        let newLeft = element.offsetLeft - (initialX / zoomLevel);
+        let newTop = element.offsetTop - initialY;
+        let newLeft = element.offsetLeft - initialX;
 
         // Ensure window stays within viewport (adjusted for zoom)
         let maxTop;
         if (isWindows) {
-            maxTop = (viewportHeight / zoomLevel) - header.offsetHeight;
+            maxTop = viewportHeight - header.offsetHeight;
         } else {
-            maxTop = (viewportHeight / zoomLevel) - element.offsetHeight;
+            maxTop = viewportHeight - element.offsetHeight;
         }
 
-        let maxLeft = viewportWidth / zoomLevel - element.offsetWidth;
+        let maxLeft = viewportWidth - element.offsetWidth;
 
         // Element new drag position
         newTop = Math.max(topBarHeight, Math.min(newTop, maxTop));
@@ -271,10 +251,25 @@ export function dragElement(element, header) {
 
         // Style base on situation
         if (isWindows) {
+            element.style.transition = `opacity 0.1s ease 0s, 
+            scale 0.1s ease 0s, 
+            box-shadow 0.1s ease 0s,
+            transform 0.1s ease 0s`;
+
             header.style.cursor = "grabbing";
             element.style.opacity = "0.8"
+            element.style.scale = "0.9"
+            element.style.transform = "translate(0%, -5%)"
+            element.style.boxShadow = "0 0 40px #000000"
         } else {
+            element.style.transition = `opacity 0.1s ease 0s, 
+            scale 0.1s ease 0s, 
+            box-shadow 0.1s ease 0s,
+            transform 0.1s ease 0s`;
+
             element.style.cursor = "grabbing";
+            element.style.opacity = "0.8"
+            element.style.scale = "0.9"
         }
     }
 
@@ -288,8 +283,13 @@ export function dragElement(element, header) {
         if (isWindows) {
             header.style.cursor = "grab";
             element.style.opacity = "1"
+            element.style.scale = "1"
+            element.style.transform = "translate(0,0)"
+            element.style.boxShadow = "0 0 20px #000000"
         } else {
             element.style.cursor = "pointer";
+            element.style.opacity = "1"
+            element.style.scale = "1"
         }
     }
 }

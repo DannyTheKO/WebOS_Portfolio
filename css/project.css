@@ -10,8 +10,8 @@
     --window-position-left: 74%;
 
     /* Windows Size */
-    --window-size-width: 500px;
-    --window-size-height: 600px;
+    --window-size-width: 450px;
+    --window-size-height: 540px;
     --window-aspect-ratio: 4/1;
 
     /* Window Background */
@@ -22,18 +22,6 @@
     /* Font Family */
     --font-family: "consolas", sans-serif;
     --font-family-special: "Stretch Pro", sans-serif;
-
-    /* Font Size */
-    --font-size-x-small: 0.8rem;
-    --font-size-small: 0.9rem;
-    --font-size-medium: 1.2rem;
-    --font-size-large: 1.5rem;
-    --font-size-x-large: 1.8rem;
-
-    /* Profile Picture Size */
-    --pfp-size-small: 64px;
-    --pfp-size-normal: 128px;
-    --pfp-size-big: 256px;
 }
 
 .Project_Icon {

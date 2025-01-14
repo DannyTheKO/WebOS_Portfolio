@@ -1,8 +1,8 @@
-.Introduction_Icon,
-#Introduction_Container {
+.Contact_Icon,
+#Contact_Container {
     /* == Windows Setting == */
     /* Icon Position */
-    --icon-position-top: 10%;
+    --icon-position-top: 55%;
     --icon-position-left: 1%;
 
     /* Windows Position */
@@ -10,7 +10,7 @@
     --window-position-left: 30%;
 
     /* Windows Size */
-    --window-size-width: 700px;
+    --window-size-width: 550px;
     --window-size-height: auto;
     --window-aspect-ratio: 4/1;
 
@@ -18,27 +18,26 @@
     --application-background-color: rgba(0, 0, 0, 0.8);
     --application-background-blur: blur(4px);
 
-    /* == Introduction Content Setting == */
+    /* == Contact Content Setting == */
     /* Font Family */
     --font-family: "consolas", sans-serif;
     --font-family-special: "Stretch Pro", sans-serif;
 
     /* Profile Picture Size */
-    --pfp-size-small: 64px;
+    --pfp-size-x-small: 64px;
+    --pfp-size-small: 96px;
     --pfp-size-normal: 128px;
     --pfp-size-big: 256px;
 }
 
-
-/* Introduction Icon */
-.Introduction_Icon {
+/* Icon */
+.Contact_Icon {
     top: var(--icon-position-top);
     left: var(--icon-position-left);
 }
 
-
-/* Introduction Windows */
-#Introduction {
+/* Windows */
+#Contact {
     flex: 1;
     /* Custom Width and Height for the app */
     width: var(--window-size-width);
@@ -54,10 +53,10 @@
     /* This will break the screen limit of the desktop but this will stay here for... idk development purpose :) */
     /* transform: translate(-50%, -50%);  */
 
-    box-shadow: 0px 0px 20px rgb(0, 0, 0, 1);
+    box-shadow: 0 0 20px rgb(0, 0, 0, 1);
 
     /* Custom Header if you want to style it */
-    .Introduction_header {
+    .Contact_header {
         margin: 0;
         padding: 0 5px;
 
@@ -69,56 +68,78 @@
     }
 
     /* This is where you're edit your style inside the content */
-    .Introduction_main {
-        padding: 1em;
+    .Contact_main {
+        height: 100%;
+        padding: 1em 0.5em 0.5em 0.5em;
+        /*background-image: linear-gradient(var(--border-color), darkblue);*/
 
-        .container_pfp {
+        p {
+            margin: 0;
+        }
+
+        [class^="wrapper"] {
+            margin-bottom: 24px;
+        }
+
+        .wrapperHeader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            margin-bottom: 16px;
+
+            .pfp {
+                border-radius: 100%;
+                aspect-ratio: 1;
+                width: var(--pfp-size-small);
+                margin-bottom: 16px;
+            }
+        }
+
+        .wrapperIcon {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            gap: 12px;
+
+            img {
+                aspect-ratio: 1/1;
+                height: 28px;
+            }
+        }
+
+        .wrapperLinks {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            gap: 16px;
 
-            font-size: var(--font-size-large);
+            text-align: center;
 
-            .profile_picture {
-                width: var(--pfp-size-normal);
-                aspect-ratio: 1/1;
+            .button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                margin: 8px 0;
-
-                border-radius: 100%;
-            }
-        }
-
-
-        .container_paragraph {
-            font-size: var(--font-size-medium);
-            padding-left: 0.5em;
-        }
-
-        .container_links {
-            display: flex;
-            justify-content: center;
-
-            overflow: hidden;
-
-            font-size: var(--font-size-small);
-
-            padding: 8px 0 8px 0;
-
-            a {
-                transition: background-color 0.2s ease 0s,
-                scale 0.2s ease 0s,
-                color 0.2s ease 0s;
-
+                width: 75%;
+                height: 45px;
                 padding: 0.5em;
-                border: 2px solid var(--border-color);
-            }
+                background-image: linear-gradient(to left, var(--border-color), dodgerblue);
+                cursor: pointer;
 
-            a:hover {
-                color: black;
-                scale: 1.5;
-                background-color: var(--border-color)
+                user-select: none;
+
+                &:active {
+                    background-image: linear-gradient(to right, var(--border-color), dodgerblue);
+                }
             }
         }
+
     }
 }

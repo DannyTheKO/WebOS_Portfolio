@@ -2,7 +2,7 @@ import { initializeIntroduction } from "./js/introduction/introduction.js";
 import { initializeTopbar } from "./js/topbar/topbar.js";
 import { initializeNote } from "./js/note/note.js";
 import { initializeProject } from "./js/project/project.js";
-import { initializeContact } from "./js/linktree/linktree.js";
+import { initializeContact } from "./js/contact/contact.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {

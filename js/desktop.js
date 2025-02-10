@@ -201,7 +201,7 @@ export function dragElement(element, header) {
         element.style.cursor = "pointer";
         isWindows = false;
 
-        // Icon mode - drag from anywhere
+        // Icon mode - drag from icon
         element.onmousedown = (e) => {
             windowsRiseZIndex(element);
             startDragging(e);
@@ -252,24 +252,17 @@ export function dragElement(element, header) {
         // Style base on situation
         if (isWindows) {
             element.style.transition = `opacity 0.1s ease 0s, 
-            scale 0.1s ease 0s, 
-            box-shadow 0.1s ease 0s,
-            transform 0.1s ease 0s`;
+            box-shadow 0.1s ease 0s`;
 
             header.style.cursor = "grabbing";
             element.style.opacity = "0.8"
-            element.style.scale = "0.9"
-            element.style.transform = "translate(0%, -5%)"
             element.style.boxShadow = "0 0 40px #000000"
         } else {
             element.style.transition = `opacity 0.1s ease 0s, 
-            scale 0.1s ease 0s, 
-            box-shadow 0.1s ease 0s,
-            transform 0.1s ease 0s`;
+            box-shadow 0.1s ease 0s`;
 
             element.style.cursor = "grabbing";
             element.style.opacity = "0.8"
-            element.style.scale = "0.9"
         }
     }
 
@@ -283,13 +276,10 @@ export function dragElement(element, header) {
         if (isWindows) {
             header.style.cursor = "grab";
             element.style.opacity = "1"
-            element.style.scale = "1"
-            element.style.transform = "translate(0,0)"
             element.style.boxShadow = "0 0 20px #000000"
         } else {
             element.style.cursor = "pointer";
             element.style.opacity = "1"
-            element.style.scale = "1"
         }
     }
 }

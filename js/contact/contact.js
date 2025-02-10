@@ -22,20 +22,10 @@ async function initializeContactComponents(contactWindow) {
     // Custom event for open button
 
     // Default start up behavior
-    // element.style.opacity = "1"
-    // element.style.display = "flex"
-    // element.style.flexDirection = "column"
+    element.style.opacity = "1"
+    element.style.display = "flex"
+    element.style.flexDirection = "column"
 
 }
 
 // TODO: Create a Contact Page and write a script
-// Having CORS issue, will find another way,
-// Or just create mockup site like contact for my app
-async function fetchLinktreeSite(linktreeWebpage) {
-    fetch("https://linktr.ee/dannyti")
-        .then(response => response.text())
-        .then(data => {
-            linktreeWebpage.innerHTML = data;
-        })
-        .catch(error => console.error('Error fetching contact:', error));
-}

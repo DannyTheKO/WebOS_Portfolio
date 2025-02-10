@@ -56,6 +56,7 @@
     box-shadow: 0 0 20px rgb(0, 0, 0, 1);
 
     /* Custom Header if you want to style it */
+
     .Contact_header {
         margin: 0;
         padding: 0 5px;
@@ -68,6 +69,7 @@
     }
 
     /* This is where you're edit your style inside the content */
+
     .Contact_main {
         height: 100%;
         padding: 1em 0.5em 0.5em 0.5em;
@@ -101,16 +103,31 @@
 
         .wrapperIcon {
             display: flex;
-            flex-direction: row;
             justify-content: center;
-            align-items: center;
+            overflow: hidden;
 
-            gap: 12px;
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-            img {
-                aspect-ratio: 1/1;
-                height: 28px;
+                gap: 12px;
+
+                padding: 0.2em;
+
+                transition: background-color 0.1s ease;
+
+                img {
+                    aspect-ratio: 1/1;
+                    height: 28px;
+                }
+
+                &:hover {
+
+                    background-color: rgb(20, 100, 225, 0.7);
+                }
             }
+
         }
 
         .wrapperLinks {
@@ -130,13 +147,16 @@
                 width: 75%;
                 height: 45px;
                 padding: 0.5em;
-                background-image: linear-gradient(to left, var(--border-color), dodgerblue);
-                cursor: pointer;
 
+                cursor: pointer;
                 user-select: none;
 
-                &:active {
-                    background-image: linear-gradient(to right, var(--border-color), dodgerblue);
+                background-color: var(--border-color);
+                transition: background-color 0.2s ease 0s;
+
+                &:hover {
+                    border: 4px solid var(--border-color);
+                    background-color: rgba(0, 0, 0, 0.5);
                 }
             }
         }
